@@ -1,0 +1,45 @@
+
+/* Ensure owl-carousel is visible */
+.owl-carousel {
+    display: block !important;
+    visibility: visible !important;
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  
+  /* Basic carousel styling */
+  .owl-carousel .item {
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  /* Navigation buttons */
+  .owl-nav {
+    text-align: center;
+    margin-top: 10px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+  
+  
+  .owl-prev, .owl-next {
+    background: #1C2A0E;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 4px;
+  }
+  
+  .owl-prev:hover, .owl-next:hover {
+    background: #2A3F15;
+  }
+  

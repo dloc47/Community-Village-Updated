@@ -1,0 +1,5 @@
+[33mf4f1dad[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m added home-components
+[33m910bce4[m `Added app-homestays-carousel and app-adventures components to app.component.html and updated imports in app.component.ts`ng s
+[33m90ff9f3[m add componenet to home folder ,fixes bugs,home initial stage completed
+[33me7c1a87[m add section in home page as grid-value,hero,homestays,nav-bar,vilage
+[33mfa689e7[m initial commit

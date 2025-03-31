@@ -1,0 +1,66 @@
+<div *ngFor="let village of villageData  | paginate: { itemsPerPage: itemPerPage, currentPage: pageNo,totalItems:totalRecords }; let i= index"
+	class="bg-white rounded-lg my-2 shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0]">
+	<div class="flex flex-col md:flex-row h-auto md:h-48">
+		<div class="w-full md:w-48 h-48 md:h-full relative overflow-hidden">
+			<img [src]="getProfileImage(village.images)"
+				[alt]="village.committeeName"
+				class="w-full h-full object-fill transform group-hover:scale-105 transition duration-500">
+		</div>
+		<div class="flex-1 p-4 flex flex-col">
+			<div class="flex-grow">
+				<div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-2">
+					<h4 class="text-lg font-semibold">
+						{{village.committeeName}}
+					</h4>
+					<span [ngClass]="getClass(i+1)"
+						class="inline-block px-3 py-1 rounded-full text-xs font-medium w-fit hover:text-white">
+						{{village.districtName}}
+					</span>
+				</div>
+				<p class="text-gray-700 mt-2 line-clamp-2 text-sm">
+					{{village.description}}
+				</p>
+			</div>
+			<div class="mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
+				<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+					<span *ngFor="let tag of village.tags"
+						class="flex items-center bg-gray-100 rounded-[5px]">
+						{{tag}}
+					</span>
+					<span class="flex items-center">
+						<svg xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4 mr-1"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor">
+							<path stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+						</svg>
+						{{village.longitude}}
+					</span>
+				</div>
+				<a [routerLink]="['/village', village.committeeId]"
+					routerLinkActive="router-link-active"
+					class="inline-flex items-center w-full md:w-fit border border-[#1C2A0E] rounded-full px-4 py-1.5 text-sm text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center md:justify-start">
+					Know More
+					<svg xmlns="http://www.w3.org/2000/svg"
+						class="h-3.5 w-3.5 ml-1.5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor">
+						<path stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"></path>
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="py-4 flex justify-center">
+	<pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+</div>

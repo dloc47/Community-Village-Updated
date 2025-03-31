@@ -1,0 +1,60 @@
+<!-- ------------------------- Homestays ------------------------------ -->
+<div *ngFor="let homestay of homestayData | paginate: { itemsPerPage: itemPerPage, currentPage: pageNo,totalItems:totalRecords };let i= index"
+	class="bg-white rounded-lg shadow-md my-2 overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0]">
+
+	<div class="flex flex-col md:flex-row h-auto md:h-48">
+		<div class="w-full md:w-48 h-48 md:h-full relative overflow-hidden">
+			<img [src]="getProfileImage(homestay.images)"
+				[alt]="homestay.homestayName"
+				class="w-full h-full object-contain transform group-hover:scale-105 transition duration-500">
+		</div>
+		<div class="flex-1 p-4 flex flex-col">
+			<div class="flex-grow">
+				<div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-2">
+					<h4 class="text-lg font-semibold">
+						{{homestay.homestayName}}
+					</h4>
+					<span [ngClass]="getClass(i+1)"
+						class="inline-block px-3 py-1 rounded-full text-xs font-medium
+                     bg-green-500/10 text-green-500 w-fit hover:text-white">
+						{{homestay.districtName}}
+					</span>
+				</div>
+				<p class="text-gray-700 mt-2 line-clamp-2 text-sm">
+					{{homestay.description}}
+				</p>
+				<div class="mt-2 flex flex-wrap gap-2">
+					<span *ngFor="let tag of homestay.tags"
+						class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+						{{tag}} ,
+					</span>
+				</div>
+			</div>
+			<div class="mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
+				<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+					<span class="flex items-center font-medium text-[#1C2A0E]">
+						{{homestay.roomTariff|currency:'INR':'symbol':'1.0-0'}}
+					</span>
+				</div>
+				<a [routerLink]="['/homestay',homestay.homestayId]"
+					class="inline-flex items-center w-full md:w-fit border border-[#1C2A0E] rounded-full px-3 py-1 text-sm text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center md:justify-start">
+					Know More
+					<svg xmlns="http://www.w3.org/2000/svg"
+						class="h-3.5 w-3.5 ml-1"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor">
+						<path stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"></path>
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="py-4 flex justify-center">
+	<pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+</div>
