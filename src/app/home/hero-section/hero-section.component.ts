@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
-import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GlobalEnums } from '../../globalEnums.enum';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -13,9 +13,11 @@ import { of } from 'rxjs';
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
-export class HeroSectionComponent implements OnInit {
+export class HeroSectionComponent implements OnInit, AfterViewInit {
   // Inject the API service for making HTTP requests
   private apiService = inject(ApiService);
+  private fb= inject(FormBuilder);
+  private router= inject(Router)
 
   // Object to store various entity counts
   counts: any = {
@@ -33,50 +35,38 @@ export class HeroSectionComponent implements OnInit {
   // Reference to GlobalEnums for type safety
   GlobalEnums = GlobalEnums;
   // Track the currently active tab
-  activeTab = this.GlobalEnums.homestays;
+  activeTab = this.GlobalEnums.village;
+  validSearchForm:boolean=true;
 
-  // Initialize the search form with reactive form controls
-  searchForm = new FormGroup({
-    location: new FormControl(''),
-    village: new FormControl(''),
-    searchKeyboard: new FormControl(''),
+
+  // Initialize the search form using FormBuilder
+  searchForm: FormGroup = this.fb.group({
+    location: ['',Validators.required],
+    village: [''],
+    searchKeyword: ['']
   });
 
-  constructor() {}
+
+constructor() {}
+
 
   ngOnInit(): void {
-    // Initialize component by fetching required data
-    this.entityCount();
-    this.getDistricts();
-  }
    
+  }
+
+  ngAfterViewInit(){
+  // Initialize component by fetching required data
+    this.fetchEntityCounts();
+    this.getDistricts();
+  } 
+
   // Method to set the active tab
   setActiveTab(category: GlobalEnums) {
     this.activeTab = category;
-  }
-
-  // Fetch and format entity counts from the API
-  entityCount(): void {
-    this.apiService.getData('website/entity-counts').pipe(
-      catchError((error) => {
-        console.error('Error fetching entity counts:', error);
-        return of({}); // Return empty object on error
-      })
-    ).subscribe({
-      next: (data: any) => {
-        try {
-          this.counts = this.formatCounts(data);
-        } catch (error) {
-          console.error('Error formatting entity counts:', error);
-          this.counts = {};
-        }
-      },
-      error: (error) => {
-        console.error('Subscription error:', error);
-      },
-      complete: () => {
-        console.log('Entity count fetch completed.');
-      }
+    this.searchForm.reset({
+      location:'',
+      village:'',
+      searchKeyword:'',
     });
   }
 
@@ -139,33 +129,85 @@ export class HeroSectionComponent implements OnInit {
     }
   }
 
-  // Format the counts data
-  formatCounts(data: any): Record<string, string> {
-    if (!data || typeof data !== 'object') {
-      return {};
-    }
 
-    const formattedData: any = {};
-    for (let key in data) {
-      if (data.hasOwnProperty(key)) {
-        formattedData[key] = this.formatNumber(data[key]);
-      }
+search() {
+  const formData = this.searchForm.getRawValue();
+  if(!this.searchForm.invalid){
+  
+  // Send form data with 'search/' before route params
+  this.router.navigate([
+    'search',
+    this.activeTab,
+    formData.location || '',   // type (location)
+    formData.village || '',    // districtId (village)                           // villageId (static or dynamic if needed)
+    formData.searchKeyword || '' // keyword (searchKeyword)
+  ]);
+}
+  else{
+  this.validSearchForm=false;
+  }
+}
+
+
+// Fetch entity counts from the API
+fetchEntityCounts(): void {
+  this.apiService.getData('website/entity-counts').pipe(
+    catchError((error) => {
+      console.error('Error fetching entity counts:', error);
+      return of({}); // Return an empty object on error
+    })
+  ).subscribe({
+    next: (data: any) => this.handleEntityData(data), // Pass data to handler
+    error: (error) => {
+      console.error('Subscription error:', error);
+    },
+    complete: () => {
+      console.log('Entity count fetch completed.');
     }
-    return formattedData;
+  });
+}
+
+
+// Handle and format entity count data
+handleEntityData(data: any): void {
+  try {
+    this.counts = this.formatCounts(data);
+  } catch (error) {
+    console.error('Error formatting entity counts:', error);
+    this.counts = {}; // Return empty object if formatting fails
+  }
+}
+
+
+// Format the counts data
+formatCounts(data: any): Record<string, string> {
+  if (!data || typeof data !== 'object') {
+    return {};
   }
 
-  // Format numbers to ensure two-digit display
-  formatNumber(value: number | string | null | undefined): string {
-    if (value === null || value === undefined) {
-      return '00';
+  const formattedData: Record<string, string> = {};
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      formattedData[key] = this.formatNumber(data[key]);
     }
-
-    let strValue = value.toString().trim();
-
-    if (!/^\d+$/.test(strValue)) {
-      return '00';
-    }
-
-    return strValue.length === 1 ? '0' + strValue : strValue;
   }
+  return formattedData;
+}
+
+
+// Format numbers to ensure two-digit display
+formatNumber(value: number | string | null | undefined): string {
+  if (value === null || value === undefined) {
+    return '00';
+  }
+
+  let strValue = value.toString().trim();
+
+  if (!/^\d+$/.test(strValue)) {
+    return '00';
+  }
+
+  return strValue.length === 1 ? '0' + strValue : strValue;
+}
+
 }

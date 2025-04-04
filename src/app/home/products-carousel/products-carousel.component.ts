@@ -43,7 +43,7 @@ export class ProductsCarouselComponent implements OnInit, AfterViewInit, OnDestr
 
         if (this.products.length > 0) {
           setTimeout(() => {
-            initializeOwlCarousel('.product-carousel',true,true,24,false,[1,3,4]);
+            initializeOwlCarousel('.product-carousel',true,true,24,false,[1,3,5]);
           }, 300);
         }
 

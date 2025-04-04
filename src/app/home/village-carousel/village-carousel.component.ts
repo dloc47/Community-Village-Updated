@@ -48,7 +48,7 @@ export class VillageCarouselComponent implements OnInit, AfterViewInit, OnDestro
 
       if (this.villages.length > 0) {
         setTimeout(() => {
-          initializeOwlCarousel('.village-carousel', true, true, 5, false, [2, 3, 4])
+          initializeOwlCarousel('.village-carousel', true, true, 5, false, [1, 3, 5])
         }, 0)
       }
 

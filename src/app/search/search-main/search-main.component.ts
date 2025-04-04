@@ -55,7 +55,7 @@ export class SearchMainComponent implements OnInit {
 
     this.loadDistricts();
 
-        this.searchService.loading$.subscribe((isLoading) => {
+     this.searchService.loading$.subscribe((isLoading) => {
       this.isLoading = isLoading;
     });
 
@@ -67,49 +67,78 @@ export class SearchMainComponent implements OnInit {
       this.errorMessage = error;
     });
 
-    this.getFirstSegment();
-
-    this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
-    
   }
 
-  getFirstSegment(): boolean {
-    let segmentFound = false;
-  
-    this.router.data.subscribe((data) => {
-      if (data['type']) {
-        // If segment exists, set active tab and load data
-        this.setActiveTabParam(data['type']);
-        segmentFound = true;
-      }
-    });
-  
-    return segmentFound;
-  }
-
-
-  setActiveTabParam(path:string){
-    switch (path) {
-      case 'village':
-        this.setActiveTabs(GlobalEnums.village);
-        break;    
-        case 'homestay':
-          this.setActiveTabs(GlobalEnums.homestays);        
-        break;
-        case 'product':
-          this.setActiveTabs(GlobalEnums.product);         
-          break;
-          case 'activity':
-          this.setActiveTabs(GlobalEnums.activities);            
-        break;
-        case 'event':
-          this.setActiveTabs(GlobalEnums.events);
-      break;      
-      default:
-        console.warn('Invalid tab selected!');
+ getFirstSegment() {
+  // Subscribe to route params
+  this.router.params.subscribe((params) => {
+    const type = params['type'] || undefined;
+    const districtId = params['districtId'] || undefined;
+    const villageId = params['villageId'] || undefined;
+    const keyword = params['keyword'] || undefined;
+    // If 'type' exists, set the active tab
+    if (type !== undefined) {
+      this.setActiveTabParam(type);
     }
-  }
 
+
+    // If 'districtId' is valid, call search() else paginated
+    if (districtId !== undefined && districtId!=='undefined' && districtId!=='') {
+      this.redirectedFilters(type,districtId,villageId,keyword);
+    }
+    else{
+      this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
+    }
+  });
+}
+
+redirectedFilters(type:any, districtId:any, villageId:any, keyword:any) {
+    // Normalize parameters: if undefined, 'undefined', or '', set to undefined
+    type = (type === undefined || type === 'undefined' || type === '') ? undefined : type;
+    districtId = (districtId === undefined || districtId === 'undefined' || districtId === '') ? undefined : districtId;
+    villageId = (villageId === undefined || villageId === 'undefined' || villageId === '') ? undefined : villageId;
+    keyword = (keyword === undefined || keyword === 'undefined' || keyword === '') ? undefined : keyword;
+
+   this.loadVillages(districtId);  //drill down vilages from district
+
+    this.userInputs.patchValue({
+      region: districtId,          // Default value as an empty string
+      village:villageId,
+      searchTerm:keyword         // Default value as an empty string
+    });
+
+    this.search();  //call this method after setting all the values
+    
+}
+
+
+
+setActiveTabParam(path: string) {
+    switch (path.toLowerCase()) { // Convert path to lowercase for case-insensitive comparison
+        case 'village':
+        case 'villages':
+            this.setActiveTabs(GlobalEnums.village);
+            break;
+        case 'homestay':
+        case 'homestays':
+            this.setActiveTabs(GlobalEnums.homestays);
+            break;
+        case 'product':
+        case 'products':
+            this.setActiveTabs(GlobalEnums.product);
+            break;
+        case 'activity':
+        case 'activities':
+            this.setActiveTabs(GlobalEnums.activities);
+            break;
+        case 'event':
+        case 'events':
+            this.setActiveTabs(GlobalEnums.events);
+            break;
+        default:
+            console.warn('Invalid tab selected!');
+    }
+}
 
 
 
@@ -120,13 +149,14 @@ export class SearchMainComponent implements OnInit {
 
   
   // ✅ Handle filtered data request
-  getFilteredData(category: GlobalEnums, districtId?: number, villageId?: number, searchTerm?: string): void {
+  getFilteredData(category: string, districtId?: number, villageId?: number, searchTerm?: string): void {
     this.searchService.updateQueryState('filtered', {
       category,
       districtId,
       villageId,
       searchTerm,
     });
+
   }
 
   loadDistricts(): void {

@@ -48,7 +48,7 @@ export class HomestaysCarouselComponent implements OnInit ,AfterViewInit,OnDestr
           this.homestays = data.data;
 
           setTimeout(() => {
-            initializeOwlCarousel('.homestays-carousel', true, true, 5, false, [2, 3, 4])
+            initializeOwlCarousel('.homestays-carousel', true, true, 5, false, [1, 3, 5])
           }, 300);
         }
       },

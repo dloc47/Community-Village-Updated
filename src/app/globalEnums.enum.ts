@@ -27,5 +27,5 @@ export enum placeholder{
 }
 
 export enum search{
-    itemPerPage =5
+    itemPerPage =10
 }

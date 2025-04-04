@@ -20,12 +20,12 @@ export const routes: Routes = [
          pathMatch:'full'
       },
       {
-         path:':type',
+         path:':type/:districtId/:villageId/:keyword',
          component:SearchMainComponent
-      }
+      },
    ]
-
  },
+ 
  {
    path: 'village',
    children:[
