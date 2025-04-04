@@ -16,17 +16,7 @@ interface Homestay {
   imports: [CommonModule, HomestaysCarouselComponent, HomestayProfileComponent]
 })
 export class HomestayMainComponent implements OnInit {
-  // Initialize the homestay property with sample data
-  homestay: Homestay = {
-    amenities: [
-      'WiFi',
-      'Parking',
-      'Air Conditioning',
-      'Kitchen',
-      'Laundry',
-      'TV'
-    ]
-  };
+
 
   constructor() { }
 

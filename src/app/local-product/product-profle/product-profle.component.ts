@@ -23,8 +23,8 @@ export class ProductProfleComponent implements OnInit {
         private router:ActivatedRoute
       ) { }
     
-    ngOnInit() {
-       this.getFirstSegment();
+       ngOnInit() {
+         this.getFirstSegment();
       }
     
       getFirstSegment(): boolean {
@@ -36,7 +36,7 @@ export class ProductProfleComponent implements OnInit {
     
           if (id) {
             // If ID is present, load committee data
-            this.loadProductData(parseInt(id)); // Load data with ID
+            this.loadProductbyID(parseInt(id)); // Load data with ID
             segmentFound = true;
           } else {
             // Fallback if no ID
@@ -50,7 +50,7 @@ export class ProductProfleComponent implements OnInit {
     
       
       // ✅ Fetch  data  
-      loadProductData(id:number): void {
+      loadProductbyID(id:number): void {
         this.loading = true;
         this.apiService
           .getDataById<any>(getByIDEndpoints.products, id)

@@ -1,19 +1,28 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-	<!-- Product Layout -->
-	<div class="grid grid-cols-1 md:grid-cols-4 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-		<!-- Image Section -->
-		<div class="relative flex items-center justify-center">
-			<div *ngIf="productInfo?.images?.length>0"
-				class="owl-carousel owl-theme productImageSwiper w-full ">
-				<div *ngFor="let image of productInfo.images"
-					class="item max-h-40">
-					<img [src]="image.imageUrl"
-						[alt]="productInfo.productName"
-						class="w-full h-auto max-h-[280px] object-fill rounded-lg">
-				</div>
-			</div>
+    <!-- Product Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <!-- Image Section -->
+        <div class="relative flex items-center justify-center">
+            <div *ngIf="productInfo?.images?.length>0"
+                class="owl-carousel owl-theme productImageSwiper w-full ">
+                <div *ngFor="let image of productInfo.images"
+                    class="item max-h-40">
+                    <img [src]="image.imageUrl"
+                        [alt]="productInfo.productName"
+                        class="w-full h-auto max-h-[280px] object-fill rounded-lg">
+                </div>
+            </div>
 
 
+            <div *ngIf="productInfo?.images?.length<=0"
+                class="owl-carousel owl-theme productImageSwiper w-full">
+                <div class="item">
+                    <img [src]="placeholder"
+                        [alt]="productInfo.productName"
+                        class="w-full h-auto max-h-[280px] object-contain rounded-lg">
+                </div>
+            </div>
+        </div>
 
 
 
@@ -21,59 +30,50 @@
 
 
 
-			<div *ngIf="productInfo?.images?.length<=0"
-				class="owl-carousel owl-theme productImageSwiper w-full">
-				<div class="item">
-					<img [src]="placeholder"
-						[alt]="productInfo.productName"
-						class="w-full h-auto max-h-[280px] object-contain rounded-lg">
-				</div>
-			</div>
-		</div>
 
 
 
 
 
+        <!-- Product Details Section -->
+        <div class="md:col-span-2">
+            <!-- Header -->
+            <div class="mb-4">
+                <div class="flex flex-col mb-2">
+                    <h1 class="text-2xl font-bold mb-1">
+                        {{productInfo.productName}}
+                    </h1>
+                    <div class="flex items-center gap-2 text-gray-600 text-sm">
+                        <!-- <i data-lucide="map-pin" class="w-4 h-4"></i> -->
+                        <p>
+                            {{productInfo.districtName}} ,{{productInfo.region}}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
 
 
 
 
 
-		<!-- Product Details Section -->
-		<div class="md:col-span-2">
-			<!-- Header -->
-			<div class="mb-4">
-				<div class="flex flex-col mb-2">
-					<h1 class="text-2xl font-bold mb-1">
-						{{productInfo.productName}}
-					</h1>
-					<div class="flex items-center gap-2 text-gray-600 text-sm">
-						<!-- <i data-lucide="map-pin" class="w-4 h-4"></i> -->
-						<p>
-							{{productInfo.districtName}} ,{{productInfo.region}}
-						</p>
-					</div>
-				</div>
-			</div>
 
 
 
 
 
 
+            <!-- Description -->
+            <div class="mb-6">
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    {{productInfo.description}}
+                </p>
+            </div>
 
 
 
 
 
-			<!-- Description -->
-			<div class="mb-6">
-				<p class="text-gray-600 text-sm leading-relaxed">
-					{{productInfo.description}}
-				</p>
-			</div>
 
 
 
@@ -81,21 +81,21 @@
 
 
 
+            <!-- Product Features -->
+            <div class="mb-6">
+                <div class="flex flex-wrap gap-2">
+                    <div *ngFor="let tag of productInfo.tags"
+                        class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full">
+                        <!-- <i data-lucide="check-circle" class="w-4 h-4 text-gray-600"></i> -->
+                        <span class="text-sm text-gray-600">{{tag}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
 
-			<!-- Product Features -->
-			<div class="mb-6">
-				<div class="flex flex-wrap gap-2">
-					<div *ngFor="let tag of productInfo.tags"
-						class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full">
-						<!-- <i data-lucide="check-circle" class="w-4 h-4 text-gray-600"></i> -->
-						<span class="text-sm text-gray-600">{{tag}}</span>
-					</div>
-				</div>
-			</div>
-		</div>
 
 
 
@@ -104,23 +104,23 @@
 
 
 
+        <!-- Other Info Section -->
+        <div class="md:border-l md:pl-6 border-gray-200">
+            <div class="flex flex-col gap-4">
+                <!-- Price Info -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <!-- <i data-lucide="phone" class="w-5 h-5 text-gray-600"></i> -->
+                    </div>
+                    <div>
+                        <p class="font-medium">
+                            Price : {{productInfo.price|currency:'INR':'symbol':'1.0-0'}}
+                        </p>
+                    </div>
+                </div>
 
 
 
-		<!-- Other Info Section -->
-		<div class="md:border-l md:pl-6 border-gray-200">
-			<div class="flex flex-col gap-4">
-				<!-- Price Info -->
-				<div class="flex items-center gap-3">
-					<div class="w-8 h-8 flex items-center justify-center">
-						<!-- <i data-lucide="phone" class="w-5 h-5 text-gray-600"></i> -->
-					</div>
-					<div>
-						<p class="font-medium">
-							Price : {{productInfo.price|currency:'INR':'symbol':'1.0-0'}}
-						</p>
-					</div>
-				</div>
 
 
 
@@ -130,22 +130,20 @@
 
 
 
-
-
-				<!-- Price Info -->
-				<div class="flex items-center gap-3">
-					<div class="w-8 h-8 flex items-center justify-center">
-						<i data-lucide="tag"
-							class="w-5 h-5 text-gray-600"></i>
-					</div>
-					<div>
-						<p class="font-medium">Contact for price</p>
-						<p class="text-sm text-gray-600">
-							Metric Unit : {{productInfo.metricUnit}}, {{productInfo.metricValue}}
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <!-- Price Info -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i data-lucide="tag"
+                            class="w-5 h-5 text-gray-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Contact for price</p>
+                        <p class="text-sm text-gray-600">
+                            Metric Unit : {{productInfo.metricUnit}}, {{productInfo.metricValue}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>

@@ -1,16 +1,10 @@
 <app-homestay-profile></app-homestay-profile>
 
+
 <div class="border border-t border-2 border-gray-200 py-4 px-4">
-<p class="my-2 text-2xl ml-2">Nearby Homestays</p>
+    <p class="my-2 text-2xl ml-2">Nearby Homestays</p>
 
-<app-homestays-carousel></app-homestays-carousel>
-</div>
 
-<div class="flex flex-wrap gap-1.5 mb-2 line-clamp-2 min-h-[3.5rem]">
-  <div *ngFor="let amenity of homestay.amenities; let i = index">
-    <span *ngIf="i < 4"
-      class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-      {{ amenity }}
-    </span>
-  </div>
+
+    <app-homestays-carousel></app-homestays-carousel>
 </div>

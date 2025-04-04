@@ -66,21 +66,31 @@ export class SearchMainComponent implements OnInit {
     this.searchService.errorMessage$.subscribe((error) => {
       this.errorMessage = error;
     });
-
+       
+      this.getFirstParameter();
   }
 
- getFirstSegment() {
+  
+ getFirstParameter() {
+let firstSegment:any;
+this.router.parent?.url.subscribe((segments) => {
+   firstSegment = segments[0]?.path || '';
+   if(firstSegment!='search'){
+   this.setActiveTabParam(firstSegment);
+   }
+});
+
   // Subscribe to route params
+
   this.router.params.subscribe((params) => {
     const type = params['type'] || undefined;
     const districtId = params['districtId'] || undefined;
     const villageId = params['villageId'] || undefined;
     const keyword = params['keyword'] || undefined;
     // If 'type' exists, set the active tab
-    if (type !== undefined) {
+    if (firstSegment=='search'&&type !== undefined) {
       this.setActiveTabParam(type);
     }
-
 
     // If 'districtId' is valid, call search() else paginated
     if (districtId !== undefined && districtId!=='undefined' && districtId!=='') {
@@ -89,7 +99,11 @@ export class SearchMainComponent implements OnInit {
     else{
       this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
     }
+
+
   });
+
+
 }
 
 redirectedFilters(type:any, districtId:any, villageId:any, keyword:any) {
