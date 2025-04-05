@@ -22,54 +22,48 @@ export class UpcomingEventsComponent implements OnInit, AfterViewInit {
   private router = inject(Router);
   
   events: any[] = [];
+  eventGroups: any[][] = [];
 
   ngOnInit() {
     this.getEvents();
   }
 
   ngAfterViewInit() {
-    // Force Swiper to update after view initialization
+    // Initialize Swiper after view initialization
     setTimeout(() => {
       const swiperContainer = document.querySelector('swiper-container');
       if (swiperContainer) {
-        (swiperContainer as any).swiper?.update();
+        const swiper = (swiperContainer as any).swiper;
+        if (swiper) {
+          swiper.update();
+          swiper.updateSlides();
+        }
       }
     }, 0);
   }
 
-  handleEventClick(event: Event) {
-    event.stopPropagation();
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    const link = target.closest('a');
-    if (link) {
-      const href = link.getAttribute('href');
-      if (href) {
-        this.router.navigate([href]);
-      }
-    }
+  handleEventClick(eventId: string) {
+    this.router.navigate(['/event', eventId]);
   }
 
   getEventGroups(): any[][] {
-    const groups: any[][] = [];
-    for (let i = 0; i < this.events.length; i += 5) {
-      groups.push(this.events.slice(i, i + 5));
-    }
-    return groups;
+    return this.eventGroups;
   }
 
   getEvents(): void {
     this.apiService.getPaginatedData(paginatedEndpoints.events, 1, 15).subscribe({
       next: (data: any) => {
         this.events = data.data;
-        console.log(this.events);
+        // Group events into sets of 5
+        this.eventGroups = [];
+        for (let i = 0; i < this.events.length; i += 4) {
+          this.eventGroups.push(this.events.slice(i, i + 4));
+        }
       },
       error: (error: any) => {
         console.error('Error fetching Events:', error);
         this.events = [];
-      },
-      complete: () => {
-        console.log('Events fetch completed.');
+        this.eventGroups = [];
       }
     });
   }

@@ -40,7 +40,6 @@ getDataById<T>(endpoint: string, id: any): Observable<T> {
     console.warn('Invalid or missing ID provided for fetching data.');
     return throwError(() => new Error('Invalid or missing ID provided.'));
   }
-
   const url = `${this.apiUrl}/${endpoint}/${id}`;
 
   return this.http
@@ -60,6 +59,7 @@ getDataById<T>(endpoint: string, id: any): Observable<T> {
 
         // Handle different error types
         if (error.name === 'TimeoutError') {
+          
           console.error('Request timed out while fetching data.');
           return throwError(() => new Error('Request timed out. Please try again.'));
         } else if (error.status === 404) {

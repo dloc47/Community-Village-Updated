@@ -89,5 +89,6 @@ export class ProductProfleComponent implements OnInit {
         this.loading=false;
       }
       
+
       
 }

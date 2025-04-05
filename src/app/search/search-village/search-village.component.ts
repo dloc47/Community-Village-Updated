@@ -33,7 +33,6 @@ export class SearchVillageComponent implements OnInit {
 
 loadData(type: 'paginated' | 'filtered', query: any): void {
   this.villageData=[];
-
   this.searchService.getData(type, query).subscribe((result: any) => {
     if (result.isDataAvailable) {
       this.villageData = result.items;

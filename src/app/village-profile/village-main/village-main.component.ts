@@ -18,6 +18,12 @@ export class VillageMainComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
+  
+    // Smooth scroll to top
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
 
 }

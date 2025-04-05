@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { getDynamicClass,initializeOwlCarousel,destroyOwlInstance,getProfileImage, getDistrictClass } from '../../utils/utils'; 
 import { RouterLink } from '@angular/router';
@@ -36,15 +36,13 @@ export class VillageCarouselComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getVillages(): void {
-    this.apiService.getPaginatedData(paginatedEndpoints.villages,1,4).subscribe({
+    this.apiService.getPaginatedData(paginatedEndpoints.villages,1,30).subscribe({
       next: (data: any) => {
         // Assign the data to the districts property
           // Add a placeholder image to each committee
           if (data && data.data && data.data.length > 0) {
-        
             this.villages = data.data
           }
-
 
       if (this.villages.length > 0) {
         setTimeout(() => {

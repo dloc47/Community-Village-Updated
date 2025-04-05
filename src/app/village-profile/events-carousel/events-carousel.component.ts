@@ -56,7 +56,7 @@ export class EventsCarouselComponent implements OnInit, AfterViewInit, OnDestroy
          this.paginatedEvent = data.data;
 
          setTimeout(() => {
-          initializeOwlCarousel('.event-carousel',true,true,10,false,[2,3,5])
+          initializeOwlCarousel('.event-carousel',true,true,10,false,[1,3,5])
          }, 300);// Small delay to ensure DOM is updated
        }
        console.log('here is the event',this.paginatedEvent)
@@ -74,5 +74,8 @@ export class EventsCarouselComponent implements OnInit, AfterViewInit, OnDestroy
      }
    });
  }
+
+
+ 
 
 }

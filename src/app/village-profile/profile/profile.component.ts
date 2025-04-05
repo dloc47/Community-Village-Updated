@@ -2,26 +2,34 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ApiService } from '../../../services/api.service';
-import { getByIDEndpoints, GlobalEnums } from '../../globalEnums.enum';
+import { getByIDEndpoints, GlobalEnums, placeholder } from '../../globalEnums.enum';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { SafeUrlPipe } from '../../pipes/SafeUrlPipe.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  imports:[CommonModule,NgxPaginationModule]
+  imports:[CommonModule,NgxPaginationModule,SafeUrlPipe,FormsModule ]
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
   
   private apiService = inject(ApiService)
   committeeInfo:any=[]
-  mapUrl: SafeResourceUrl | undefined;
+
   
   loading:boolean=false
   noDataFound:boolean=false
-  latitude: number = 27.3206;
-  longitude: number = 88.6126;
+  imgPlaceholder=placeholder.image
+
+  latitude: string = '27.606001';  // default Sikkim
+  longitude: string = '88.473167';
+
+get mapUrl(): string {
+  return `https://maps.google.com/maps?q=${this.latitude},${this.longitude}&z=15&t=k&output=embed`;
+}
 
   
   constructor(private sanitizer: DomSanitizer,
@@ -31,6 +39,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getFirstSegment();
   }
+
 
   getFirstSegment(): boolean {
     let segmentFound = false;
@@ -56,10 +65,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   p: number = 1;//for image pagination
 
-  updateMapUrl() {
-    const url = `https://maps.google.com/maps?q=${this.latitude},${this.longitude}&t=k&z=14&ie=UTF8&iwloc=B&output=embed`;
-    this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
 
   ngAfterViewInit(): void {
   }
@@ -83,6 +88,11 @@ loadCommitteeData(id:number): void {
     .getDataById<any>(getByIDEndpoints.villages, id)
     .subscribe({
       next: (data: any) => {
+
+        this.latitude=data.latitude;
+        this.longitude=data.longitude;
+
+
         console.log(data);
         
         // Check if data is valid
