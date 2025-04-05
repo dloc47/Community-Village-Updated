@@ -1,52 +1,51 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Image Gallery Section -->
-    <!-- Image Section with Proper Handling -->
     <div *ngIf="homestayInfo?.images?.length > 0; else noImages"
-        class="hidden md:grid grid-cols-3 gap-4 mb-8">
-        <div class="col-span-2">
-            <!-- Main Image - Show first image or placeholder -->
-            <img [src]="homestayInfo?.images[0]?.imageUrl || placeholder"
-                [alt]="homestayInfo.homestayName || 'Homestay Image'"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <!-- Main Image -->
+        <div class="md:col-span-2">
+            <img [src]="(mainImage?.imageUrl) || placeholder"
+                [alt]="homestayInfo?.homestayName || 'Homestay Image'"
                 class="w-full h-[400px] object-contain rounded-lg">
         </div>
 
+        <!-- Small Images Responsive Slider -->
+        <div class="col-span-1">
+            <!-- Horizontal Slider for Mobile -->
+            <swiper-container direction="horizontal"
+                slides-per-view="auto"
+                space-between="16"
+                navigation="false"
+                pagination="true"
+                pagination-clickable="true"
+                class="h-[200px] md:hidden">
+                <swiper-slide *ngFor="let image of smallImages"
+                    class="h-auto cursor-pointer"
+                    (click)="swapImage(image)">
+                    <img [src]="image.imageUrl"
+                        [alt]="homestayInfo?.homestayName || 'Homestay Image'"
+                        class="w-full h-[195px] object-contain rounded-lg">
+                </swiper-slide>
+            </swiper-container>
 
-
-
-
-
-
-
-        <div class="col-span-1 grid gap-4">
-            <!-- Check if second image exists, otherwise show placeholder -->
-            <div>
-                <img [src]="homestayInfo?.images[1]?.imageUrl || placeholder"
-                    [alt]="homestayInfo.homestayName || 'Homestay Image'"
-                    class="w-full h-[195px] object-contain rounded-lg">
-            </div>
-
-
-
-
-
-
-
-
-            <!-- Check if third image exists, otherwise show placeholder -->
-            <div>
-                <img [src]="homestayInfo?.images[2]?.imageUrl || placeholder"
-                    [alt]="homestayInfo.homestayName || 'Homestay Image'"
-                    class="w-full h-[195px] object-contain rounded-lg">
-            </div>
+            <!-- Vertical Slider for Desktop/Tablet -->
+            <swiper-container direction="vertical"
+                slides-per-view="auto"
+                space-between="16"
+                navigation="false"
+                pagination="true"
+                pagination-clickable="true"
+                class="h-[400px] hidden md:block">
+                <swiper-slide *ngFor="let image of smallImages"
+                    class="h-auto cursor-pointer"
+                    (click)="swapImage(image)">
+                    <img [src]="image.imageUrl"
+                        [alt]="homestayInfo?.homestayName || 'Homestay Image'"
+                        class="w-full h-[195px] object-contain rounded-lg">
+                </swiper-slide>
+            </swiper-container>
         </div>
     </div>
-
-
-
-
-
-
-
 
     <!-- Fallback if images array is empty -->
     <ng-template #noImages>
@@ -58,47 +57,6 @@
             </div>
         </div>
     </ng-template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Mobile Gallery (hidden on desktop) -->
-    <div *ngIf="homestayInfo?.images?.length > 0; else noImagesMobile"
-        class="md:hidden mb-8 relative">
-        <div class="owl-carousel owl-theme homestayGallerySwiper">
-            <div *ngFor="let image of homestayInfo.images"
-                class="item">
-                <!-- Correctly map to imageUrl or use placeholder if unavailable -->
-                <img [src]="image?.imageUrl || placeholder"
-                    [alt]="homestayInfo.homestayName || 'Homestay Image'"
-                    class="w-full h-[300px] object-cover rounded-lg">
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Fallback for mobile if no images -->
-    <ng-template #noImagesMobile>
-        <div class="mb-8 md:hidden">
-            <img [src]="placeholder"
-                alt="No Image Available"
-                class="w-full h-[300px] object-cover rounded-lg">
-        </div>
-    </ng-template>
-
 
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -123,8 +81,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <section class="mb-12">
                 <h2 class="text-xl md:text-2xl font-semibold mb-6">About this homestay</h2>
@@ -151,23 +107,13 @@
             </section>
         </div>
 
-
-
         <!-- Sidebar -->
         <div class="md:col-span-1">
             <!-- Contact Information -->
             <div class="border border-gray-200 rounded-lg p-4">
                 <h3 class="text-lg font-semibold mb-4">Contact Information</h3>
-
-
-
-
                 <!-- Host Name -->
                 <div class="flex items-center gap-3 mb-3">
-
-
-
-
                     <div>
                         <p class="font-medium">
                             {{homestayInfo.ownerName}}
