@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { GlobalEnums, paginatedEndpoints } from '../app/globalEnums.enum';
+import {  paginatedEndpoints } from '../app/globalEnums.enum';
 import { ApiService } from './api.service';
 import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs';
 
@@ -10,7 +10,7 @@ export class SearchService {
 private apiService = inject(ApiService)
 
   // ✅ Track no data and error states
-  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private loadingSubject = new BehaviorSubject<boolean>(true);
   private noDataFoundSubject = new BehaviorSubject<boolean>(false);
   private errorMessageSubject = new BehaviorSubject<string | null>(null);
 
@@ -37,6 +37,10 @@ constructor() { }
 
    // ✅ Fetch data dynamically based on query state
    getData(type: 'paginated' | 'filtered', query: any): Observable<any> {
+
+    // ✅ Start loading before API call
+    this.loadingSubject.next(true);
+
     if (type === 'paginated') {
       return this.PaginatedData(query.endpoint,query.pageNo, query.itemPerPage);
     } else {
@@ -59,10 +63,14 @@ PaginatedData(
   errorMessage?: string;
   errorCode?: number;
 }> {
-     // ✅ Start loading before API call
-     this.loadingSubject.next(true);
 
   return this.apiService.getPaginatedData<any>(endpoint, pageNo, itemPerPage).pipe(
+    finalize(() => {
+      // ✅ Stop loading after API completes (success or error)
+      setTimeout(() => {
+        this.loadingSubject.next(false);
+      }, 800);
+    }),
     map((data: any) => {
       // ✅ More robust data parsing to handle different API response formats
       console.log('API Response:', data); // Log the raw response for debugging
@@ -133,10 +141,6 @@ PaginatedData(
         errorMessage, // User-friendly error message
         errorCode, // HTTP error code
       });
-    }),
-    finalize(() => {
-      // ✅ Stop loading after API completes (success or error)
-      this.loadingSubject.next(false);
     })
   );
   
@@ -158,8 +162,7 @@ fetchFilteredData(
   errorMessage?: string;
   errorCode?: number;
 }> {
-  // ✅ Set loading to true before API call
-  this.loadingSubject.next(true);
+
   this.noDataFoundSubject.next(false); // Reset no data state
 
   // Prepare API params (use undefined instead of null)
@@ -178,6 +181,12 @@ fetchFilteredData(
       params.searchTerm
     )
     .pipe(
+        finalize(() => {
+      // ✅ Stop loading after API completes (success or error)
+      setTimeout(() => {
+        this.loadingSubject.next(false);
+      }, 800);
+    }),
       map((data: any) => {
         // ✅ More robust data parsing to handle different API response formats
         console.log('API Filter Response:', data); // Log the raw response for debugging
@@ -241,10 +250,6 @@ fetchFilteredData(
           errorMessage,
           errorCode,
         });
-      }),
-      finalize(() => {
-        // ✅ Set loading to false after API completes
-        this.loadingSubject.next(false);
       })
     );
 }

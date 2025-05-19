@@ -21,13 +21,17 @@ export class SearchProductComponent implements OnInit {
   productData:any[]=[]
   totalRecords:number=0
   isDataFound=false;
- 
+  isLoading:boolean=false;
   
   constructor() { }
 
   ngOnInit() {
     this.searchService.queryState$.subscribe(({ type, query }) => {
       this.loadData(type, query);
+    });
+
+    this.searchService.loading$.subscribe((isLoading) => {
+      this.isLoading = isLoading;
     });
   }
 

@@ -78,6 +78,6 @@
 	</div>
 </div>
 
-<div class="py-4 flex justify-center">
+<div class="py-4 flex justify-center" *ngIf="eventData.length > 0 && !isLoading">
 	<pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
 </div>

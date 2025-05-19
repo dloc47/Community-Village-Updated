@@ -53,20 +53,25 @@ export class SearchMainComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadDistricts();
+    //load districts
+        this.loadDistricts();
 
+    //loading
      this.searchService.loading$.subscribe((isLoading) => {
-      this.isLoading = isLoading;
+       this.isLoading = isLoading;
     });
 
-        this.searchService.noDataFound$.subscribe((noData) => {
+    //no data found
+   this.searchService.noDataFound$.subscribe((noData) => {
       this.noDataFound = noData;
     });
 
+    //error message
     this.searchService.errorMessage$.subscribe((error) => {
       this.errorMessage = error;
     });
        
+    //get first parameter
       this.getFirstParameter();
   }
 

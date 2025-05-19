@@ -5,6 +5,7 @@ import { SearchService } from '../../../services/search.service';
 import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-search-activity',
@@ -21,6 +22,8 @@ export class SearchActivityComponent implements OnInit {
  activityData:any[]=[]
  totalRecords:number=0
  isDataFound=false;
+ isLoading:boolean=false;
+
 
 
   constructor() { }
@@ -28,6 +31,10 @@ export class SearchActivityComponent implements OnInit {
   ngOnInit() {
     this.searchService.queryState$.subscribe(({ type, query }) => {
       this.loadData(type, query);
+    });
+
+    this.searchService.loading$.subscribe((isLoading) => {
+      this.isLoading = isLoading;
     });
   }
 
