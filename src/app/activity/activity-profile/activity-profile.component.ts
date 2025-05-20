@@ -1,10 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../globalEnums.enum';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 
 register();
 
