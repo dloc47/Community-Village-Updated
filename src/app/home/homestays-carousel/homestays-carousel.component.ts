@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit ,AfterViewInit,OnDestroy, inject} from '@angular/core';
+import { Component, OnInit ,AfterViewInit,OnDestroy, inject, Input} from '@angular/core';
 import { getDynamicClass,initializeOwlCarousel,destroyOwlInstance, getProfileImage, getDistrictClass } from '../../utils/utils';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
@@ -13,6 +13,8 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 })
 export class HomestaysCarouselComponent implements OnInit ,AfterViewInit,OnDestroy{
 
+  @Input() villageId: number = 0;
+  
   private apiService = inject(ApiService)
 
   homestays:any=[];
