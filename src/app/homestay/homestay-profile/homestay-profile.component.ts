@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
-import { initializeOwlCarousel, destroyOwlInstance } from '../../utils/utils';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../globalEnums.enum';
@@ -50,12 +49,68 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     return this._smallImages;
   }
 
-  swapImage(clickedImage: any): void {
-    if (this.mainImage) {
-      this._smallImages.push(this.mainImage);
+  swapImage(image: any): void {
+    if (image) {
+      const currentIndex = this._smallImages.findIndex(img => img === image);
+      if (currentIndex !== -1) {
+        // Add fade-in animation class
+        const mainImageElement = document.querySelector('.main-image-container img');
+        if (mainImageElement) {
+          mainImageElement.classList.add('fade-in');
+          setTimeout(() => {
+            mainImageElement.classList.remove('fade-in');
+          }, 500);
+        }
+        
+        // Swap the main image with the selected image
+        const temp = this.mainImage;
+        this.mainImage = image;
+        this._smallImages[currentIndex] = temp;
+      }
     }
-    this.mainImage = clickedImage;
-    this._smallImages = this._smallImages.filter(img => img !== clickedImage);
+  }
+
+  nextImage(event: Event): void {
+    event.stopPropagation();
+    if (this._smallImages.length > 0) {
+      // Add fade-in animation class
+      const mainImageElement = document.querySelector('.main-image-container img');
+      if (mainImageElement) {
+        mainImageElement.classList.add('fade-in');
+        setTimeout(() => {
+          mainImageElement.classList.remove('fade-in');
+        }, 500);
+      }
+
+      const firstImage = this._smallImages[0];
+      this._smallImages.shift();
+      this._smallImages.push(this.mainImage);
+      this.mainImage = firstImage;
+    }
+  }
+
+  previousImage(event: Event): void {
+    event.stopPropagation();
+    if (this._smallImages.length > 0) {
+      // Add fade-in animation class
+      const mainImageElement = document.querySelector('.main-image-container img');
+      if (mainImageElement) {
+        mainImageElement.classList.add('fade-in');
+        setTimeout(() => {
+          mainImageElement.classList.remove('fade-in');
+        }, 500);
+      }
+
+      const lastImage = this._smallImages[this._smallImages.length - 1];
+      this._smallImages.pop();
+      this._smallImages.unshift(this.mainImage);
+      this.mainImage = lastImage;
+    }
+  }
+
+  openImageGallery(): void {
+    // This method can be implemented later to open a full-screen gallery view
+    console.log('Opening image gallery...');
   }
 
   getFirstSegment(): boolean {
