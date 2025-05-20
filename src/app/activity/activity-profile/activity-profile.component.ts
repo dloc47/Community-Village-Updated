@@ -1,15 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { initializeOwlCarousel,destroyOwlInstance } from '../../utils/utils';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../globalEnums.enum';
 import { CommonModule } from '@angular/common';
+import { register } from 'swiper/element/bundle';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+register();
 
 @Component({
   selector: 'app-activity-profile',
   templateUrl: './activity-profile.component.html',
   styleUrls: ['./activity-profile.component.css'],
-  imports:[CommonModule]
+  imports:[CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ActivityProfileComponent implements OnInit {
 
@@ -17,6 +21,8 @@ export class ActivityProfileComponent implements OnInit {
   noDataFound:boolean=false;
   activityInfo:any=[]
   placeholder:placeholder=placeholder.image
+  showModal: boolean = false;
+  selectedImage: string = '';
   
   private apiService = inject(ApiService)
   
@@ -63,10 +69,6 @@ export class ActivityProfileComponent implements OnInit {
             if (data) {
               // Enrich with additional properties (no need for mapping here)
               this.activityInfo = data;
-              setTimeout(() => {
-                initializeOwlCarousel('.activity-profile-carousel',false,true,1,false,[1,1,1])
-              }, 300);
-  
             } else {
               // Handle no data scenario
               this.handleNoDataFound();
@@ -89,6 +91,20 @@ export class ActivityProfileComponent implements OnInit {
       this.loading=false;
     }
     
-    
+    openImageModal(imageUrl: string): void {
+      this.selectedImage = imageUrl;
+      this.showModal = true;
+      document.body.style.overflow = 'hidden';
+    }
 
+    closeModal(): void {
+      this.showModal = false;
+      this.selectedImage = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Prevent modal from closing when clicking inside the modal content
+    onModalClick(event: Event): void {
+      event.stopPropagation();
+    }
 }

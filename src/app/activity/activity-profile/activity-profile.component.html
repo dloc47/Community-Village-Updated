@@ -1,56 +1,52 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-
-
-
-
-
-
-
-
 	<div class="grid grid-cols-1 md:grid-cols-4 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
 		<!-- Image Section -->
 		<div class="relative flex items-center justify-center">
-
-
-
-
-			<div class="owl-carousel owl-theme activity-profile-carousel">
-				<!-- Check if images exist -->
-				<ng-container *ngIf="activityInfo.images && activityInfo.images.length > 0; else noImages">
-					<!-- Loop through images -->
-					<div *ngFor="let image of activityInfo.images"
-						class="item">
-						<img [src]="image.imageUrl || placeholder"
-							[alt]="activityInfo.activityName"
-							class="w-full h-auto max-h-[400px] object-contain rounded-lg">
-					</div>
-				</ng-container>
-
-
-				<!-- Show placeholder when no images -->
-				<ng-template #noImages>
-					<div class="item">
-						<img [src]="placeholder"
-							alt="No image available"
-							class="w-full h-auto max-h-[400px] object-contain rounded-lg">
-					</div>
-				</ng-template>
-			</div>
-
-
-
-
-
+			<swiper-container
+				slides-per-view="1"
+				space-between="16"
+				pagination="true"
+				pagination-clickable="true"
+				class="w-full">
+				<swiper-slide *ngFor="let image of activityInfo.images"
+					class="w-full h-auto max-h-[400px] object-contain rounded-lg cursor-grab"
+					(click)="openImageModal(image.imageUrl || placeholder)">
+					<img [src]="image.imageUrl || placeholder"
+						[alt]="activityInfo.activityName"
+						class="w-full h-auto max-h-[400px] object-contain rounded-lg">
+				</swiper-slide>
+			</swiper-container>
 		</div>
 
-
-
-
-
-
-
-
+		<!-- Image Modal -->
+		<div *ngIf="showModal" 
+			class="fixed inset-0 bg-white/30 backdrop-blur-sm z-[100] flex items-center justify-center"
+			(click)="closeModal()">
+			<div class="relative bg-white rounded-xl mt-10 shadow-2xl max-w-2xl w-[90%] transform transition-all duration-300 ease-in-out" 
+				(click)="onModalClick($event)">
+				<!-- Close Button -->
+				<button (click)="closeModal()" 
+					class="absolute -right-3  cursor-pointer -top-3 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-all duration-200 group">
+					<svg xmlns="http://www.w3.org/2000/svg" 
+						class="h-5 w-5 text-gray-600 group-hover:text-gray-800" 
+						fill="none" 
+						viewBox="0 0 24 24" 
+						stroke="currentColor">
+						<path stroke-linecap="round" 
+							stroke-linejoin="round" 
+							stroke-width="2" 
+							d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+				<!-- Image Container -->
+				<div class="p-3">
+					<img [src]="selectedImage" 
+						[alt]="activityInfo.activityName"
+						class="w-full h-auto max-h-[70vh] object-contain rounded-lg">
+				</div>
+			</div>
+		</div>
 
 		<!-- Activity Details Section -->
 		<div class="md:col-span-2">
@@ -69,28 +65,12 @@
 				</div>
 			</div>
 
-
-
-
-
-
-
-
-
 			<!-- Description -->
 			<div class="mb-6">
 				<p class="text-gray-600 text-sm leading-relaxed">
 					{{activityInfo.description}}
 				</p>
 			</div>
-
-
-
-
-
-
-
-
 
 			<!-- Activity Features -->
 			<div class="mb-6">
@@ -102,25 +82,7 @@
 					</div>
 				</div>
 			</div>
-
-
-
-
-
-
-
-
-
-
 		</div>
-
-
-
-
-
-
-
-
 
 		<!-- Contact Section -->
 		<div class="md:border-l border-gray-200 md:pl-6">
@@ -137,14 +99,6 @@
 						</p>
 					</div>
 				</div>
-
-
-
-
-
-
-
-
 
 				<!-- Price Info -->
 				<div class="flex items-center gap-3">
