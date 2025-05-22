@@ -2,13 +2,15 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
-import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { GlobalEnums } from '../../globalEnums.enum';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
+
 @Component({
   selector: 'app-hero-section',
+  standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',

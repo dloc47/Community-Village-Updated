@@ -10,6 +10,7 @@ register();
 
 @Component({
   selector: 'app-activity-profile',
+  standalone: true,
   templateUrl: './activity-profile.component.html',
   styleUrls: ['./activity-profile.component.css'],
   imports:[CommonModule],
