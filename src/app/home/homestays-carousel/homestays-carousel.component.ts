@@ -68,4 +68,11 @@ export class HomestaysCarouselComponent implements OnInit ,AfterViewInit,OnDestr
   {
     return getProfileImage(images);
   }
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 }

@@ -63,4 +63,11 @@ export class ProductsCarouselComponent implements OnInit, AfterViewInit, OnDestr
   getProfileImage(images:any[]):string{
     return getProfileImage(images)
   }
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 }

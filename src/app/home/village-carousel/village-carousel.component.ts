@@ -69,4 +69,10 @@ export class VillageCarouselComponent implements OnInit, AfterViewInit, OnDestro
     return getProfileImage(imageArray);
   }
 
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
 }
