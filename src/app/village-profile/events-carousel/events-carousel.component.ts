@@ -75,6 +75,12 @@ export class EventsCarouselComponent implements OnInit, AfterViewInit, OnDestroy
    });
  }
 
+ scrollToTop(): void {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
 
  
 

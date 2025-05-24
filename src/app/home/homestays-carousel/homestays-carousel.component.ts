@@ -1,37 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit ,AfterViewInit,OnDestroy, inject, Input} from '@angular/core';
-import { getDynamicClass,initializeOwlCarousel,destroyOwlInstance, getProfileImage, getDistrictClass } from '../../utils/utils';
+import { Component, OnInit, inject, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
+import { register } from 'swiper/element/bundle';
+import { getProfileImage, getDistrictClass } from '../../utils/utils';
+
+// Register Swiper custom elements
+register();
 
 @Component({
   selector: 'app-homestays-carousel',
   templateUrl: './homestays-carousel.component.html',
   styleUrls: ['./homestays-carousel.component.css'],
-  imports:[CommonModule,RouterLink]
+  imports: [CommonModule, RouterLink],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomestaysCarouselComponent implements OnInit ,AfterViewInit,OnDestroy{
-
+export class HomestaysCarouselComponent implements OnInit {
   @Input() villageId: number = 0;
-  
-  private apiService = inject(ApiService)
+  private apiService = inject(ApiService);
+  homestays: any = [];
 
-  homestays:any=[];
-  
   ngOnInit() {
     this.getHomestays();
   }
 
-  ngAfterViewInit(): void {
-    
-  }
-
-  ngOnDestroy() {
-    destroyOwlInstance('.homestays-carousel')
-  }
-
-  // Updated to use district-specific colors
   getClass(region: string): string {
     return getDistrictClass(region);
   }
@@ -39,33 +32,19 @@ export class HomestaysCarouselComponent implements OnInit ,AfterViewInit,OnDestr
   getHomestays(): void {
     this.apiService.getPaginatedData(paginatedEndpoints.homestays, 1, 5).subscribe({
       next: (data: any) => {
-        console.log('Raw Homestays API Response:', data);
-        console.log('Total Records:', data?.totalRecords);
-        console.log('Current Page:', data?.pageNumber);
-        console.log('Page Size:', data?.pageSize);
-        
         if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
-          console.log('Number of Homestays Loaded:', data.data.length);
-          console.log('Homestays Data:', data.data);
           this.homestays = data.data;
-
-          setTimeout(() => {
-            initializeOwlCarousel('.homestays-carousel', true, true, 5, false, [1, 3, 5])
-          }, 300);
+          console.log('Number of homestays loaded:', this.homestays.length);
         }
       },
       error: (error: any) => {
         console.error('Error fetching Homestays:', error);
         this.homestays = [];
-      },
-      complete: () => {
-        console.log('Homestays API call completed');
       }
     });
   }
 
-  getProfileImage(images:any[]):string
-  {
+  getProfileImage(images: any[]): string {
     return getProfileImage(images);
   }
 

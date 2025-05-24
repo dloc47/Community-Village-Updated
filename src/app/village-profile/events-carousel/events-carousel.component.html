@@ -37,7 +37,7 @@
 						{{event.region}}
 					</span>
 				</div>
-				<a [routerLink]="['/event',event.eventId]"
+				<a [routerLink]="['/event',event.eventId]" (click)="scrollToTop()"
 					class="inline-flex items-center mt-4 w-fit border border-[#1C2A0E] rounded-full px-3 py-1 text-xs text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
 					Know More
 					<svg xmlns="http://www.w3.org/2000/svg"
