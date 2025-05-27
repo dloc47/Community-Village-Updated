@@ -17,11 +17,10 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ActivityProfileComponent implements OnInit {
-
+  placeholder:placeholder=placeholder.image
   loading :boolean=false;
   noDataFound:boolean=false;
   activityInfo:any=[]
-  placeholder:placeholder=placeholder.image
   showModal: boolean = false;
   selectedImage: string = '';
   

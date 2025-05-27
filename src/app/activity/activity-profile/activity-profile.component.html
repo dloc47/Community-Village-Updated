@@ -2,21 +2,29 @@
 
 	<div class="grid grid-cols-1 md:grid-cols-4 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
 		<!-- Image Section -->
-		<div class="relative flex items-center justify-center">
-			<swiper-container
-				slides-per-view="1"
-				space-between="16"
-				pagination="true"
-				pagination-clickable="true"
-				class="w-full">
-				<swiper-slide *ngFor="let image of activityInfo.images"
-					class="w-full h-auto max-h-[400px] object-contain rounded-lg cursor-grab"
-					(click)="openImageModal(image.imageUrl || placeholder)">
-					<img [src]="image.imageUrl || placeholder"
-						[alt]="activityInfo.activityName"
-						class="w-full h-auto max-h-[400px] object-contain rounded-lg">
-				</swiper-slide>
-			</swiper-container>
+		<div class="relative flex items-center justify-center w-full">
+			<div class="w-full aspect-[4/3] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+				<ng-container *ngIf="activityInfo.images.length > 0; else placeholderBlock">
+					<swiper-container
+						slides-per-view="1"
+						space-between="16"
+						pagination="true"
+						pagination-clickable="true"
+						class="w-full h-full">
+						<swiper-slide *ngFor="let image of activityInfo.images"
+							class="w-full h-full flex items-center justify-center">
+							<img [src]="image.imageUrl"
+								[alt]="activityInfo.activityName"
+								class="w-full h-full object-cover rounded-lg">
+						</swiper-slide>
+					</swiper-container>
+				</ng-container>
+				<ng-template #placeholderBlock>
+					<img [src]="placeholder"
+						alt="placeholder"
+						class="w-20 h-20 object-contain opacity-60">
+				</ng-template>
+			</div>
 		</div>
 
 		<!-- Image Modal -->
