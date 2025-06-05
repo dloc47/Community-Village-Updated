@@ -1,0 +1,60 @@
+/* Swiper Container Styles */
+:host ::ng-deep swiper-container {
+    --swiper-pagination-color: #1C2A0E;
+    --swiper-pagination-bullet-inactive-color: #94a3b8;
+    --swiper-pagination-bullet-inactive-opacity: 0.5;
+    padding: 20px 0;
+}
+
+:host ::ng-deep swiper-slide {
+    height: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+:host ::ng-deep swiper-slide:hover {
+    transform: translateY(-2px);
+}
+
+/* Card Styles */
+.group {
+    transition: all 0.3s ease-in-out;
+}
+
+.group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Date Box Styles */
+.flex-col.items-center.justify-center {
+    transition: all 0.3s ease-in-out;
+}
+
+.group:hover .flex-col.items-center.justify-center {
+    transform: scale(1.05);
+}
+
+/* Tag Styles */
+.rounded-full {
+    transition: all 0.3s ease-in-out;
+}
+
+.rounded-full:hover {
+    transform: translateY(-1px);
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
