@@ -3,7 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
-import { getDynamicClass } from '../../utils/utils';
+import { getDynamicClass, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 
@@ -27,6 +27,10 @@ export class EventsCarouselComponent implements OnInit {
 
   getClass(input: number) {
     return getDynamicClass(input);
+  }
+
+  getDistrictClass(region: string): string {
+    return getDistrictClass(region);
   }
 
   getEvents(): void {
