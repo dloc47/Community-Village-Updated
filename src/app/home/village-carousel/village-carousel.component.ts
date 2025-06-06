@@ -21,7 +21,7 @@ export class VillageCarouselComponent implements OnInit {
     this.getVillages();
   }
 
-  getClass(region: string): string {
+  getDistrictClasses(region: string): string {
     return getDistrictClass(region);
   }
 
