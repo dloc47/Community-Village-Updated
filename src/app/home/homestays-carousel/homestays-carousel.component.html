@@ -37,19 +37,19 @@
                 <h4 class="text-base mb-2 font-semibold line-clamp-1">
                     {{homestay.homestayName}}
                 </h4>
-                <div class="flex flex-wrap gap-2 mb-2">
+                <!-- Committee Name and Region -->
+                <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                    <span class="inline-block px-2 py-1 rounded-full text-xs sm:text-xs font-medium transition-all duration-300 bg-[#1C2A0E] text-white overflow-hidden text-ellipsis whitespace-nowrap">{{homestay.committeeName}}</span>
                     <span [ngClass]="getClass(homestay.region)"
-                        class="inline-block px-2 sm:px-3 py-1 rounded-full text-xs sm:text-xs font-medium transition-all duration-300 hover:text-white">
-                        {{homestay.region}}
-                    </span>
+                        class="inline-block px-2 sm:px-3 py-1 rounded-full text-xs sm:text-xs font-medium transition-all duration-300 hover:text-white overflow-hidden text-ellipsis whitespace-nowrap">{{homestay.region}}</span>
                 </div>
-                <p class="text-gray-700 mb-3 line-clamp-2 sm:line-clamp-3 h-12 sm:h-14 text-sm">
+                <p class="text-gray-700 mb-3 line-clamp-2 sm:line-clamp-3 h-14 sm:h-16 text-sm">
                     {{homestay.description}}
                 </p>
                 <div class="flex flex-row gap-1.5 line-clamp-1 h-[2rem] sm:h-[2.5rem] overflow-hidden">
                     <div *ngFor="let amenity of homestay.amenities | slice:0:2; let i = index">
                         <span
-                            class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                            class="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                             {{ amenity }}
                         </span>
                     </div>
