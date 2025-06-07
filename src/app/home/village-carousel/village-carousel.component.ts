@@ -5,7 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
 import { getProfileImage, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { LucideAngularModule,Milestone,Users,ChevronRight } from 'lucide-angular';
+import { LucideAngularModule,Milestone,Users,ChevronRight,Tag } from 'lucide-angular';
 
 @Component({
   selector: 'app-village-carousel',
@@ -21,6 +21,7 @@ export class VillageCarouselComponent implements OnInit {
     ArrowIcon:ChevronRight,
     DistrictIcon:Milestone,
     UserIcon:Users,
+    TagIcon:Tag
   }
 
   ngOnInit(): void {
