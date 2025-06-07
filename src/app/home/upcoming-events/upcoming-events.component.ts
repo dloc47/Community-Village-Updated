@@ -5,6 +5,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { RouterLink, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
+import { LucideAngularModule, MapPin,Users} from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -13,7 +14,7 @@ register();
   selector: 'app-upcoming-events',
   templateUrl: './upcoming-events.component.html',
   styleUrls: ['./upcoming-events.component.css'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink,LucideAngularModule],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -23,7 +24,10 @@ export class UpcomingEventsComponent implements OnInit, AfterViewInit {
   
   events: any[] = [];
   eventGroups: any[][] = [];
-
+  icons={
+    LocateIcon:MapPin,
+    UserIcon: Users
+  }
   ngOnInit() {
     this.getEvents();
   }
@@ -59,6 +63,9 @@ export class UpcomingEventsComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < this.events.length; i += 4) {
           this.eventGroups.push(this.events.slice(i, i + 4));
         }
+        
+        console.log(this.eventGroups);
+
       },
       error: (error: any) => {
         console.error('Error fetching Events:', error);

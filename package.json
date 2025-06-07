@@ -22,6 +22,7 @@
     "@angular/ssr": "^19.1.5",
     "@tailwindcss/postcss": "^4.0.6",
     "express": "^4.18.2",
+    "lucide-angular": "^0.513.0",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.5",

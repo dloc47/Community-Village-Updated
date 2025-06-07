@@ -30,7 +30,7 @@
             </div>
 
             <!-- Right Side - Events Timeline with Swiper -->
-            <div class="h-[600px]">
+            <div class="min-h-[600px] max-h-[650px]">
                 <swiper-container slides-per-view="1"
                     space-between="20"
                     navigation="false"
@@ -55,22 +55,17 @@
                                         <!-- Event Title -->
                                         <h3 class="text-[#1C2A0E] text-sm font-semibold">{{event.eventName}}</h3>
                                         <!-- Event Location -->
-                                        <div class="flex items-center gap-1 text-[#1C2A0E]/60 text-xs mb-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="w-4 h-4">
-                                                <path stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"></path>
-                                            </svg>
-                                            {{event.location}}
+                                        <div class="flex items-center gap-2 text-black/80 text-xs mb-2">
+                                            <span class="flex items-center gap-1 px-2 py-1 bg-yellow-100 rounded-full">
+                                                <lucide-angular [img]="icons.LocateIcon" class="w-3.5 h-3.5 text-[#1C2A0E]"></lucide-angular>
+                                                <span class="font-medium">{{event.location}}</span>
+                                            </span>
+                                            <span class="flex items-center gap-1 px-2 py-1 bg-blue-100  rounded-full">
+                                                <lucide-angular [img]="icons.UserIcon" class="w-3.5 h-3.5 text-[#1C2A0E]"></lucide-angular>
+                                                <span class="font-medium">{{event.committeeName}}</span>
+                                            </span>
                                         </div>
+
                                         <!-- Event Description -->
                                         <p class="text-[#1C2A0E] text-xs mb-2 line-clamp-2">
                                             {{event.description}}
