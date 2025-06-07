@@ -5,6 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
 import { register } from 'swiper/element/bundle';
 import { getProfileImage, getDistrictClass } from '../../utils/utils';
+import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Home } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -13,13 +14,20 @@ register();
   selector: 'app-homestays-carousel',
   templateUrl: './homestays-carousel.component.html',
   styleUrls: ['./homestays-carousel.component.css'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomestaysCarouselComponent implements OnInit {
   @Input() villageId: number = 0;
   private apiService = inject(ApiService);
   homestays: any = [];
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: MapPin,
+    CommitteeIcon: Users,
+    TagIcon: Tag,
+    HomeIcon: Home
+  }
 
   ngOnInit() {
     this.getHomestays();
