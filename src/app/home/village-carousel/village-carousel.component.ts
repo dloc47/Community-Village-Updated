@@ -5,17 +5,23 @@ import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
 import { getProfileImage, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { LucideAngularModule,Milestone,Users,ChevronRight } from 'lucide-angular';
 
 @Component({
   selector: 'app-village-carousel',
   templateUrl: './village-carousel.component.html',
   styleUrls: ['./village-carousel.component.css'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink,LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class VillageCarouselComponent implements OnInit {
   private apiService = inject(ApiService);
   villages: any[] = [];
+  icons={
+    ArrowIcon:ChevronRight,
+    DistrictIcon:Milestone,
+    UserIcon:Users,
+  }
 
   ngOnInit(): void {
     this.getVillages();

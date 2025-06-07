@@ -36,13 +36,17 @@
             <!-- Content Section -->
             <div class="flex flex-col flex-grow px-2 min-h-[180px]">
                 <!-- Title -->
-                <h4 class="text-base mb-2 font-semibold line-clamp-1">
-                    {{village.committeeName}}
+                <h4 class="text-base mb-2 font-semibold text-[#1C2A0E] flex items-center gap-2">
+                    <span class="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-full w-full">
+                        <lucide-angular [img]="icons.UserIcon" class="w-3.5 h-3.5 text-black flex-shrink-0"></lucide-angular>
+                        <span class="text-sm truncate">{{village.committeeName}}</span>
+                    </span>
                 </h4>
                 <!-- Region Tag -->
                 <div class="flex flex-wrap gap-2 mb-2">
                     <span [ngClass]="getDistrictClasses(village.region)"
-                        class="inline-block px-2 sm:px-3 py-1 rounded-full text-xs sm:text-xs font-medium transition-all duration-300 hover:text-white">
+                        class="inline-flex  items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white">
+                        <lucide-angular [img]="icons.DistrictIcon" class="w-3.5 h-3.5"></lucide-angular>
                         {{village.region}}
                     </span>
                 </div>
@@ -63,16 +67,7 @@
                 <a [routerLink]="['/village',village.committeeId]" (click)="scrollToTop()"
                     class="inline-flex items-center mt-auto w-fit border border-[#1C2A0E] rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-sm text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
                     Know More
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5l7 7-7 7"></path>
-                    </svg>
+                    <lucide-angular [img]="icons.ArrowIcon" class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5"></lucide-angular>
                 </a>
             </div>
         </div>
