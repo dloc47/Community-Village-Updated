@@ -1,12 +1,7 @@
-<!-- Village Carousel Container -->
-<swiper-container
+<!-- Village Carousel Single -->
+<swiper-container 
+    direction="horizontal"
     slides-per-view="1"
-    space-between="16"
-    navigation="false"
-    pagination="true"
-    pagination-clickable="true"
-    autoplay="true"
-    loop="true"
     breakpoints='{
         "640": {
             "slidesPerView": 2,
@@ -20,38 +15,42 @@
             "slidesPerView": 4,
             "spaceBetween": 16
         },
-        "1280": {
+        "1480": {
             "slidesPerView": 5,
             "spaceBetween": 16
         }
     }'
+    space-between="16"
+    navigation="false"
+    pagination="true"
+    pagination-clickable="true"
+    autoplay="true"
     class="mt-2">
-    <swiper-slide *ngFor="let village of villages" class="mt-2 pb-16">
+    <swiper-slide *ngFor="let village of villages; let i = index" class="mt-2 pb-16">
         <div class="group flex flex-col h-full shadow-md rounded-lg">
-            <!-- Image Section -->
             <div class="relative overflow-hidden rounded-t-lg !rounded-b-none mb-3 aspect-square min-h-[200px] sm:min-h-[220px] max-h-[200px] sm:max-h-[220px]">
                 <img [src]="getProfileImage(village.images)"
-                    [alt]="village.committeeName"
+                    [alt]="village.villageName"
                     loading="lazy"
                     class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
             </div>
-            <!-- Content Section -->
             <div class="flex flex-col flex-grow px-2 min-h-[180px]">
-                <!-- Title -->
-                <h4 class="text-base font-semibold line-clamp-1 my-1">{{village.committeeName}}</h4>
-                <!-- Region Tag -->
+
+                <!-- Committee Name and Region -->
                 <div class="flex flex-wrap gap-2 my-0.5">
+                    <span class="inline-flex items-center gap-2 font-semibold px-2.5 py-1 rounded-full text-md">
+                        <lucide-angular [img]="icons.UserIcon" class="w-3.5 h-3.5 text-black flex-shrink-0"></lucide-angular>
+                        <span class="truncate">{{village.committeeName}}</span>
+                    </span>
                     <span [ngClass]="getDistrictClasses(village.region)"
                         class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white">
                         <lucide-angular [img]="icons.DistrictIcon" class="w-3.5 h-3.5 flex-shrink-0"></lucide-angular>
                         <span class="truncate">{{village.region}}</span>
                     </span>
                 </div>
-                <!-- Description -->
                 <p class="text-gray-700 my-2 line-clamp-2 h-11 text-sm">
                     {{village.description}}
                 </p>
-                <!-- Tags -->
                 <div class="flex mt-1 mb-2 flex-row gap-x-1.5 line-clamp-1 h-[2rem] overflow-hidden">
                     <div *ngFor="let tag of village.tags | slice:0:2; let i = index">
                         <span class="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
@@ -60,13 +59,14 @@
                         </span>
                     </div>
                 </div>
-                <a [routerLink]="['/village', village.committeeId]" (click)="scrollToTop()"
-                class="mx-auto flex justify-center mb-3 items-center mt-auto w-fit border border-[#1C2A0E] rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-sm text-[#1C2A0E]
-                       hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
-                Know More
-                <lucide-angular [img]="icons.ArrowIcon" class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5 flex-shrink-0"></lucide-angular>
-              </a>
-              
+                <a [routerLink]="['/village',village.villageId]" (click)="scrollToTop()"
+                    class="mx-auto flex justify-center mb-3 items-center 
+                    mt-auto w-11/12 border border-[#1C2A0E] rounded-full 
+                    px-4 sm:px-5 py-1 sm:py-1.5 text-sm text-[#1C2A0E]
+                    hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
+                    Know More
+                    <lucide-angular [img]="icons.ArrowIcon" class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5 flex-shrink-0"></lucide-angular>
+                </a>
             </div>
         </div>
     </swiper-slide>
