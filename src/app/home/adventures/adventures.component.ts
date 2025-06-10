@@ -7,7 +7,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { placeholder } from '../../globalEnums.enum';
-import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Activity } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Binoculars } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -28,7 +28,7 @@ export class AdventuresComponent implements OnInit, OnDestroy {
     DistrictIcon: MapPin,
     CommitteeIcon: Users,
     TagIcon: Tag,
-    ActivityIcon: Activity
+    ActivityIcon:Binoculars
   }
 
   ngOnInit() {

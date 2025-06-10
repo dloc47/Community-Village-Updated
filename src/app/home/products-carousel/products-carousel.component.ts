@@ -6,7 +6,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { getProfileImage, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
-import { LucideAngularModule,Milestone,Users,ChevronRight,Tag} from 'lucide-angular';
+import { LucideAngularModule,Milestone,Users,ChevronRight,Tag, ShoppingBag} from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -26,7 +26,7 @@ export class ProductsCarouselComponent implements OnInit {
     DistrictIcon:Milestone,
     CommitteeIcon:Users,
     TagIcon:Tag,
-
+    ProductIcon: ShoppingBag,
   }
 
   ngOnInit() {

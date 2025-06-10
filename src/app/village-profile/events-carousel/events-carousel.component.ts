@@ -6,6 +6,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { getDynamicClass, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
+import { CalendarDays, ChevronRight, LucideAngularModule, MapPin, Milestone, } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -14,12 +15,18 @@ register();
   selector: 'app-events-carousel',
   templateUrl: './events-carousel.component.html',
   styleUrls: ['./events-carousel.component.css'],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EventsCarouselComponent implements OnInit {
   private apiService = inject(ApiService);
   paginatedEvent: any[] = [];
+  icons={
+    EventIcon: CalendarDays,
+    DistrictIcon: Milestone,
+    LocationIcon:MapPin,
+    ArrowLeftIcon:ChevronRight
+  }
 
   ngOnInit() {
     this.getEvents();

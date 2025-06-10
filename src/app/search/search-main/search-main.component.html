@@ -92,11 +92,11 @@
 				<label class="block text-sm font-medium text-gray-700 mb-2">Committee</label>
 				<div class="relative">
 					<select id="village"
-						[disabled]="!villages.isDataAvailable"
+						[disabled]="userInputs.get('region')?.value"
 						formControlName="village"
 						class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
 						<option selected value>
-							@if (villages.isDataAvailable) {
+							@if (userInputs.get('region')?.value) {
 								Select Committee
 							}
 							@else{

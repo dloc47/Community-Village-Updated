@@ -5,7 +5,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { RouterLink, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
-import { LucideAngularModule, MapPin,Users} from 'lucide-angular';
+import { CalendarDays, LucideAngularModule, MapPin,Users,} from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -26,7 +26,8 @@ export class UpcomingEventsComponent implements OnInit, AfterViewInit {
   eventGroups: any[][] = [];
   icons={
     LocateIcon:MapPin,
-    UserIcon: Users
+    UserIcon: Users,
+    EventIcon: CalendarDays,
   }
   ngOnInit() {
     this.getEvents();
