@@ -4,17 +4,21 @@ import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../globalEnums.enum';
-import { getDynamicClass, getProfileImage } from '../../utils/utils';
+import { getProfileImage, handleImageError, getDistrictClass } from '../../utils/utils';
+import { LucideAngularModule, MapPin, ChevronRight, Users, Tag, HousePlus } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-homestay',
   templateUrl: './search-homestay.component.html',
   styleUrls: ['./search-homestay.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule]
+  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
 })
 export class SearchHomestayComponent implements OnInit {
 
  private searchService = inject(SearchService)
+ public getProfileImage =getProfileImage
+ public getDistrictClass =getDistrictClass
+ public handleImageError =handleImageError
 
  itemPerPage=search.itemPerPage;
  pageNo:number=1
@@ -22,6 +26,17 @@ export class SearchHomestayComponent implements OnInit {
  totalRecords:number=0
  isDataFound=false;
  isLoading:boolean=false;
+
+ // Define icons object
+ icons = {
+   ArrowIcon: ChevronRight,
+   DistrictIcon: MapPin,
+   CommitteeIcon: Users,
+   TagIcon: Tag,
+   HomestayIcon: HousePlus,
+   Users: Users,
+   MapPin: MapPin
+ };
 
   constructor() { }
 
@@ -55,14 +70,6 @@ loadData(type: 'paginated' | 'filtered', query: any): void {
 }
 
 
-  getClass(input:number){
-    return getDynamicClass(input);
-  }
-  
-  getProfileImage(images:any[])
-  {
-    return getProfileImage(images);
-  }
 
 
   // ✅ Handle Page Change (ngx-pagination)
