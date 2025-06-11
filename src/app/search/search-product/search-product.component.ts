@@ -1,20 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit,inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getDynamicClass,getProfileImage } from '../../utils/utils';
+import { getDynamicClass,getProfileImage, getDistrictClass, handleImageError } from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../globalEnums.enum';
+import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-product',
   templateUrl: './search-product.component.html',
   styleUrls: ['./search-product.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule]
+  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
 })
 export class SearchProductComponent implements OnInit {
 
   private searchService = inject(SearchService)
+  public getProfileImage = getProfileImage;
+  public getDistrictClass = getDistrictClass;
+  public handleImageError = handleImageError;
 
   itemPerPage=search.itemPerPage;
   pageNo:number=1
@@ -23,6 +27,18 @@ export class SearchProductComponent implements OnInit {
   isDataFound=false;
   isLoading:boolean=false;
   
+  // Define icons object
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: MapPin,
+    CommitteeIcon: Users,
+    TagIcon: Tag,
+    ShoppingBagIcon: ShoppingBag,
+    Users: Users,
+    MapPin: MapPin,
+    HouseIcon: HousePlus
+  };
+
   constructor() { }
 
   ngOnInit() {
@@ -60,12 +76,6 @@ loadData(type: 'paginated' | 'filtered', query: any): void {
     return getDynamicClass(input);
   }
   
-  getProfileImage(images:any[])
-  {
-    return getProfileImage(images);
-  }
-
-
   // ✅ Handle Page Change (ngx-pagination)
 onPageChange(pageNumber: number): void {
   this.pageNo = pageNumber 
