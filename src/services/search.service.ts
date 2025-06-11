@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {  paginatedEndpoints } from '../app/globalEnums.enum';
+import { paginatedEndpoints } from '../app/globalEnums.enum';
 import { ApiService } from './api.service';
 import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs';
 
@@ -10,9 +10,9 @@ export class SearchService {
 private apiService = inject(ApiService)
 
   // ✅ Track no data and error states
-  private loadingSubject = new BehaviorSubject<boolean>(true);
-  private noDataFoundSubject = new BehaviorSubject<boolean>(false);
-  private errorMessageSubject = new BehaviorSubject<string | null>(null);
+   loadingSubject = new BehaviorSubject<boolean>(true);
+   noDataFoundSubject = new BehaviorSubject<boolean>(false);
+   errorMessageSubject = new BehaviorSubject<string | null>(null);
 
   private queryStateSubject = new BehaviorSubject<any>({
     type: 'paginated', // Default to paginated
@@ -29,7 +29,6 @@ private apiService = inject(ApiService)
 constructor() { }
 
   // ✅ Update query dynamically from any component
-    // ✅ Perform search based on query state
   updateQueryState(type: 'paginated' | 'filtered', query: any = null): void {
     this.queryStateSubject.next({ type, query });
   }

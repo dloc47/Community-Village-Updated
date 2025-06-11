@@ -49,8 +49,8 @@ export class SearchMainComponent implements OnInit {
   GlobalEnums = GlobalEnums;  //enums which store tabs category to avoid type error
   activeTab:GlobalEnums=GlobalEnums.village;  //current active tab or category to show data
   
-  isLoading:boolean=false;
-  noDataFound:boolean=false;
+  isLoading:any;
+  noDataFound:any;
   errorMessage:any
   pageNo:number=1
   itemPerPage:number=search.itemPerPage
@@ -74,16 +74,11 @@ export class SearchMainComponent implements OnInit {
 
     //load districts
         this.loadDistricts();
-
-    //loading
-     this.searchService.loading$.subscribe((isLoading) => {
-       this.isLoading = isLoading;
-    });
-
+       this.isLoading = this.searchService.loading$;
+  
     //no data found
-   this.searchService.noDataFound$.subscribe((noData) => {
-      this.noDataFound = noData;
-    });
+      this.noDataFound =    this.searchService.noDataFound$;
+
 
     //error message
     this.searchService.errorMessage$.subscribe((error) => {

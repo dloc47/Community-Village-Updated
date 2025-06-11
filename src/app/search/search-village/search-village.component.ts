@@ -1,26 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit,inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getDynamicClass,getProfileImage } from '../../utils/utils';
+import { getDistrictClass,getProfileImage,handleImageError } from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../globalEnums.enum';
+import { LucideAngularModule, MapPin, ChevronRight, Milestone, Users, Tag } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-village',
   templateUrl: './search-village.component.html',
   styleUrls: ['./search-village.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule]
+  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
 })
 export class SearchVillageComponent implements OnInit {
- private searchService = inject(SearchService)
+  private searchService = inject(SearchService)
+  public handleImageError =handleImageError
+  public getDistrictClass =getDistrictClass
+  public getProfileImage=getProfileImage
 
- itemPerPage=search.itemPerPage;
- pageNo:number=1
- villageData:any[]=[]
- totalRecords:number=0
- isDataFound=false;
- isLoading:boolean=false;
+  itemPerPage=search.itemPerPage;
+  pageNo:number=1
+  villageData:any[]=[]
+  totalRecords:number=0
+  isDataFound=false;
+  isLoading:boolean=false;
+
+  // Define icons object
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: Milestone,
+    CommitteeIcon: Users,
+    TagIcon: Tag
+  }
 
   constructor() { }
 
@@ -53,14 +65,6 @@ loadData(type: 'paginated' | 'filtered', query: any): void {
 }
 
 
-  getClass(input:number){
-    return getDynamicClass(input);
-  }
-  
-  getProfileImage(images:any[])
-  {
-    return getProfileImage(images);
-  }
 
 
   // ✅ Handle Page Change (ngx-pagination)
