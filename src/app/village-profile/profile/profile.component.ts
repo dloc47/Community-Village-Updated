@@ -10,6 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';   
 import { finalize } from 'rxjs/operators';
+import { handleImageError, getDistrictClass } from '../../utils/utils';
+import { LucideAngularModule, ArrowLeft, ArrowRight,
+   MapPin, Dot, Star, User, Award, Globe, 
+   Compass, X, Phone, Mail, Tag, Landmark, Contact,Tags } from 'lucide-angular';
 // Register Swiper custom elements
 register();
 
@@ -17,12 +21,13 @@ register();
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  imports: [CommonModule, NgxPaginationModule, SafeUrlPipe, FormsModule],
+  imports: [CommonModule, NgxPaginationModule, SafeUrlPipe, FormsModule, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProfileComponent implements OnInit {
   
   private apiService = inject(ApiService)
+  public handleImageError =handleImageError;
   committeeInfo: any = []
   private _smallImages: any[] = []
   mainImage: any = null
@@ -30,6 +35,10 @@ export class ProfileComponent implements OnInit {
 
   get smallImages(): any[] {
     return this._smallImages
+  }
+
+  get galleryImages(): any[] {
+    return [this.mainImage, ...this._smallImages].filter(img => img !== null);
   }
 
   loading: boolean = false
@@ -49,6 +58,27 @@ export class ProfileComponent implements OnInit {
   get safeMapUrl(): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.mapUrl);
   }
+
+  isMapModalOpen: boolean = false;
+
+  icons = {
+    ArrowLeft: ArrowLeft,
+    ArrowRight: ArrowRight,
+    MapPin: MapPin,
+    Dot: Dot,
+    Star: Star,
+    User: User,
+    Award: Award,
+    Globe: Globe,
+    Compass: Compass,
+    X: X,
+    Phone: Phone,
+    Mail: Mail,
+    Tag: Tag,
+    Landmark: Landmark,
+    Contact: Contact,
+    Tags:Tags
+  };
 
   constructor(private sanitizer: DomSanitizer,
     private router :ActivatedRoute
@@ -81,8 +111,8 @@ export class ProfileComponent implements OnInit {
   }
 
   swapImage(image: any): void {
-    if (image) {
-      const currentIndex = this._smallImages.findIndex(img => img === image);
+    if (image && this._smallImages.includes(image)) {
+      const currentIndex = this._smallImages.indexOf(image);
       if (currentIndex !== -1) {
         // Add fade-in animation class
         const mainImageElement = document.querySelector('.main-image-container img');
@@ -182,5 +212,19 @@ export class ProfileComponent implements OnInit {
 
   handleNoDataFound() {
     this.noDataFound = true;
+  }
+
+  openMapModal(): void {
+    this.isMapModalOpen = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+
+  closeMapModal(): void {
+    this.isMapModalOpen = false;
+    document.body.style.overflow = ''; // Restore background scrolling
+  }
+
+  getDistrictClasses(region: string): string {
+    return getDistrictClass(region);
   }
 }
