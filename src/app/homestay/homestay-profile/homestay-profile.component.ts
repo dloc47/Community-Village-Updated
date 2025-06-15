@@ -8,7 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { LucideAngularModule, ArrowLeft, ArrowRight, MapPin, Dot, Star, User
   , Award, Globe, Compass, X, Phone, Mail, Tag, Landmark, Contact, Home, Check,AppWindow,
-   Bed, Users, Tags, CreditCard, Share2, 
+   Bed, Users, Tags, CreditCard, Share2,Banknote,
    Facebook,
    Instagram} from 'lucide-angular';
 
@@ -56,7 +56,8 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     Share2: Share2,
     AppWindow:AppWindow,
     Facebook:Facebook,
-     Instagram :Instagram
+     Instagram :Instagram,
+     Banknote:Banknote
   };
 
   private apiService = inject(ApiService);

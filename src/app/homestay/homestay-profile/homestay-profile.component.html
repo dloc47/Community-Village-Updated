@@ -99,7 +99,7 @@
         <!-- Left Column - Main Content -->
         <div class="lg:col-span-2 space-y-4">
             <!-- About Section -->
-            <div *ngIf="homestayInfo.description || homestayInfo.tags?.length" class="space-y-4">
+            <div *ngIf="homestayInfo.description || homestayInfo.tags?.length" class="space-y-2">
                 <h2 class="text-lg font-semibold flex items-center gap-2 text-gray-800">
                     <lucide-angular [img]="icons.Home" class="w-5 h-5 text-blue-500"></lucide-angular>
                     About the Homestay
@@ -109,9 +109,9 @@
                         {{homestayInfo.description}}
                     </p>
                     <!-- Tags Section -->
-                    <div *ngIf="homestayInfo?.tags?.length" class="flex flex-wrap gap-2">
+                    <div *ngIf="homestayInfo?.tags?.length" class="flex flex-wrap gap-x-2">
                         <span *ngFor="let tag of homestayInfo.tags" 
-                            class="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-50 text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300">
+                            class="inline-flex items-center gap-1 px-2.5 bg-gray-50 text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300">
                             <lucide-angular [img]="icons.Tag" class="w-3.5 h-3.5 text-blue-500"></lucide-angular>
                             {{tag}}
                         </span>
@@ -120,10 +120,10 @@
             </div>
 
             <!-- Amenities and Payment Methods Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mt-6">
                 <!-- Amenities Section -->
                 <div *ngIf="homestayInfo.amenities?.length">
-                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
+                    <h2 class="text-lg font-semibold mb-2 flex items-center gap-2 text-gray-800">
                         <lucide-angular [img]="icons.AppWindow" class="w-5 h-5 text-emerald-500"></lucide-angular>
                         Amenities
                     </h2>
@@ -138,12 +138,12 @@
 
                 <!-- Payment Methods -->
                 <div *ngIf="homestayInfo.paymentMethods">
-                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
-                        <lucide-angular [img]="icons.CreditCard" class="w-5 h-5 text-blue-500"></lucide-angular>
+                    <h2 class="text-lg font-semibold mb-2 flex items-center gap-2 text-gray-800">
+                        <lucide-angular [img]="icons.Banknote" class="w-5 h-5 text-blue-500"></lucide-angular>
                         Payment Methods
                     </h2>
                     <div class="flex flex-wrap gap-1">
-                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-white text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300">
+                        <span class="inline-flex items-center gap-1 px-x py-1 bg-white text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300">
                             <lucide-angular [img]="icons.CreditCard" class="w-3.5 h-3.5 text-blue-500"></lucide-angular>
                             {{homestayInfo.paymentMethods}}
                         </span>
@@ -153,7 +153,7 @@
 
             <!-- Social Media Section -->
             <div *ngIf="homestayInfo.socialMediaLinks?.facebook || homestayInfo.socialMediaLinks?.instagram">
-                <h2 class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
+                <h2 class="text-lg font-semibold mb-2 flex items-center gap-2 text-gray-800">
                     <lucide-angular [img]="icons.Share2" class="w-5 h-5 text-blue-500"></lucide-angular>
                     Social Media
                 </h2>
