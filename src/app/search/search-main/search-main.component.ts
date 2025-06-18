@@ -231,7 +231,7 @@ setActiveTabParam(path: string) {
     let region = regionStr !== undefined && !isNaN(Number(regionStr)) ? Number(regionStr) : undefined;
     let village = villageStr !== undefined && !isNaN(Number(villageStr)) ? Number(villageStr) : undefined;
     
-    console.log(searchTerm)
+
 
      this.getFilteredData(this.category, region, village, searchTerm);
   }

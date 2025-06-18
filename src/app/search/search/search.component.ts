@@ -4,9 +4,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { GlobalEnums, paginatedEndpoints } from '../../globalEnums.enum';
 import { getDynamicClass, getProfileImage } from '../../utils/utils';
 import { IsNumberPipe } from '../../pipes/isNumber.pipe';
-import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
-import { ActivatedRoute ,UrlSegment,RouterLink, RouterModule} from '@angular/router';
+import { ActivatedRoute , RouterModule} from '@angular/router';
 import { SearchService } from '../../../services/search.service';
 
 @Component({
@@ -163,8 +163,9 @@ getFirstSegment(): boolean {
         let region = this.getValidInput(this.userInputs.get('region')?.value);
         let village = this.getValidInput(this.userInputs.get('village')?.value);
         let searchTerm = this.getValidInput(this.userInputs.get('searchTerm')?.value);
-   
+        alert('searched'+searchTerm)
         if(region!==undefined||village!==undefined||searchTerm!==undefined){
+
           this.searching=true;  //enable searching 
           this.fetchFilteredData(region,village,searchTerm)
         }

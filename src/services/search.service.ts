@@ -40,11 +40,15 @@ constructor() { }
     // ✅ Start loading before API call
     this.loadingSubject.next(true);
 
+    console.log(query.searchTerm)
+    
     if (type === 'paginated') {
       return this.PaginatedData(query.endpoint,query.pageNo, query.itemPerPage);
     } else {
       return this.fetchFilteredData(query.category, query.districtId, query.villageId, query.searchTerm);
     }
+
+   
   }
 
 
