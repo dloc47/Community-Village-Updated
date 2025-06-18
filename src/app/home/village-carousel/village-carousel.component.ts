@@ -1,38 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
-import { getProfileImage, getDistrictClass } from '../../utils/utils';
+import { getProfileImage, getDistrictClass, handleImageError } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { LucideAngularModule,Milestone,Users,ChevronRight,Tag } from 'lucide-angular';
+import { LucideAngularModule, Milestone, Users, ChevronRight, Tag } from 'lucide-angular';
 
 @Component({
   selector: 'app-village-carousel',
   templateUrl: './village-carousel.component.html',
   styleUrls: ['./village-carousel.component.css'],
-  imports: [CommonModule, RouterLink,LucideAngularModule],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class VillageCarouselComponent implements OnInit {
+ 
+  @Input() type: string = '';
+  @Input() id: string = '';
+
+  public getDistrictClass = getDistrictClass;
+  public getProfileImage = getProfileImage;
+  public handleImageError = handleImageError;
   private apiService = inject(ApiService);
   villages: any[] = [];
-  icons={
-    ArrowIcon:ChevronRight,
-    DistrictIcon:Milestone,
-    UserIcon:Users,
-    TagIcon:Tag
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: Milestone,
+    UserIcon: Users,
+    TagIcon: Tag
   }
 
   ngOnInit(): void {
-    this.getVillages();
+    if (this.type === 'random') {
+      this.getCommitteesRandom();
+    } else if (this.type === 'nearby') {
+      this.getCommitteeNearby();
+    } else if (this.type === 'related') {
+      this.getCommitteeRelated();
+    }
   }
 
-  getDistrictClasses(region: string): string {
-    return getDistrictClass(region);
-  }
-
-  getVillages(): void {
+  getCommitteesRandom(): void {
     this.apiService.getPaginatedData(paginatedEndpoints.villages, 1, 30).subscribe({
       next: (data: any) => {
         if (data && data.data && data.data.length > 0) {
@@ -48,9 +57,38 @@ export class VillageCarouselComponent implements OnInit {
       }
     });
   }
+ 
+  getCommitteeNearby() {
+    this.apiService.getData(paginatedEndpoints.nearby, 'districtId=' + this.id).subscribe({
+      next: (data: any) => {
+        if (data && data.committees) {
+          this.villages = data.committees;
+        } else {
+          this.villages = [];
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching nearby Villages:', error);
+        this.villages = [];
+      }
+    });
+  }
 
-  getProfileImage(imageArray: any[]): string {
-    return getProfileImage(imageArray);
+  getCommitteeRelated() {
+    this.apiService.getData(paginatedEndpoints.related, 'committeeId=' + this.id).subscribe({
+      next: (data: any) => {
+        if (data && data.data && data.data.committees) {
+          this.villages = data.data.committees;
+        } else {
+          this.villages = [];
+        }
+        console.log('Related committees:', this.villages);
+      },
+      error: (error: any) => {
+        console.error('Error fetching related Villages:', error);
+        this.villages = [];
+      }
+    });
   }
 
   scrollToTop(): void {

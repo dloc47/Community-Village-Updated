@@ -22,9 +22,9 @@ export class ApiService {
   }
 
   // Generic GET request
-  getData<T>(endpoint: string): Observable<T> {
+  getData<T>(endpoint: string,parameters:string=''): Observable<T> {
     return this.http
-      .get<T>(`${this.apiUrl}/${endpoint}`, { headers: this.getHeaders() })
+      .get<T>(`${this.apiUrl}/${endpoint}?${parameters}`, { headers: this.getHeaders() })
       .pipe(
         timeout(this.defaultTimeout),
         map((res: T) => res),

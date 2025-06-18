@@ -1,7 +1,6 @@
-
 import { Routes } from '@angular/router';
 import { HomeMainComponent } from './home/home-main/home-main.component';
-import { VillageMainComponent } from './village-profile/village-main/village-main.component';
+import { ProfileComponent } from './village-profile/profile/profile.component';
 import { EventMainComponent } from './event/event-main/event-main.component';
 import { HomestayMainComponent } from './homestay/homestay-main/homestay-main.component';
 import { LocalProductMainComponent } from './local-product/localProduct-main/localProduct-main.component';
@@ -36,10 +35,9 @@ export const routes: Routes = [
       },
       {
          path:':id',
-         component:VillageMainComponent
+         component:ProfileComponent
       }
    ]
-
  },
 
  {
@@ -55,7 +53,6 @@ export const routes: Routes = [
          component:EventMainComponent
       }
    ]
-
  },
 
  {
@@ -71,7 +68,6 @@ export const routes: Routes = [
          component:HomestayMainComponent
       }
    ]
-
  },
 
  {
@@ -87,7 +83,6 @@ export const routes: Routes = [
          component:LocalProductMainComponent
       }
    ]
-
  },
  {
    path: 'activity',
