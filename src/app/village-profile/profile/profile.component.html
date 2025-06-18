@@ -376,7 +376,8 @@
         </div>
         <app-village-carousel
             [type]="'nearby'"
-            [id]="committeeInfo?.districtId"
+            [id]="committeeInfo?.districtId?.toString()"
+            *ngIf="committeeInfo?.districtId"
         ></app-village-carousel>
     </div>
 </section>

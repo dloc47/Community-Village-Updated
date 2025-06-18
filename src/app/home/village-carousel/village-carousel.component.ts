@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
@@ -14,7 +14,7 @@ import { LucideAngularModule, Milestone, Users, ChevronRight, Tag } from 'lucide
   imports: [CommonModule, RouterLink, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class VillageCarouselComponent implements OnInit {
+export class VillageCarouselComponent implements OnInit, OnChanges {
  
   @Input() type: string = '';
   @Input() id: string = '';
@@ -32,6 +32,16 @@ export class VillageCarouselComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['id'] && !changes['id'].firstChange) {
+      this.loadData();
+    }
+  }
+
+  private loadData(): void {
     if (this.type === 'random') {
       this.getCommitteesRandom();
     } else if (this.type === 'nearby') {
