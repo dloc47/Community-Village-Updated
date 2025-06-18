@@ -52,6 +52,8 @@ export class HomestaysCarouselComponent implements OnInit {
     });
   }
 
+  
+
   getProfileImage(images: any[]): string {
     return getProfileImage(images);
   }
