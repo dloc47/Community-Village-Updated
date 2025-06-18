@@ -7,6 +7,7 @@ import { paginatedEndpoints } from '../../globalEnums.enum';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { placeholder } from '../../globalEnums.enum';
+import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Binoculars } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -15,13 +16,21 @@ register();
   selector: 'app-adventures',
   templateUrl: './adventures.component.html',
   styleUrls: ['./adventures.component.css'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AdventuresComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   activities: any[] = [];
-  placeholder:placeholder=placeholder.image
+  placeholder: placeholder = placeholder.image;
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: MapPin,
+    CommitteeIcon: Users,
+    TagIcon: Tag,
+    ActivityIcon:Binoculars
+  }
+
   ngOnInit() {
     this.getActivities();
   }

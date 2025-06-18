@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ApiService } from '../../../services/api.service';
-import { getByIDEndpoints, GlobalEnums, placeholder } from '../../globalEnums.enum';
+import { getByIDEndpoints, placeholder } from '../../globalEnums.enum';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { SafeUrlPipe } from '../../pipes/SafeUrlPipe.pipe';
@@ -10,6 +10,16 @@ import { FormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';   
 import { finalize } from 'rxjs/operators';
+import { handleImageError, getDistrictClass } from '../../utils/utils';
+import { LucideAngularModule, ArrowLeft, ArrowRight,
+   MapPin, Dot, Star, User, Award, Globe, 
+   Compass, X, Phone, Mail, Tag, Landmark, Contact, Tags } from 'lucide-angular';
+import { VillageCarouselComponent } from '../../home/village-carousel/village-carousel.component';
+import { HomestaysCarouselComponent } from '../../home/homestays-carousel/homestays-carousel.component';
+import { ProductsCarouselComponent } from '../../home/products-carousel/products-carousel.component';
+import { AdventuresComponent } from '../../home/adventures/adventures.component';
+import { EventsCarouselComponent } from '../events-carousel/events-carousel.component';
+
 // Register Swiper custom elements
 register();
 
@@ -17,12 +27,25 @@ register();
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  imports: [CommonModule, NgxPaginationModule, SafeUrlPipe, FormsModule],
+  imports: [
+    CommonModule, 
+    NgxPaginationModule, 
+    FormsModule, 
+    LucideAngularModule,
+    VillageCarouselComponent,
+    HomestaysCarouselComponent,
+    ProductsCarouselComponent,
+    AdventuresComponent,
+    EventsCarouselComponent
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProfileComponent implements OnInit {
-  
+  @Input() id: string = '';
+  districtId: any;
+
   private apiService = inject(ApiService)
+  public handleImageError = handleImageError;
   committeeInfo: any = []
   private _smallImages: any[] = []
   mainImage: any = null
@@ -30,6 +53,10 @@ export class ProfileComponent implements OnInit {
 
   get smallImages(): any[] {
     return this._smallImages
+  }
+
+  get galleryImages(): any[] {
+    return [this.mainImage, ...this._smallImages].filter(img => img !== null);
   }
 
   loading: boolean = false
@@ -50,39 +77,47 @@ export class ProfileComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.mapUrl);
   }
 
-  constructor(private sanitizer: DomSanitizer,
-    private router :ActivatedRoute
+  isMapModalOpen: boolean = false;
+
+  icons = {
+    ArrowLeft: ArrowLeft,
+    ArrowRight: ArrowRight,
+    MapPin: MapPin,
+    Dot: Dot,
+    Star: Star,
+    User: User,
+    Award: Award,
+    Globe: Globe,
+    Compass: Compass,
+    X: X,
+    Phone: Phone,
+    Mail: Mail,
+    Tag: Tag,
+    Landmark: Landmark,
+    Contact: Contact,
+    Tags: Tags
+  };
+
+  constructor(
+    private sanitizer: DomSanitizer,
+    private router: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.getFirstSegment();
-  }
-
-
-
-  getFirstSegment(): boolean {
-    let segmentFound = false;
-    this.router.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.loadCommitteeData(parseInt(id));
-        segmentFound = true;
-      } else {
-        console.log('No valid ID found in route.');
-      }
-    });
-    return segmentFound;
+    if(this.id) {
+      this.loadCommitteeData(this.id)
+    }
   }
 
   isBoxVisible: boolean = true;
-  toggleDivs(divType:string) {
-    if(divType=='villageDetails') this.isBoxVisible=true;
-    else if(divType=='leaderShip') this.isBoxVisible=false;
+  toggleDivs(divType: string) {
+    if(divType == 'villageDetails') this.isBoxVisible = true;
+    else if(divType == 'leaderShip') this.isBoxVisible = false;
   }
 
   swapImage(image: any): void {
-    if (image) {
-      const currentIndex = this._smallImages.findIndex(img => img === image);
+    if (image && this._smallImages.includes(image)) {
+      const currentIndex = this._smallImages.indexOf(image);
       if (currentIndex !== -1) {
         // Add fade-in animation class
         const mainImageElement = document.querySelector('.main-image-container img');
@@ -144,7 +179,7 @@ export class ProfileComponent implements OnInit {
     console.log('Opening image gallery...');
   }
 
-  loadCommitteeData(id:number): void {
+  loadCommitteeData(id: string): void {
     this.loading = true;
     this.apiService
       .getDataById<any>(getByIDEndpoints.villages, id)
@@ -157,6 +192,7 @@ export class ProfileComponent implements OnInit {
         next: (data: any) => {
           if (data) {
             this.committeeInfo = data;
+            this.districtId = data.districtId;
             // Set first image as main image
             this.mainImage = data.images?.[0] || null;
             // Store remaining images as small images
@@ -164,8 +200,8 @@ export class ProfileComponent implements OnInit {
             
             // Update map coordinates if available, but keep zoom level for state view
             if (data.latitude && data.longitude) {
-              this.latitude = data.latitude?data.latitude:this.latitude;
-              this.longitude = data.longitude?data.longitude:this.longitude;
+              this.latitude = data.latitude ? data.latitude : this.latitude;
+              this.longitude = data.longitude ? data.longitude : this.longitude;
               // Keep zoom level at 8 to show state context
               this.zoom = 8;
             }
@@ -182,5 +218,19 @@ export class ProfileComponent implements OnInit {
 
   handleNoDataFound() {
     this.noDataFound = true;
+  }
+
+  openMapModal(): void {
+    this.isMapModalOpen = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+
+  closeMapModal(): void {
+    this.isMapModalOpen = false;
+    document.body.style.overflow = ''; // Restore background scrolling
+  }
+
+  getDistrictClasses(region: string): string {
+    return getDistrictClass(region);
   }
 }

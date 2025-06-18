@@ -1,0 +1,39 @@
+/* Swiper Container Styles */
+:host ::ng-deep swiper-container {
+    --swiper-pagination-color: #1C2A0E;
+    --swiper-pagination-bullet-inactive-color: #94a3b8;
+    --swiper-pagination-bullet-inactive-opacity: 0.5;
+    --swiper-navigation-color: #1C2A0E;
+    --swiper-navigation-size: 24px;
+    padding: 20px 0;
+}
+
+:host ::ng-deep swiper-slide {
+    height: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+:host ::ng-deep .swiper-button-next,
+:host ::ng-deep .swiper-button-prev {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .swiper-button-next:hover,
+:host ::ng-deep .swiper-button-prev:hover {
+    background-color: #1C2A0E;
+    color: white;
+}
+
+/* Card Hover Effects */
+.group:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Image Hover Effect */
+.group:hover img {
+    transform: scale(1.05);
+}

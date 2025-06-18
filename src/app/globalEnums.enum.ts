@@ -11,7 +11,9 @@ export enum paginatedEndpoints{
     products = 'products/paginated-products',
     homestays = 'homestays/paginated-homestays',
     activities = 'Activities/paginated-activities',
-    events = 'events/paginated-events'
+    events = 'events/paginated-events',
+    related= 'website/related-entities',
+    nearby='website/nearby-entities'
 }
 
 export enum getByIDEndpoints{

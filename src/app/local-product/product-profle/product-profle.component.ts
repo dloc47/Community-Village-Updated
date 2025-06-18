@@ -5,6 +5,10 @@ import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { LucideAngularModule, ArrowLeft, ArrowRight, MapPin, Dot, Star, User,
+  Award, Globe, Compass, X, Phone, Mail, Tag, Landmark, Contact, Home, Check,AppWindow,Layers,
+   Bed, Users, Tags, CreditCard, Share2, Banknote } from 'lucide-angular';
+import { handleImageError, getDistrictClass } from '../../utils/utils';
 
 // Register Swiper custom elements
 register();
@@ -13,7 +17,7 @@ register();
   selector: 'app-product-profle',
   templateUrl: './product-profle.component.html',
   styleUrls: ['./product-profle.component.css'],
-  imports:[CommonModule],
+  imports:[CommonModule, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductProfleComponent implements OnInit {
@@ -23,6 +27,36 @@ export class ProductProfleComponent implements OnInit {
     placeholder: placeholder = placeholder.image;
     showModal: boolean = false;
     selectedImage: string = '';
+    public handleImageError = handleImageError;
+    public getDistrictClasses = getDistrictClass;
+
+    icons = {
+        ArrowLeft: ArrowLeft,
+        ArrowRight: ArrowRight,
+        MapPin: MapPin,
+        Dot: Dot,
+        Star: Star,
+        User: User,
+        Award: Award,
+        Globe: Globe,
+        Compass: Compass,
+        X: X,
+        Phone: Phone,
+        Mail: Mail,
+        Tag: Tag,
+        Tags: Tags,
+        Landmark: Landmark,
+        Contact: Contact,
+        Home: Home,
+        Check: Check,
+        Bed: Bed,
+        Users: Users,
+        CreditCard: CreditCard,
+        Share2: Share2,
+        AppWindow:AppWindow,
+        Banknote: Banknote,
+        Layers:Layers
+    };
     
     private apiService = inject(ApiService);
     

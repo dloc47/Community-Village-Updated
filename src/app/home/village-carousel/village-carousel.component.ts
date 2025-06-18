@@ -1,72 +1,104 @@
-import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
-import { getDynamicClass,initializeOwlCarousel,destroyOwlInstance,getProfileImage, getDistrictClass } from '../../utils/utils'; 
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
+import { getProfileImage, getDistrictClass, handleImageError } from '../../utils/utils';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { LucideAngularModule, Milestone, Users, ChevronRight, Tag } from 'lucide-angular';
 
 @Component({
   selector: 'app-village-carousel',
   templateUrl: './village-carousel.component.html',
   styleUrls: ['./village-carousel.component.css'],
-  imports:[CommonModule,RouterLink]
+  imports: [CommonModule, RouterLink, LucideAngularModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class VillageCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
-  private apiService=inject(ApiService)
-  constructor(){
-  }
+export class VillageCarouselComponent implements OnInit, OnChanges {
+ 
+  @Input() type: string = '';
+  @Input() id: string = '';
 
+  public getDistrictClass = getDistrictClass;
+  public getProfileImage = getProfileImage;
+  public handleImageError = handleImageError;
+  private apiService = inject(ApiService);
   villages: any[] = [];
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: Milestone,
+    UserIcon: Users,
+    TagIcon: Tag
+  }
 
   ngOnInit(): void {
-    this.getVillages();
+    this.loadData();
   }
 
-  ngAfterViewInit() {
-   
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['id'] && !changes['id'].firstChange) {
+      this.loadData();
+    }
   }
 
- ngOnDestroy() {
-    destroyOwlInstance('.village-carousel')
+  private loadData(): void {
+    if (this.type === 'random') {
+      this.getCommitteesRandom();
+    } else if (this.type === 'nearby') {
+      this.getCommitteeNearby();
+    } else if (this.type === 'related') {
+      this.getCommitteeRelated();
+    }
   }
 
-  // Updated to use district-specific colors
-  getClass(region: string): string {
-    return getDistrictClass(region);
-  }
-
-  getVillages(): void {
-    this.apiService.getPaginatedData(paginatedEndpoints.villages,1,30).subscribe({
+  getCommitteesRandom(): void {
+    this.apiService.getPaginatedData(paginatedEndpoints.villages, 1, 30).subscribe({
       next: (data: any) => {
-        // Assign the data to the districts property
-          // Add a placeholder image to each committee
-          if (data && data.data && data.data.length > 0) {
-            this.villages = data.data
-          }
-
-      if (this.villages.length > 0) {
-        setTimeout(() => {
-          initializeOwlCarousel('.village-carousel', true, true, 5, false, [1, 3, 5])
-        }, 0)
-      }
-
+        if (data && data.data && data.data.length > 0) {
+          this.villages = data.data;
+        }
       },
-      error: (error:any) => {
-        console.error('Error fetching Committies:', error);
-        // Optionally, set a default value or handle the error
-        this.villages = []; // Fallback to an empty array
+      error: (error: any) => {
+        console.error('Error fetching Villages:', error);
+        this.villages = [];
       },
       complete: () => {
-        // Optional: Handle completion logic if needed
-        console.log('Committies fetch completed.');
-      
+        console.log('Villages fetch completed.');
+      }
+    });
+  }
+ 
+  getCommitteeNearby() {
+    this.apiService.getData(paginatedEndpoints.nearby, 'districtId=' + this.id).subscribe({
+      next: (data: any) => {
+        if (data && data.committees) {
+          this.villages = data.committees;
+        } else {
+          this.villages = [];
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching nearby Villages:', error);
+        this.villages = [];
       }
     });
   }
 
-   // Utility function is now accessible
-   getProfileImage(imageArray: any[]): string {
-    return getProfileImage(imageArray);
+  getCommitteeRelated() {
+    this.apiService.getData(paginatedEndpoints.related, 'committeeId=' + this.id).subscribe({
+      next: (data: any) => {
+        if (data && data.data && data.data.committees) {
+          this.villages = data.data.committees;
+        } else {
+          this.villages = [];
+        }
+        console.log('Related committees:', this.villages);
+      },
+      error: (error: any) => {
+        console.error('Error fetching related Villages:', error);
+        this.villages = [];
+      }
+    });
   }
 
   scrollToTop(): void {

@@ -22,9 +22,9 @@ export class ApiService {
   }
 
   // Generic GET request
-  getData<T>(endpoint: string): Observable<T> {
+  getData<T>(endpoint: string,parameters:string=''): Observable<T> {
     return this.http
-      .get<T>(`${this.apiUrl}/${endpoint}`, { headers: this.getHeaders() })
+      .get<T>(`${this.apiUrl}/${endpoint}?${parameters}`, { headers: this.getHeaders() })
       .pipe(
         timeout(this.defaultTimeout),
         map((res: T) => res),
@@ -83,7 +83,7 @@ getDataById<T>(endpoint: string, id: any): Observable<T> {
     if (category?.trim()) params = params.set('category', category.trim());
     if (districtId !== undefined && districtId !== null) params = params.set('districtId', districtId.toString());
     if (villageId !== undefined && villageId !== null) params = params.set('villageId', villageId.toString());
-    if (search?.trim()) params = params.set('search', search.trim());
+    if (search?.trim()) params = params.set('searchText', search.trim());
   
     // Updated to match the new API structure
     return this.http.get<T>(`${this.apiUrl}/website/filter`, { headers: this.getHeaders(), params })

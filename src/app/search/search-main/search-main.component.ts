@@ -9,6 +9,9 @@ import { SearchActivityComponent } from "../search-activity/search-activity.comp
 import { SearchProductComponent } from "../search-product/search-product.component";
 import { SearchEventComponent } from "../search-event/search-event.component";
 import { ActivatedRoute } from '@angular/router';
+import { LucideAngularModule, ShoppingBag,
+   Users, X, Search, ChevronDown,Milestone ,Binoculars,HousePlus,
+   CalendarDays,TextSearch,ListFilter} from 'lucide-angular';
 
 @Component({
   selector: 'app-search-main',
@@ -19,19 +22,35 @@ import { ActivatedRoute } from '@angular/router';
     SearchVillageComponent, SearchHomestayComponent,
     SearchActivityComponent,
     SearchProductComponent,
-    SearchEventComponent
-]
+    SearchEventComponent,
+    LucideAngularModule
+  ]
 })
 export class SearchMainComponent implements OnInit {
   private fb=inject( FormBuilder)
   private searchService=inject( SearchService)
   private router=inject( ActivatedRoute)
 
+  // Define icons object
+  icons = {
+    VillageIcon: Users,
+    ActivityIcon: Binoculars,
+    ProductIcon: ShoppingBag,
+    EventIcon: CalendarDays,
+    LocationIcon: Milestone,
+    SearchIcon: Search,
+    TextSearchIcon:TextSearch,
+    ClearIcon: X,
+    DropdownIcon: ChevronDown,
+    HomestayIcon:HousePlus,
+    FilterIcon:ListFilter
+  }
+
   GlobalEnums = GlobalEnums;  //enums which store tabs category to avoid type error
   activeTab:GlobalEnums=GlobalEnums.village;  //current active tab or category to show data
   
-  isLoading:boolean=false;
-  noDataFound:boolean=false;
+  isLoading:any;
+  noDataFound:any;
   errorMessage:any
   pageNo:number=1
   itemPerPage:number=search.itemPerPage
@@ -55,16 +74,11 @@ export class SearchMainComponent implements OnInit {
 
     //load districts
         this.loadDistricts();
-
-    //loading
-     this.searchService.loading$.subscribe((isLoading) => {
-       this.isLoading = isLoading;
-    });
-
+       this.isLoading = this.searchService.loading$;
+  
     //no data found
-   this.searchService.noDataFound$.subscribe((noData) => {
-      this.noDataFound = noData;
-    });
+      this.noDataFound =    this.searchService.noDataFound$;
+
 
     //error message
     this.searchService.errorMessage$.subscribe((error) => {
@@ -203,6 +217,7 @@ setActiveTabParam(path: string) {
         searchTerm: '',
       }
     );
+    this.villages=[];
     this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
    }
 
@@ -211,11 +226,14 @@ setActiveTabParam(path: string) {
     let villageStr = this.getValidInput(this.userInputs.get('village')?.value);
     let searchTerm = this.getValidInput(this.userInputs.get('searchTerm')?.value);
   
+
     // Convert to number if valid and not NaN
     let region = regionStr !== undefined && !isNaN(Number(regionStr)) ? Number(regionStr) : undefined;
     let village = villageStr !== undefined && !isNaN(Number(villageStr)) ? Number(villageStr) : undefined;
-  
-    this.getFilteredData(this.category, region, village, searchTerm);
+    
+
+
+     this.getFilteredData(this.category, region, village, searchTerm);
   }
   
      // Function to check if the value is valid (not empty or just spaces)

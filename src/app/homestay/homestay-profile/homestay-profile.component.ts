@@ -5,6 +5,12 @@ import { getByIDEndpoints, placeholder } from '../../globalEnums.enum';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { handleImageError, getDistrictClass } from '../../utils/utils';
+import { LucideAngularModule, ArrowLeft, ArrowRight, MapPin, Dot, Star, User
+  , Award, Globe, Compass, X, Phone, Mail, Tag, Landmark, Contact, Home, Check,AppWindow,
+   Bed, Users, Tags, CreditCard, Share2,Banknote,
+   Facebook,
+   Instagram} from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -13,7 +19,7 @@ register();
   selector: 'app-homestay-profile',
   templateUrl: './homestay-profile.component.html',
   styleUrls: ['./homestay-profile.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomestayProfileComponent implements OnInit, AfterViewInit {
@@ -23,6 +29,36 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
   placeholder: placeholder = placeholder.image;
   private _smallImages: any[] = [];
   mainImage: any = null;
+  public handleImageError = handleImageError;
+
+  icons = {
+    ArrowLeft: ArrowLeft,
+    ArrowRight: ArrowRight,
+    MapPin: MapPin,
+    Dot: Dot,
+    Star: Star,
+    User: User,
+    Award: Award,
+    Globe: Globe,
+    Compass: Compass,
+    X: X,
+    Phone: Phone,
+    Mail: Mail,
+    Tag: Tag,
+    Tags: Tags,
+    Landmark: Landmark,
+    Contact: Contact,
+    Home: Home,
+    Check: Check,
+    Bed: Bed,
+    Users: Users,
+    CreditCard: CreditCard,
+    Share2: Share2,
+    AppWindow:AppWindow,
+    Facebook:Facebook,
+     Instagram :Instagram,
+     Banknote:Banknote
+  };
 
   private apiService = inject(ApiService);
 
@@ -47,6 +83,10 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
 
   get smallImages(): any[] {
     return this._smallImages;
+  }
+
+  getDistrictClasses(region: string): string {
+    return getDistrictClass(region);
   }
 
   swapImage(image: any): void {
@@ -108,11 +148,6 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openImageGallery(): void {
-    // This method can be implemented later to open a full-screen gallery view
-    console.log('Opening image gallery...');
-  }
-
   getFirstSegment(): boolean {
     let segmentFound = false;
     this.router.paramMap.subscribe((params) => {
@@ -139,7 +174,6 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
             this.mainImage = data.images?.[0] || null;
             // Store remaining images as small images
             this._smallImages = data.images?.slice(1) || [];
-                
           } else {
             this.handleNoDataFound();
           }
@@ -157,5 +191,24 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
   handleNoDataFound() {
     this.noDataFound = true;
     this.loading = false;
+  }
+
+  getSocialMediaLinks(): { name: string; url: string ,icon:any}[] {
+    const links = [];
+    if (this.homestayInfo.socialMediaLinks?.facebook) {
+      links.push({
+        name: 'Facebook',
+        url: this.homestayInfo.socialMediaLinks.facebook,
+        icon:this.icons.Facebook
+      });
+    }
+    if (this.homestayInfo.socialMediaLinks?.instagram) {
+      links.push({
+        name: 'Instagram',
+        url: this.homestayInfo.socialMediaLinks.instagram,
+        icon:this.icons.Instagram
+      });
+    }
+    return links;
   }
 }

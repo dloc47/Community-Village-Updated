@@ -1,21 +1,25 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { paginatedEndpoints, search } from '../../globalEnums.enum';
-import { getDynamicClass, getProfileImage } from '../../utils/utils';
+import { getDistrictClass, getProfileImage ,handleImageError} from '../../utils/utils';
 import { SearchService } from '../../../services/search.service';
 import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../services/api.service';
+import { LucideAngularModule, MapPin, Users,Tag, Binoculars, ChevronRight,HousePlus } from 'lucide-angular';
+
 
 @Component({
   selector: 'app-search-activity',
   templateUrl: './search-activity.component.html',
   styleUrls: ['./search-activity.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule]
+  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
 })
 export class SearchActivityComponent implements OnInit {
 
  private searchService = inject(SearchService)
+ public getProfileImage = getProfileImage;
+ public getDistrictClass =getDistrictClass
+ public handleImageError=handleImageError
 
  itemPerPage=search.itemPerPage;
  pageNo:number=1
@@ -23,6 +27,17 @@ export class SearchActivityComponent implements OnInit {
  totalRecords:number=0
  isDataFound=false;
  isLoading:boolean=false;
+
+ // Define icons object
+ icons = {
+   ArrowIcon: ChevronRight,
+   DistrictIcon: MapPin,
+   CommitteeIcon: Users,
+   TagIcon: Tag,
+   Users: Users,
+   HouseIcon: HousePlus,
+   BinocularsIcon:Binoculars
+ };
 
 
 
@@ -58,17 +73,7 @@ loadData(type: 'paginated' | 'filtered', query: any): void {
   });
 }
 
-
-  getClass(input:number){
-    return getDynamicClass(input);
-  }
   
-  getProfileImage(images:any[])
-  {
-    return getProfileImage(images);
-  }
-
-
   // ✅ Handle Page Change (ngx-pagination)
 onPageChange(pageNumber: number): void {
   this.pageNo = pageNumber 

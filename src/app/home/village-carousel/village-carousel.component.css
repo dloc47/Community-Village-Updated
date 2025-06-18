@@ -1,44 +1,40 @@
-
-/* Ensure owl-carousel is visible */
-.owl-carousel {
-  display: block !important;
-  visibility: visible !important;
-  position: relative;
-  width: 100%;
-  min-height: 400px;
-  overflow: hidden;
-  z-index: 1;
+/* Swiper Container Styles */
+:host ::ng-deep swiper-container {
+    --swiper-pagination-color: #1C2A0E;
+    --swiper-pagination-bullet-inactive-color: #94a3b8;
+    --swiper-pagination-bullet-inactive-opacity: 0.5;
+    --swiper-navigation-color: #1C2A0E;
+    --swiper-navigation-size: 24px;
+    padding: 20px 0;
 }
 
-
-/* Basic carousel styling */
-.owl-carousel .item {
-  padding: 10px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+:host ::ng-deep swiper-slide {
+    height: auto;
+    transition: all 0.3s ease-in-out;
 }
 
-
-/* Navigation buttons */
-.owl-nav {
-  text-align: center;
-  margin-top: 10px;
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  transform: translateY(-50%);
+:host ::ng-deep .swiper-button-next,
+:host ::ng-deep .swiper-button-prev {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-.owl-prev, .owl-next {
-  background: #1C2A0E;
-  color: white;
-  padding: 5px 10px;
-  margin: 0 5px;
-  border-radius: 4px;
+:host ::ng-deep .swiper-button-next:hover,
+:host ::ng-deep .swiper-button-prev:hover {
+    background-color: #1C2A0E;
+    color: white;
 }
 
-.owl-prev:hover, .owl-next:hover {
-  background: #2A3F15;
+/* Card Hover Effects */
+.group:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease-in-out;
 }
+
+/* Image Hover Effect */
+.group:hover img {
+    transform: scale(1.05);
+}
+

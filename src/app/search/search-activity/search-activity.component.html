@@ -1,68 +1,58 @@
 <!-- -----------------------------------Activities--------------------------------- -->
 <div *ngFor="let activity of activityData | paginate: { itemsPerPage: itemPerPage, currentPage: pageNo , totalItems:totalRecords}; let i=index"
-	class="bg-white my-2 rounded-lg shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0]">
-	<div class="flex flex-col md:flex-row h-auto md:h-48">
-		<div class="w-full md:w-48 h-48 md:h-full relative overflow-hidden">
+	class="bg-white rounded-xl my-4 shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0] border border-gray-200">
+	<div class="flex flex-col sm:flex-row h-auto sm:h-48">
+		<div class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0">
 			<img [src]="getProfileImage(activity.images)"
 				[alt]="activity.activityName"
-				class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+				class="w-full h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none transition duration-500"
+				(error)="handleImageError($event)"
+				>
+				
 		</div>
-
-		<!-- Content Container -->
 		<div class="flex-1 p-4 flex flex-col">
 			<div class="flex-grow">
-				<!-- Header with title and location -->
-				<div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-2">
-					<h4 class="text-lg font-semibold">
+				<div class="flex flex-row flex-wrap items-center gap-2 mb-2">
+					<h4 class="text-base font-semibold whitespace-nowrap line-clamp-1 flex items-center gap-1">
+						<lucide-angular [img]="icons.BinocularsIcon" class="w-5 h-5 text-emerald-700" stroke-width="2"></lucide-angular>
 						{{activity.activityName}}
 					</h4>
-					<div class="flex flex-wrap gap-2">
-						<span [ngClass]="getClass(i+1)"
-							class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-500 hover:text-white">
-							{{activity.districtName}}
-						</span>
-
+					<span class="inline-flex items-center px-3 py-1.5 hover:text-white ml-2 rounded-full text-xs border font-medium gap-1"
+						[ngClass]="getDistrictClass(activity.districtName)">
+						<lucide-angular [img]="icons.DistrictIcon" class="w-4 h-4" stroke-width="2"></lucide-angular>
+						{{activity.districtName}}
+					</span>
+				</div>
+				<!-- Organizer/Committee and Address (if available) -->
+				<div class="flex flex-row gap-1 sm:gap-4 mb-2 ml-1">
+					<div *ngIf="activity.committeeName" class="flex items-center gap-1 text-sm text-gray-600">
+						<lucide-angular [img]="icons.Users" class="w-4 h-4 text-emerald-700" stroke-width="2"></lucide-angular>
+						<span class="line-clamp-1">{{activity.committeeName}}</span>
+					</div>
+					<div *ngIf="activity.homestayName" class="flex items-center gap-1 text-sm text-gray-600">
+						<lucide-angular [img]="icons.HouseIcon" class="w-4 h-4 text-emerald-700" stroke-width="2"></lucide-angular>
+						<span class="line-clamp-1">{{activity.homestayName}}</span>
 					</div>
 				</div>
-
-				<!-- Activity description -->
-				<p class="text-gray-700 mt-2 mb-2 line-clamp-2 text-sm">
+				<p class="text-gray-700 mt-2 line-clamp-2 text-sm">
 					{{activity.description}}
 				</p>
-
-				<!-- Combined tags and includes in a more compact layout -->
-				<div class="space-y-2">
-					<div class="flex flex-wrap gap-1.5">
-						<span *ngFor="let tag of activity.tags"
-							class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-							{{tag}}
-						</span>
-					</div>
-
-				</div>
 			</div>
-
-			<!-- Footer with price and action button -->
-			<div class="mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
-				<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-					<!-- <span class="flex items-center font-medium text-[#1C2A0E]">
-                          {{activity.price | currency:'INR':'symbol':'1.0-0'}} /person
-                      </span> -->
+			<div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+				<div class="flex flex-wrap items-center gap-2 text-sm mb-2 sm:mb-0">
+					<span *ngFor="let tag of activity.tags | slice:0:4"
+						class="inline-flex items-center bg-gray-100 border border-gray-200 rounded-full px-3 py-1 text-sm text-gray-700 gap-1 mb-1">
+						<lucide-angular [img]="icons.TagIcon" class="w-4 h-4" stroke-width="2"></lucide-angular>
+						{{tag}}
+					</span>
 				</div>
-
 				<a [routerLink]="['/activity',activity.activityId]"
-					class="inline-flex items-center w-full md:w-fit border border-[#1C2A0E] rounded-full px-3 py-1 text-sm text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center md:justify-start">
+					class="inline-flex items-center w-full sm:w-auto border border-[#1C2A0E] rounded-full px-4 py-1.5 text-sm font-semibold bg-[#F9FAFB] text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center sm:justify-end shadow-sm">
 					Know More
-					<svg xmlns="http://www.w3.org/2000/svg"
-						class="h-3.5 w-3.5 ml-1"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor">
-						<path stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M9 5l7 7-7 7"></path>
-					</svg>
+					<lucide-angular [img]="icons.ArrowIcon"
+						class="h-4 w-4 ml-1.5"
+						stroke-width="2">
+					</lucide-angular>
 				</a>
 			</div>
 		</div>
