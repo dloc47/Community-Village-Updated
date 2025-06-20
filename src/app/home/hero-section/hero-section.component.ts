@@ -23,10 +23,10 @@ export class HeroSectionComponent implements OnInit, AfterViewInit {
 
   // Object to store various entity counts
   counts: any = {
-    villageCommunities: '00',
-    homeStays: '00',
-    thingsToDo: '00',
-    localProducts: '00',
+    committees: '00',
+    homestays: '00',
+    activities: '00',
+    products: '00',
     events: '00'
   };
 
