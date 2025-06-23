@@ -25,6 +25,7 @@
     pagination="true"
     pagination-clickable="true"
     autoplay="true"
+    loop="true"
     class="mt-2">
     <swiper-slide *ngFor="let homestay of homestays; let i = index" class="mt-2 pb-16">
         <div class="group flex flex-col h-full shadow-md rounded-lg">
@@ -32,6 +33,7 @@
                 <img [src]="getProfileImage(homestay.images)"
                     [alt]="homestay.homestayName"
                     loading="lazy"
+                    (error)="handleImageError($event)"
                     class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
             </div>
             <div class="flex flex-col flex-grow px-2 min-h-[180px]">
@@ -47,10 +49,10 @@
                         </span>
                     </div>
                     <div class="flex">
-                        <span [ngClass]="getClass(homestay.region)"
+                        <span [ngClass]="getDistrictClass(homestay.districtName)"
                             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white">
                             <lucide-angular [img]="icons.DistrictIcon" class="w-3.5 h-3.5 flex-shrink-0"></lucide-angular>
-                            <span class="truncate">{{homestay.region}}</span>
+                            <span class="truncate">{{homestay.districtName}}</span>
                         </span>
                     </div>
                 </div>

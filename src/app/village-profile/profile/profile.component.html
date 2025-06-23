@@ -290,7 +290,10 @@
                 </p>
             </div>
         </div>
-        <app-homestays-carousel></app-homestays-carousel>
+        <app-homestays-carousel
+        [type]="'related'"
+        [committeeId]="committeeInfo.committeeId"
+        ></app-homestays-carousel>
     </div>
 </section>
 

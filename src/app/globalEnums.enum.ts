@@ -12,7 +12,7 @@ export enum paginatedEndpoints{
     homestays = 'website/paginated-homestays',
     activities = 'website/paginated-activities',
     events = 'website/paginated-events',
-    related= 'website/website/related-entities',
+    related= 'website/related-entities',
     nearby='website/nearby-entities'
 }
 

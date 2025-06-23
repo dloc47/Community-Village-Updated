@@ -12,7 +12,7 @@ import { LucideAngularModule, MapPin, Users, Tag, ChevronRight } from 'lucide-an
   selector: 'app-search-event',
   templateUrl: './search-event.component.html',
   styleUrls: ['./search-event.component.css'],
-  imports: [CommonModule, RouterLink, NgxPaginationModule, IsNumberPipe, LucideAngularModule]
+  imports: [CommonModule, RouterLink, NgxPaginationModule, LucideAngularModule]
 })
 export class SearchEventComponent implements OnInit {
 
