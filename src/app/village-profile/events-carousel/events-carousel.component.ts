@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, inject, Input } from '@angular/core';
 import { RouterModule, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../globalEnums.enum';
@@ -18,7 +18,12 @@ register();
   imports: [CommonModule, RouterModule,LucideAngularModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EventsCarouselComponent implements OnInit {
+
+export class EventsCarouselComponent implements OnInit, OnChanges {
+  @Input() committeeId: number = 0;
+  @Input() districtId: number = 0;
+  @Input() type: 'nearby' | 'related' | 'random' = 'random';
+  public getDistrictClass = getDistrictClass;
   private apiService = inject(ApiService);
   paginatedEvent: any[] = [];
   icons={
@@ -29,18 +34,32 @@ export class EventsCarouselComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getEvents();
+    this.loadData();
   }
 
-  getClass(input: number) {
-    return getDynamicClass(input);
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadData();
   }
 
-  getDistrictClass(region: string): string {
-    return getDistrictClass(region);
+  private loadData(): void {
+    switch (this.type) {
+      case 'random':
+        this.getEventsRandom();
+        break;
+      case 'related':
+        if (this.committeeId) {
+          this.getEventsRelated(this.committeeId);
+        }
+        break;
+      case 'nearby':
+        if (this.districtId) {
+          this.getEventsNearby(this.districtId);
+        }
+        break;
+    }
   }
 
-  getEvents(): void {
+  getEventsRandom(): void {
     this.apiService.getPaginatedData(paginatedEndpoints.events, 1, 5).subscribe({
       next: (data: any) => {
         if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
@@ -53,6 +72,40 @@ export class EventsCarouselComponent implements OnInit {
       },
       complete: () => {
         console.log('Event fetch completed.');
+      }
+    });
+  }
+
+  getEventsRelated(committeeId: number): void {
+    this.apiService.getData(paginatedEndpoints.related, `committeeId=${committeeId}`).subscribe({
+      next: (data: any) => {
+        if (data && data.data) {
+          this.paginatedEvent = data.data.events;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching related events:', error);
+        this.paginatedEvent = [];
+      },
+      complete: () => {
+        console.log('Related events fetch completed.');
+      }
+    });
+  }
+
+  getEventsNearby(districtId: any): void {
+    this.apiService.getData(paginatedEndpoints.nearby, `districtId=${districtId}`).subscribe({
+      next: (data: any) => {
+        if (data && data.data) {
+          this.paginatedEvent = data.data.events;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching nearby events:', error);
+        this.paginatedEvent = [];
+      },
+      complete: () => {
+        console.log('Nearby events fetch completed.');
       }
     });
   }
