@@ -94,8 +94,8 @@ export class HomestaysCarouselComponent implements OnInit ,OnChanges {
     });
   }
 
-  getHomestaysNearby(id:any): void {
-    this.apiService.getDataById(paginatedEndpoints.related,id).subscribe({
+  getHomestaysNearby(districtiId:any): void {
+    this.apiService.getData(paginatedEndpoints.nearby, `districtId=${districtiId}`).subscribe({
       next: (data: any) => {
         if (data && data.data ) {
           this.homestays = data.data.homestays;

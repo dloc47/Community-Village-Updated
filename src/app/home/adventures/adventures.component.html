@@ -32,6 +32,7 @@
                         <img [src]="getProfileImage(activity.images) || placeholder"
                             [alt]="activity.activityName"
                             loading="lazy"
+                            (error)="handleImageError($event)"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="flex flex-col flex-grow px-2 min-h-[180px]">
@@ -44,10 +45,10 @@
                                 <lucide-angular [img]="icons.CommitteeIcon" class="w-3.5 h-3.5 text-black flex-shrink-0"></lucide-angular>
                                 <span class="truncate">{{activity.committeeName}}</span>
                             </span>
-                            <span [ngClass]="getClass(activity.region)"
+                            <span [ngClass]="getDistrictClass(activity.districtName)"
                                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white">
                                 <lucide-angular [img]="icons.DistrictIcon" class="w-3.5 h-3.5 flex-shrink-0"></lucide-angular>
-                                <span class="truncate">{{activity.region}}</span>
+                                <span class="truncate">{{activity.districtName}}</span>
                             </span>
                         </div>
                         <p class="text-gray-700 my-2 line-clamp-2 h-11 text-sm">

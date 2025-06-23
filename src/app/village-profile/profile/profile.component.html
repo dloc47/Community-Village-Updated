@@ -314,7 +314,10 @@
                 </p>
             </div>
         </div>
-        <app-adventures></app-adventures>
+        <app-adventures
+        [type]="'related'"
+        [committeeId]="committeeInfo.committeeId"
+        ></app-adventures>
     </div>
 </section>
 
@@ -335,7 +338,8 @@
                 </p>
             </div>
         </div>
-        <app-events-carousel></app-events-carousel>
+        <app-events-carousel
+        ></app-events-carousel>
     </div>
 </section>
 
