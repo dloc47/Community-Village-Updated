@@ -3,7 +3,7 @@ import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } from '@angular/forms';
-import { GlobalEnums } from '../../globalEnums.enum';
+import { GlobalEnums } from '../../utils/globalEnums.enum';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 

@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { GlobalEnums, paginatedEndpoints, search } from '../../globalEnums.enum';
-import { SearchVillageComponent } from "../search-village/search-village.component";
+import { GlobalEnums, paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { SearchService } from '../../../services/search.service';
 import { SearchHomestayComponent } from "../search-homestay/search-homestay.component";
 import { SearchActivityComponent } from "../search-activity/search-activity.component";
@@ -12,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, ShoppingBag,
    Users, X, Search, ChevronDown,Milestone ,Binoculars,HousePlus,
    CalendarDays,TextSearch,ListFilter} from 'lucide-angular';
+import { SearchCommitteeComponent } from '../search-committee/search-committee.component';
 
 @Component({
   selector: 'app-search-main',
@@ -19,7 +19,7 @@ import { LucideAngularModule, ShoppingBag,
   styleUrls: ['./search-main.component.css'],
   imports: [
     CommonModule, ReactiveFormsModule,
-    SearchVillageComponent, SearchHomestayComponent,
+    SearchCommitteeComponent, SearchHomestayComponent,
     SearchActivityComponent,
     SearchProductComponent,
     SearchEventComponent,

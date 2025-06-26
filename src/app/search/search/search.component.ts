@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit,inject } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { GlobalEnums, paginatedEndpoints } from '../../globalEnums.enum';
+import { GlobalEnums, paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { getDynamicClass, getProfileImage } from '../../utils/utils';
 import { IsNumberPipe } from '../../pipes/isNumber.pipe';
 import { FormBuilder, FormGroup,ReactiveFormsModule } from '@angular/forms';

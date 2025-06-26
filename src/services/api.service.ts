@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders,HttpParams  } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 import { environment } from '../enviroments/enviroment';
-import { paginatedEndpoints } from '../app/globalEnums.enum';
+import { paginatedEndpoints } from '../app/utils/globalEnums.enum';
 
 @Injectable({
   providedIn: 'root',

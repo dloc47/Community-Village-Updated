@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
-import { paginatedEndpoints, search } from '../../globalEnums.enum';
+import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { getProfileImage, handleImageError, getDistrictClass } from '../../utils/utils';
 import { LucideAngularModule, MapPin, ChevronRight, Users, Tag, HousePlus } from 'lucide-angular';
 

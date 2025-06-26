@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { paginatedEndpoints } from '../app/globalEnums.enum';
+import { paginatedEndpoints } from '../app/utils/globalEnums.enum';
 import { ApiService } from './api.service';
 import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs';
 

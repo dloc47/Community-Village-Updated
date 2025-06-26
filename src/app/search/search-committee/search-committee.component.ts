@@ -1,43 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit,inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getDynamicClass,getProfileImage, getDistrictClass, handleImageError } from '../../utils/utils';
+import { getDistrictClass,getProfileImage,handleImageError } from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
-import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus } from 'lucide-angular';
+import { LucideAngularModule, MapPin, ChevronRight, Milestone, Users, Tag } from 'lucide-angular';
 
 @Component({
-  selector: 'app-search-product',
-  templateUrl: './search-product.component.html',
-  styleUrls: ['./search-product.component.css'],
+  selector: 'app-search-committee',
+  templateUrl: './search-committee.component.html',
+  styleUrls: ['./search-committee.component.css'],
   imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
 })
-export class SearchProductComponent implements OnInit {
-
+export class SearchCommitteeComponent implements OnInit {
   private searchService = inject(SearchService)
-  public getProfileImage = getProfileImage;
-  public getDistrictClass = getDistrictClass;
-  public handleImageError = handleImageError;
+  public handleImageError =handleImageError
+  public getDistrictClass =getDistrictClass
+  public getProfileImage=getProfileImage
 
   itemPerPage=search.itemPerPage;
   pageNo:number=1
-  productData:any[]=[]
+  villageData:any[]=[]
   totalRecords:number=0
   isDataFound=false;
   isLoading:boolean=false;
-  
+
   // Define icons object
   icons = {
     ArrowIcon: ChevronRight,
-    DistrictIcon: MapPin,
+    DistrictIcon: Milestone,
     CommitteeIcon: Users,
-    TagIcon: Tag,
-    ShoppingBagIcon: ShoppingBag,
-    Users: Users,
-    MapPin: MapPin,
-    HouseIcon: HousePlus
-  };
+    TagIcon: Tag
+  }
 
   constructor() { }
 
@@ -53,12 +48,10 @@ export class SearchProductComponent implements OnInit {
 
 
 loadData(type: 'paginated' | 'filtered', query: any): void {
-  this.productData=[];
-  this.totalRecords=0;
-
+  this.villageData=[];
   this.searchService.getData(type, query).subscribe((result: any) => {
     if (result.isDataAvailable) {
-      this.productData = result.items;
+      this.villageData = result.items;
       if(type=='paginated')
       {
         this.totalRecords = result.totalRecords;
@@ -72,14 +65,12 @@ loadData(type: 'paginated' | 'filtered', query: any): void {
 }
 
 
-  getClass(input:number){
-    return getDynamicClass(input);
-  }
-  
+
+
   // ✅ Handle Page Change (ngx-pagination)
 onPageChange(pageNumber: number): void {
   this.pageNo = pageNumber 
-  this.getPaginatedData(paginatedEndpoints.products,this.pageNo,search.itemPerPage)
+  this.getPaginatedData(paginatedEndpoints.villages,this.pageNo,search.itemPerPage)
   
 }
 
@@ -87,7 +78,6 @@ onPageChange(pageNumber: number): void {
    getPaginatedData(endpoint:paginatedEndpoints,pageNo: number, itemPerPage: number): void {
     this.searchService.updateQueryState('paginated', { endpoint,pageNo, itemPerPage });
   }
-
 
 
 

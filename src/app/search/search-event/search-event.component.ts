@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { getDynamicClass,getProfileImage, getDistrictClass } from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
-import { paginatedEndpoints, search } from '../../globalEnums.enum';
+import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { IsNumberPipe } from "../../pipes/isNumber.pipe";
 import { LucideAngularModule, MapPin, Users, Tag, ChevronRight } from 'lucide-angular';
 

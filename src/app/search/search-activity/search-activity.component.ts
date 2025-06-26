@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { paginatedEndpoints, search } from '../../globalEnums.enum';
+import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { getDistrictClass, getProfileImage ,handleImageError} from '../../utils/utils';
 import { SearchService } from '../../../services/search.service';
 import { RouterLink } from '@angular/router';

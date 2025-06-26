@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { paginatedEndpoints } from '../../globalEnums.enum';
+import { paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { RouterLink, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
