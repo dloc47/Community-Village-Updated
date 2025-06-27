@@ -30,6 +30,17 @@
     <swiper-slide *ngFor="let homestay of homestays; let i = index" class="mt-2 pb-16">
         <div class="group flex flex-col h-full shadow-md rounded-lg">
             <div class="relative overflow-hidden rounded-t-lg !rounded-b-none mb-3 aspect-square min-h-[200px] sm:min-h-[220px] max-h-[200px] sm:max-h-[220px]">
+                <!-- Verified Tag -->
+                <span *ngIf="homestay.verificationStatusId === 1" 
+                  class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
+                  <lucide-angular [img]="icons.CommitteeIcon" class="w-4 h-4"></lucide-angular>
+                  Verified by Committee
+                </span>
+                <span *ngIf="homestay.verificationStatusId === 2" 
+                  class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
+                  <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+                  Verified
+                </span>
                 <img [src]="getProfileImage(homestay.images)"
                     [alt]="homestay.homestayName"
                     loading="lazy"

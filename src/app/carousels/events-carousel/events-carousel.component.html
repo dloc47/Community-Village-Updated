@@ -6,6 +6,7 @@
 	pagination="true"
 	autoplay="true"
 	loop="true"
+	class="w-full mt-2"
 	breakpoints='{
 		"640": {
 			"slidesPerView": 2,
@@ -24,11 +25,22 @@
 			"spaceBetween": 16
 		}
 	}'
-	class="mt-2">
+>
 	<swiper-slide *ngFor="let event of paginatedEvent; let i = index">
-		<div class="group flex flex-col h-full bg-white rounded-lg border border-gray-100 hover:border-[#1C2A0E]/20 transition-all duration-300">
+		<div class="group flex flex-col h-full bg-white rounded-lg border border-gray-100 hover:border-[#1C2A0E]/20 transition-all duration-300 min-w-[250px] sm:min-w-[250px] max-w-[320px] mx-auto">
 			<div class="relative p-4 border-b border-gray-100 bg-[#1C2A0E]/5">
-				<div class="flex items-center gap-4">
+				<!-- Verified Tag -->
+				<span *ngIf="event.verificationStatusId === 1" 
+					class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
+					<lucide-angular [img]="icons.DistrictIcon" class="w-4 h-4"></lucide-angular>
+					Verified by Committee
+				</span>
+				<span *ngIf="event.verificationStatusId === 2" 
+					class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
+					<lucide-angular [img]="icons.AwardIcon" class="w-4 h-4"></lucide-angular>
+					Verified
+				</span>
+				<div class="flex items-center gap-4 pt-4">
 					<div class="flex flex-col items-center justify-center w-16 h-16 bg-[#1C2A0E] text-white rounded-lg">
 						<span class="text-2xl font-bold">
 							{{event.startDate|date:'d'}}

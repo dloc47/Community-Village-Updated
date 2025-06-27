@@ -7,7 +7,7 @@ import { paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { placeholder } from '../../utils/globalEnums.enum';
-import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Binoculars } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, Binoculars,Award } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -36,7 +36,8 @@ export class ActivitiesCarouselComponent implements OnInit, OnDestroy, OnChanges
     DistrictIcon: MapPin,
     CommitteeIcon: Users,
     TagIcon: Tag,
-    ActivityIcon: Binoculars
+    ActivityIcon: Binoculars,
+    Award:Award
   };
 
   ngOnInit() {
@@ -131,11 +132,6 @@ export class ActivitiesCarouselComponent implements OnInit, OnDestroy, OnChanges
     // No need to destroy Swiper instance as it's handled automatically
   }
 
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }
+ 
 }
 

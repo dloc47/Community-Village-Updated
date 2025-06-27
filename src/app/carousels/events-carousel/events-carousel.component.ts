@@ -6,7 +6,7 @@ import { paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { getDynamicClass, getDistrictClass } from '../../utils/utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { register } from 'swiper/element/bundle';
-import { CalendarDays, ChevronRight, LucideAngularModule, MapPin, Milestone, } from 'lucide-angular';
+import { CalendarDays, ChevronRight, LucideAngularModule, MapPin, Milestone, Award } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -30,7 +30,8 @@ export class EventsCarouselComponent implements OnInit, OnChanges {
     EventIcon: CalendarDays,
     DistrictIcon: Milestone,
     LocationIcon:MapPin,
-    ArrowLeftIcon:ChevronRight
+    ArrowLeftIcon:ChevronRight,
+    AwardIcon: Award
   }
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { register } from 'swiper/element/bundle';
 import { getProfileImage, getDistrictClass,handleImageError } from '../../utils/utils';
-import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, HousePlus } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users, ChevronRight, Tag, HousePlus, Award } from 'lucide-angular';
 
 // Register Swiper custom elements
 register();
@@ -33,6 +33,7 @@ export class HomestaysCarouselComponent implements OnInit ,OnChanges {
     CommitteeIcon: Users,
     TagIcon: Tag,
     HomestayIcon:HousePlus,
+    Award: Award
   }
 
   ngOnInit() {
