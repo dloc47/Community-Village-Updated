@@ -3,9 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { getByIDEndpoints } from '../../utils/globalEnums.enum';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, MapPin, User,
-  Award, Phone, Tag, Check, Layers, 
-  Users} from 'lucide-angular';
+import {
+  LucideAngularModule,
+  MapPin,
+  User,
+  Award,
+  Phone,
+  Tag,
+  Check,
+  Layers,
+  Users,
+} from 'lucide-angular';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
 
@@ -13,9 +21,7 @@ import { EventsCarouselComponent } from '../../carousels/events-carousel/events-
   selector: 'app-event-profile',
   templateUrl: './event-profile.component.html',
   styleUrls: ['./event-profile.component.css'],
-  imports:[CommonModule, LucideAngularModule,
-    EventsCarouselComponent
-  ]
+  imports: [CommonModule, LucideAngularModule, EventsCarouselComponent],
 })
 export class EventProfileComponent implements OnInit {
   loading: boolean = false;
@@ -23,6 +29,7 @@ export class EventProfileComponent implements OnInit {
   eventInfo: any = [];
   public handleImageError = handleImageError;
   public getDistrictClasses = getDistrictClass;
+  relatedEvents: number = 0;
 
   icons = {
     MapPin: MapPin,
@@ -32,14 +39,12 @@ export class EventProfileComponent implements OnInit {
     Tag: Tag,
     Check: Check,
     Layers: Layers,
-    Users:Users
+    Users: Users,
   };
-  
+
   private apiService = inject(ApiService);
-  
-  constructor(
-    private router: ActivatedRoute
-  ) { }
+
+  constructor(private router: ActivatedRoute) {}
 
   ngOnInit() {
     this.getFirstSegment();
@@ -64,29 +69,27 @@ export class EventProfileComponent implements OnInit {
 
   loadEventData(id: number): void {
     this.loading = true;
-    this.apiService
-      .getDataById<any>(getByIDEndpoints.events, id)
-      .subscribe({
-        next: (data: any) => {
-          console.log(data);
-          
-          if (data) {
-            this.eventInfo = data;
-          } else {
-            this.handleNoDataFound();
-          }
-        },
-        error: (error: any) => {
-          console.error('Error fetching data:', error);
+    this.apiService.getDataById<any>(getByIDEndpoints.events, id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+
+        if (data) {
+          this.eventInfo = data;
+        } else {
           this.handleNoDataFound();
-        },
-        complete: () => {
-          this.loading = false;
-          console.log('Data fetch completed:', this.eventInfo);
-        },
-      });
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching data:', error);
+        this.handleNoDataFound();
+      },
+      complete: () => {
+        this.loading = false;
+        console.log('Data fetch completed:', this.eventInfo);
+      },
+    });
   }
-  
+
   handleNoDataFound() {
     this.noDataFound = true;
     this.loading = false;
@@ -96,7 +99,7 @@ export class EventProfileComponent implements OnInit {
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 }

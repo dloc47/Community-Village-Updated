@@ -3,12 +3,22 @@
 	class="bg-white rounded-xl my-4 shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0] border border-gray-200">
 	<div class="flex flex-col sm:flex-row h-auto sm:h-48">
 		<div class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0">
+			<!-- Verified Tag -->
+			<span *ngIf="activity.verificationStatusId === 1" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.CommitteeIcon" class="w-4 h-4"></lucide-angular>
+				Verified by Committee
+			</span>
+			<span *ngIf="activity.verificationStatusId === 2" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+				Verified
+			</span>
 			<img [src]="getProfileImage(activity.images)"
 				[alt]="activity.activityName"
 				class="w-full h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none transition duration-500"
 				(error)="handleImageError($event)"
 				>
-				
 		</div>
 		<div class="flex-1 p-4 flex flex-col">
 			<div class="flex-grow">

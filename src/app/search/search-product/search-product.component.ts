@@ -5,7 +5,7 @@ import { getDynamicClass,getProfileImage, getDistrictClass, handleImageError } f
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
-import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus, Award } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-product',
@@ -36,7 +36,8 @@ export class SearchProductComponent implements OnInit {
     ShoppingBagIcon: ShoppingBag,
     Users: Users,
     MapPin: MapPin,
-    HouseIcon: HousePlus
+    HouseIcon: HousePlus,
+    Award: Award
   };
 
   constructor() { }

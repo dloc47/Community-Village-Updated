@@ -9,11 +9,12 @@ import { EventProfileComponent } from './profiles/event-profile/event-profile.co
 
 export const routes: Routes = [
 
-  // Search route for search if ID is missing
   {path:'', component:HomeMainComponent},
+
   {
    path: 'search',
-   children:[
+   children:
+   [
       {path:'',
          component:SearchMainComponent,
          pathMatch:'full'
@@ -24,6 +25,7 @@ export const routes: Routes = [
       },
    ]
  },
+
  
  {
    path: 'village',

@@ -5,7 +5,7 @@ import { SearchService } from '../../../services/search.service';
 import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, MapPin, Users,Tag, Binoculars, ChevronRight,HousePlus } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users,Tag, Binoculars, ChevronRight,HousePlus, Award } from 'lucide-angular';
 
 
 @Component({
@@ -36,7 +36,8 @@ export class SearchActivityComponent implements OnInit {
    TagIcon: Tag,
    Users: Users,
    HouseIcon: HousePlus,
-   BinocularsIcon:Binoculars
+   BinocularsIcon:Binoculars,
+   Award: Award
  };
 
 

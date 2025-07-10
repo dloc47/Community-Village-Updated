@@ -3,12 +3,23 @@
 	<div class="flex flex-col sm:flex-row h-auto sm:h-48">
 		<!-- Image Container -->
 		<div class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0">
+			<!-- Verified Tag -->
+			<span *ngIf="product.verificationStatusId === 1" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
+				Verified by Committee
+			</span>
+			<span *ngIf="product.verificationStatusId === 2" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+				Verified
+			</span>
 			<img [src]="getProfileImage(product.images)"
 				[alt]="product.productName"
 				(error)="handleImageError($event)"
 				class="w-full h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none transition duration-500">
 			<!-- Price Badge -->
-			<span class="absolute top-2 left-2 px-3 py-1 bg-sky-200 text-gray-700 text-sm font-bold rounded-full shadow">
+			<span class="absolute bottom-2 left-2 px-3 py-0.5 bg-sky-200 text-gray-700 text-xs font-bold rounded-full shadow">
 				{{product.price|currency:'INR':'symbol':'1.0-0'}}
 			</span>
 		</div>

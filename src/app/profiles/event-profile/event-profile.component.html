@@ -1,109 +1,181 @@
 <div class="px-4 sm:px-6 lg:px-8 mb-4 mt-8">
   <div class="flex items-center gap-4">
-    <h1 class="text-3xl font-bold">{{eventInfo.eventName}}</h1>
+    <h1 class="text-3xl font-bold">{{ eventInfo.eventName }}</h1>
     <div class="flex items-center gap-2">
-      <span *ngIf="eventInfo.verificationStatusId === 0 || eventInfo.verificationStatusId === 1" 
-        class="px-2.5 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 flex items-center gap-1">
+      <span
+        *ngIf="
+          eventInfo.verificationStatusId === 0 ||
+          eventInfo.verificationStatusId === 1
+        "
+        class="px-2.5 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 flex items-center gap-1"
+      >
         <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
         Verified by Committee
       </span>
-      <span *ngIf="eventInfo.verificationStatusId === 2" 
-        class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1">
+      <span
+        *ngIf="eventInfo.verificationStatusId === 2"
+        class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1"
+      >
         <lucide-angular [img]="icons.Check" class="w-4 h-4"></lucide-angular>
         Verified
       </span>
-                </div>
+    </div>
+  </div>
+</div>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200"
+  >
+    <!-- Date Display Section -->
+    <div class="relative flex items-center justify-center w-full">
+      <div
+        class="w-full max-w-[300px] md:max-w-[400px] bg-[#1C2A0E] rounded-lg flex flex-col items-center justify-center p-3 md:p-4"
+      >
+        <div class="grid grid-cols-2 gap-3 md:gap-4 w-full">
+          <!-- Start Date -->
+          <div class="text-center border-r border-white/20 pr-3 md:pr-4">
+            <p class="text-[10px] md:text-xs text-white/70 mb-0.5 md:mb-1">
+              Start Date
+            </p>
+            <div class="flex items-center justify-center gap-0.5 md:gap-1">
+              <p class="text-2xl md:text-3xl font-bold text-white">
+                {{ eventInfo.startDate | date : "d" }}
+              </p>
+              <div class="flex flex-col items-start">
+                <p class="text-xs md:text-sm font-medium text-white">
+                  {{ eventInfo.startDate | date : "MMM" }}
+                </p>
+                <p class="text-[10px] md:text-xs text-white/80">
+                  {{ eventInfo.startDate | date : "yyyy" }}
+                </p>
+              </div>
             </div>
+          </div>
+
+          <!-- End Date -->
+          <div class="text-center pl-3 md:pl-4">
+            <p class="text-[10px] md:text-xs text-white/70 mb-0.5 md:mb-1">
+              End Date
+            </p>
+            <div class="flex items-center justify-center gap-0.5 md:gap-1">
+              <p class="text-2xl md:text-3xl font-bold text-white">
+                {{ eventInfo.endDate | date : "d" }}
+              </p>
+              <div class="flex flex-col items-start">
+                <p class="text-xs md:text-sm font-medium text-white">
+                  {{ eventInfo.endDate | date : "MMM" }}
+                </p>
+                <p class="text-[10px] md:text-xs text-white/80">
+                  {{ eventInfo.endDate | date : "yyyy" }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          
-              <!-- Date Display Section -->
-              <div class="relative flex items-center justify-center w-full">
-                <div class="w-full max-w-[300px] md:max-w-[400px] bg-[#1C2A0E] rounded-lg flex flex-col items-center justify-center p-3 md:p-4">
-                  <div class="grid grid-cols-2 gap-3 md:gap-4 w-full">
-                    <!-- Start Date -->
-                    <div class="text-center border-r border-white/20 pr-3 md:pr-4">
-                      <p class="text-[10px] md:text-xs text-white/70 mb-0.5 md:mb-1">Start Date</p>
-                      <div class="flex items-center justify-center gap-0.5 md:gap-1">
-                        <p class="text-2xl md:text-3xl font-bold text-white">{{eventInfo.startDate | date:'d'}}</p>
-                        <div class="flex flex-col items-start">
-                          <p class="text-xs md:text-sm font-medium text-white">{{eventInfo.startDate | date:'MMM'}}</p>
-                          <p class="text-[10px] md:text-xs text-white/80">{{eventInfo.startDate | date:'yyyy'}}</p>
-                        </div>
-                      </div>
-                    </div>
+        <!-- Location Section -->
+        <div class="w-full mt-3 pt-3 border-t border-white/20">
+          <div class="flex items-center gap-2">
+            <lucide-angular
+              [img]="icons.MapPin"
+              class="w-4 h-4 text-white/80 flex-shrink-0"
+            ></lucide-angular>
+            <p class="text-xs text-white/90">{{ eventInfo.location }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                    <!-- End Date -->
-                    <div class="text-center pl-3 md:pl-4">
-                      <p class="text-[10px] md:text-xs text-white/70 mb-0.5 md:mb-1">End Date</p>
-                      <div class="flex items-center justify-center gap-0.5 md:gap-1">
-                        <p class="text-2xl md:text-3xl font-bold text-white">{{eventInfo.endDate | date:'d'}}</p>
-                        <div class="flex flex-col items-start">
-                          <p class="text-xs md:text-sm font-medium text-white">{{eventInfo.endDate | date:'MMM'}}</p>
-                          <p class="text-[10px] md:text-xs text-white/80">{{eventInfo.endDate | date:'yyyy'}}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+    <!-- Event Details Section -->
+    <div
+      class="md:col-span-1 space-y-4 max-h-80 overflow-auto custom-scrollbar"
+    >
+      <!-- Committee & Region Tags -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span
+          class="px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 flex items-center gap-1"
+        >
+          <lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
+          {{ eventInfo.committeeName }}
+        </span>
+        <span
+          [ngClass]="getDistrictClasses(eventInfo.districtName)"
+          class="px-2.5 py-1 text-xs font-medium rounded-full flex items-center gap-1"
+        >
+          <lucide-angular [img]="icons.MapPin" class="w-4 h-4"></lucide-angular>
+          {{ eventInfo.districtName }}
+        </span>
+        <span
+          class="px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 flex items-center gap-1"
+        >
+          <lucide-angular
+            [img]="icons.Layers"
+            class="w-4 h-4 text-blue-500"
+          ></lucide-angular>
+          {{ eventInfo.eventCategory }}
+        </span>
+      </div>
 
-                  <!-- Location Section -->
-                  <div class="w-full mt-3 pt-3 border-t border-white/20">
-                    <div class="flex items-center gap-2">
-                      <lucide-angular [img]="icons.MapPin" class="w-4 h-4 text-white/80 flex-shrink-0"></lucide-angular>
-                      <p class="text-xs text-white/90">{{eventInfo.location}}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          
-              <!-- Event Details Section -->
-              <div class="md:col-span-1 space-y-4 max-h-80 overflow-auto custom-scrollbar">
-          
-                <!-- Committee & Region Tags -->
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 flex items-center gap-1">
-                    <lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
-                    {{eventInfo.committeeName}}
-                  </span>
-                  <span [ngClass]="getDistrictClasses(eventInfo.districtName)"
-                    class="px-2.5 py-1 text-xs font-medium rounded-full flex items-center gap-1">
-                    <lucide-angular [img]="icons.MapPin" class="w-4 h-4"></lucide-angular>
-                    {{eventInfo.districtName}}
-                  </span>
-                  <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700 flex items-center gap-1">
-                    <lucide-angular [img]="icons.Layers" class="w-4 h-4 text-blue-500"></lucide-angular>
-                    {{eventInfo.eventCategory}}
-                  </span>
-                </div>
-          
-          
-                <!-- About this Event Header & Description -->
-                <div>
-                  <h2 class="text-lg font-semibold mb-2 max-h-24  overflow-auto custom-scrollbar">About this Event</h2>
-                  <div class="text-gray-600 text-justify text-sm leading-relaxed mb-2 max-h-32 overflow-y-auto custom-scrollbar">
-                    {{eventInfo.description}}                                     </div>
-                </div>
-          
-                <!-- Tags Section -->
-                <div class="flex flex-wrap items-center gap-2">
-                  <span *ngFor="let tag of eventInfo.tags" 
-                    class="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-50 text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300">
-                    <lucide-angular [img]="icons.Tag" class="w-3.5 h-3.5 text-blue-500"></lucide-angular>
-                    {{tag}}
-                  </span>
-                </div>
-          
-              
-              </div>
-            </div>
-          </section>
+      <!-- About this Event Header & Description -->
+      <div>
+        <h2
+          class="text-lg font-semibold mb-2 max-h-24 overflow-auto custom-scrollbar"
+        >
+          About this Event
+        </h2>
+        <div
+          class="text-gray-600 text-justify text-sm leading-relaxed mb-2 max-h-32 overflow-y-auto custom-scrollbar"
+        >
+          {{ eventInfo.description }}
+        </div>
+      </div>
 
-          
-          
-          <div class="border-t border-2 border-gray-200 py-4 px-4">
-            <p class="my-2 text-2xl ml-2">More Events</p>
-            
-          <app-events-carousel></app-events-carousel>
-           </div>
+      <!-- Tags Section -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span
+          *ngFor="let tag of eventInfo.tags"
+          class="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-50 text-gray-700 text-xs rounded-full hover:bg-blue-50 transition-all duration-300"
+        >
+          <lucide-angular
+            [img]="icons.Tag"
+            class="w-3.5 h-3.5 text-blue-500"
+          ></lucide-angular>
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Events Section (Improved) -->
+<section
+  *ngIf="relatedEvents"
+  class="py-6 bg-gray-50 mt-4 border-1 border-t-gray-200"
+>
+  <div class="max-w-6xl mx-auto px-2">
+    <div class="mb-4">
+      <div class="max-w-xl">
+        <h2
+          class="text-[#1C2A0E] text-lg sm:text-xl md:text-2xl font-semibold uppercase tracking-wide mb-1 md:mb-2"
+        >
+          More Events by This Committee
+        </h2>
+        <h3
+          class="text-base sm:text-lg md:text-xl text-[#1C2A0E] leading-tight mb-2 md:mb-2"
+        >
+          Discover other events organized by {{ eventInfo.committeeName }}
+        </h3>
+        <p class="text-xs sm:text-sm text-[#1C2A0E] mb-2 md:mb-3">
+          Explore more events and activities curated by the same committee for a
+          richer experience.
+        </p>
+      </div>
+    </div>
+    <app-events-carousel
+      [type]="'related'"
+      [committeeId]="eventInfo.committeeId"
+      (totalResults)="(relatedEvents)"
+    ></app-events-carousel>
+  </div>
+</section>

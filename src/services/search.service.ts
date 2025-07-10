@@ -9,7 +9,7 @@ import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs
 export class SearchService {
 private apiService = inject(ApiService)
 
-  // ✅ Track no data and error states
+  // Track no data and error states
    loadingSubject = new BehaviorSubject<boolean>(true);
    noDataFoundSubject = new BehaviorSubject<boolean>(false);
    errorMessageSubject = new BehaviorSubject<string | null>(null);
@@ -19,7 +19,7 @@ private apiService = inject(ApiService)
     query: null,
   });
 
-  // ✅ Expose as Observables
+  // Expose as Observables
   loading$ = this.loadingSubject.asObservable();
   noDataFound$ = this.noDataFoundSubject.asObservable();
   errorMessage$ = this.errorMessageSubject.asObservable();
@@ -28,16 +28,16 @@ private apiService = inject(ApiService)
 
 constructor() { }
 
-  // ✅ Update query dynamically from any component
+  //  Update query dynamically from any component
   updateQueryState(type: 'paginated' | 'filtered', query: any = null): void {
     this.queryStateSubject.next({ type, query });
   }
 
 
-   // ✅ Fetch data dynamically based on query state
+   // Fetch data dynamically based on query state
    getData(type: 'paginated' | 'filtered', query: any): Observable<any> {
 
-    // ✅ Start loading before API call
+    //  Start loading before API call
     this.loadingSubject.next(true);
 
     console.log(query.searchTerm)

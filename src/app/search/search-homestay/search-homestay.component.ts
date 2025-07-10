@@ -5,7 +5,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { getProfileImage, handleImageError, getDistrictClass } from '../../utils/utils';
-import { LucideAngularModule, MapPin, ChevronRight, Users, Tag, HousePlus } from 'lucide-angular';
+import { LucideAngularModule, MapPin, ChevronRight, Users, Tag, HousePlus, Award } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-homestay',
@@ -35,7 +35,8 @@ export class SearchHomestayComponent implements OnInit {
    TagIcon: Tag,
    HomestayIcon: HousePlus,
    Users: Users,
-   MapPin: MapPin
+   MapPin: MapPin,
+   Award: Award
  };
 
   constructor() { }

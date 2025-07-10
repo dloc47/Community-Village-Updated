@@ -6,7 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
 import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
 import { IsNumberPipe } from "../../pipes/isNumber.pipe";
-import { LucideAngularModule, MapPin, Users, Tag, ChevronRight } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, Award } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-event',
@@ -34,7 +34,8 @@ export class SearchEventComponent implements OnInit {
    DistrictIcon: MapPin,
    TagIcon: Tag,
    Users: Users,
-   MapPin: MapPin
+   MapPin: MapPin,
+   Award: Award
  };
 
   constructor() { }

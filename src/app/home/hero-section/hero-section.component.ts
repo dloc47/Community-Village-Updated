@@ -6,12 +6,14 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } 
 import { GlobalEnums } from '../../utils/globalEnums.enum';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus, 
+  CalendarDays, TextSearch, ListFilter, Binoculars, Search } from 'lucide-angular';
 
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, LucideAngularModule],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
@@ -32,7 +34,7 @@ export class HeroSectionComponent implements OnInit, AfterViewInit {
 
   // Arrays to store district and village data
   districts: any[] = [];
-  villages: any[] = [];
+  committee: any[] = [];
   
   // Reference to GlobalEnums for type safety
   GlobalEnums = GlobalEnums;
@@ -40,12 +42,25 @@ export class HeroSectionComponent implements OnInit, AfterViewInit {
   activeTab = this.GlobalEnums.village;
   validSearchForm:boolean=true;
 
+  icons = {
+    CommitteeIcon: Users,
+    DistrictIcon: MapPin,
+    TagIcon: Tag,
+    ArrowIcon: ChevronRight,
+    HomestayIcon: HousePlus,
+    ProductIcon: ShoppingBag,
+    EventIcon: CalendarDays,
+    ActivityIcon: Binoculars,
+    TextSearchIcon: TextSearch,
+    SearchIcon: Search,
+    FilterIcon: ListFilter
+  };
 
   // Initialize the search form using FormBuilder
-  searchForm: FormGroup = this.fb.group({
-    location: ['',Validators.required],
-    village: [''],
-    searchKeyword: ['']
+  heroSearchForm: FormGroup = this.fb.group({
+    region: ['',Validators.required],
+    committee: [''],
+    searchTerm: ['']
   });
 
 
@@ -65,10 +80,10 @@ constructor() {}
   // Method to set the active tab
   setActiveTab(category: GlobalEnums) {
     this.activeTab = category;
-    this.searchForm.reset({
-      location:'',
-      village:'',
-      searchKeyword:'',
+    this.heroSearchForm.reset({
+      region:'',
+      committee:'',
+      searchTerm:'',
     });
   }
 
@@ -89,12 +104,12 @@ constructor() {}
   }
 
   // Fetch villages based on selected district
-  getVillages(districtId: number): void {
+  getCommittees(districtId: number): void {
     this.apiService.getData('website/committees').subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
-          // Filter villages by districtId and map to required format
-          this.villages = data
+          // Filter committees by districtId and map to required format
+          this.committee = data
             .filter(item => item.districtId === districtId)
             .map(({ committeeId, committeeName, districtId }) => ({ 
               committeeId, 
@@ -103,15 +118,15 @@ constructor() {}
             }));
         } else {
           console.warn('Unexpected data format:', data);
-          this.villages = [];
+          this.committee = [];
         }
       },
       error: (error) => {
-        console.error('Error fetching villages:', error);
-        this.villages = [];
+        console.error('Error fetching committees:', error);
+        this.committee = [];
       },
       complete: () => {
-        console.log('Villages fetch completed.');
+        console.log('Committees fetch completed.');
       }
     });
   }
@@ -120,35 +135,32 @@ constructor() {}
   onDistrictChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
     const districtId = selectedValue && !isNaN(+selectedValue) ? +selectedValue : null;
-    
-    // Reset village selection when district changes
-    this.searchForm.get('village')?.setValue('');
-    
+    // Reset committee selection when district changes
+    this.heroSearchForm.get('committee')?.setValue('');
     if (districtId !== null) {
-      this.getVillages(districtId);
+      this.getCommittees(districtId);
     } else {
-      this.villages = [];
+      this.committee = [];
     }
   }
 
 
-search() {
-  const formData = this.searchForm.getRawValue();
-  if(!this.searchForm.invalid){
-  
-  // Send form data with 'search/' before route params
-  this.router.navigate([
-    'search',
-    this.activeTab,
-    formData.location || '',   // type (location)
-    formData.village || '',    // districtId (village)                           // villageId (static or dynamic if needed)
-    formData.searchKeyword || '' // keyword (searchKeyword)
-  ]);
-}
-  else{
-  this.validSearchForm=false;
+  onHeroSearch() {
+    const formData = this.heroSearchForm.getRawValue();
+    if(!this.heroSearchForm.invalid){
+      // Send form data with 'search/' before route params
+      this.router.navigate([
+        'search',
+        this.activeTab,
+        formData.region || '',   // type (region)
+        formData.committee || '',    // committeeId
+        formData.searchTerm || '' // keyword (searchTerm)
+      ]);
+    }
+    else{
+      this.validSearchForm=false;
+    }
   }
-}
 
 
 // Fetch entity counts from the API

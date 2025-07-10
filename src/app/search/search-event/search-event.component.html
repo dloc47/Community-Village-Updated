@@ -3,10 +3,17 @@
 	class="my-2 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0] border border-gray-200">
 	<div class="flex flex-col sm:flex-row h-auto sm:h-48">
 		<!-- Timeline Date Container -->
-		<div class="w-full sm:w-48 h-24 sm:h-full bg-[#1C2A0E] text-white flex flex-col items-center justify-center p-4 relative">
-			<!-- Category Badge -->
-			<span class="absolute top-2 left-2 px-3 py-1 bg-sky-200 text-gray-700 text-sm font-bold rounded-full shadow">
-				{{event.eventCategory}}
+		<div class="w-full sm:w-48 h-42 sm:h-full bg-[#1C2A0E] text-white flex flex-col items-center justify-center p-4 relative">
+			<!-- Verified Tag -->
+			<span *ngIf="event.verificationStatusId === 1" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
+				Verified by Committee
+			</span>
+			<span *ngIf="event.verificationStatusId === 2" 
+				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
+				<lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+				Verified
 			</span>
 			<div class="text-center w-full">
 				<div class="text-2xl font-bold">
@@ -19,6 +26,10 @@
 					{{getDaysLeft(event.startDate)}}
 				</div>
 			</div>
+			<!-- Category Badge -->
+			<span class="absolute bottom-2 left-2 px-2 py-0.5 bg-sky-200 text-gray-700 text-xs font-bold rounded-full shadow">
+				{{event.eventCategory}}
+			</span>
 		</div>
 		<!-- Content Container -->
 		<div class="flex-1 p-4 flex flex-col">
