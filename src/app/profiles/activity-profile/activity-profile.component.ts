@@ -1,15 +1,43 @@
-import { Component, inject, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../utils/globalEnums.enum';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
-import { LucideAngularModule, ArrowLeft, ArrowRight, MapPin, Dot, Star, User,
-  Award, Globe, Compass, X, Phone, Mail, Tag, Landmark, Contact, Home, Check,AppWindow,
-   Bed, Users, Tags, CreditCard, Share2, Banknote } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  ArrowLeft,
+  ArrowRight,
+  MapPin,
+  Dot,
+  Star,
+  User,
+  Award,
+  Globe,
+  Compass,
+  X,
+  Phone,
+  Mail,
+  Tag,
+  Landmark,
+  Contact,
+  Home,
+  Check,
+  AppWindow,
+  Bed,
+  Users,
+  Tags,
+  CreditCard,
+  Share2,
+  Banknote,
+} from 'lucide-angular';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { ActivitiesCarouselComponent } from '../../carousels/activities-carousel/activities-carousel.component';
-
 
 register();
 
@@ -18,18 +46,17 @@ register();
   standalone: true,
   templateUrl: './activity-profile.component.html',
   styleUrls: ['./activity-profile.component.css'],
-  imports:[CommonModule, LucideAngularModule,
-    ActivitiesCarouselComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [CommonModule, LucideAngularModule, ActivitiesCarouselComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ActivityProfileComponent implements OnInit {
-  placeholder:placeholder=placeholder.image
-  loading :boolean=false;
-  noDataFound:boolean=false;
-  activityInfo:any=[]
+  placeholder: placeholder = placeholder.image;
+  loading: boolean = false;
+  noDataFound: boolean = false;
+  activityInfo: any = [];
   showModal: boolean = false;
   selectedImage: string = '';
+  relatedActivity: any;
   public handleImageError = handleImageError;
   public getDistrictClasse = getDistrictClass;
 
@@ -56,18 +83,16 @@ export class ActivityProfileComponent implements OnInit {
     Users: Users,
     CreditCard: CreditCard,
     Share2: Share2,
-    AppWindow:AppWindow,
-    Banknote: Banknote
+    AppWindow: AppWindow,
+    Banknote: Banknote,
   };
-  
-  private apiService = inject(ApiService)
-  
-  constructor(
-    private router:ActivatedRoute
-  ) { }
+
+  private apiService = inject(ApiService);
+
+  constructor(private router: ActivatedRoute) {}
 
   ngOnInit() {
-     this.getFirstSegment();
+    this.getFirstSegment();
   }
 
   getFirstSegment(): boolean {
@@ -90,15 +115,15 @@ export class ActivityProfileComponent implements OnInit {
     return segmentFound;
   }
 
-  // ✅ Fetch  data  
-  loadActivityData(id:number): void {
+  // ✅ Fetch  data
+  loadActivityData(id: number): void {
     this.loading = true;
     this.apiService
       .getDataById<any>(getByIDEndpoints.activities, id)
       .subscribe({
         next: (data: any) => {
           console.log(data);
-          
+
           // Check if data is valid
           if (data) {
             // Enrich with additional properties (no need for mapping here)
@@ -118,13 +143,13 @@ export class ActivityProfileComponent implements OnInit {
         },
       });
   }
-  
+
   // Handle no data scenario
   handleNoDataFound() {
     this.noDataFound = true;
-    this.loading=false;
+    this.loading = false;
   }
-  
+
   openImageModal(imageUrl: string): void {
     this.selectedImage = imageUrl;
     this.showModal = true;

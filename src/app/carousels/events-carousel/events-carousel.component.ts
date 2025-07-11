@@ -8,7 +8,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { paginatedEndpoints } from '../../utils/globalEnums.enum';
 import { getDistrictClass } from '../../utils/utils';
@@ -36,12 +36,12 @@ register();
 export class EventsCarouselComponent implements OnInit, OnChanges {
   @Input() committeeId: number = 0;
   @Input() districtId: number = 0;
+  @Input() notInclude: number = 0; // allow undefined
   @Input() type: 'nearby' | 'related' | 'random' = 'random';
   @Output() totalResults = new EventEmitter<number>();
 
   public getDistrictClass = getDistrictClass;
   private apiService = inject(ApiService);
-  notInclude: any; // allow undefined
 
   paginatedEvent: any[] = [];
   icons = {
@@ -52,13 +52,7 @@ export class EventsCarouselComponent implements OnInit, OnChanges {
     AwardIcon: Award,
   };
 
-  constructor(private route: ActivatedRoute) {}
-
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
-      this.notInclude = idParam ? Number(idParam) : null;
-    });
     this.loadData();
   }
 
@@ -116,12 +110,9 @@ export class EventsCarouselComponent implements OnInit, OnChanges {
         next: (data: any) => {
           if (data && data.data) {
             const events = data.data.events || [];
-            this.paginatedEvent =
-              this.notInclude != null
-                ? events.filter(
-                    (event: any) => event.eventId !== this.notInclude
-                  )
-                : events;
+            this.paginatedEvent = this.notInclude
+              ? events.filter((event: any) => event.eventId !== this.notInclude)
+              : events;
             this.totalResults.emit(this.paginatedEvent.length);
           }
         },

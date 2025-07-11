@@ -175,7 +175,8 @@
     <app-events-carousel
       [type]="'related'"
       [committeeId]="eventInfo.committeeId"
-      (totalResults)="(relatedEvents)"
+      (totalResults)="relatedEvents = $event"
+      [notInclude]="eventInfo.eventId"
     ></app-events-carousel>
   </div>
 </section>
