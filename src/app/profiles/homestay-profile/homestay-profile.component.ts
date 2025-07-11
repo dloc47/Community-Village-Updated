@@ -6,11 +6,35 @@ import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
-import { LucideAngularModule, ArrowLeft, ArrowRight, MapPin, Dot, Star, User
-  , Award, Globe, Compass, X, Phone, Mail, Tag, Landmark, Contact, Home, Check,AppWindow,
-   Bed, Users, Tags, CreditCard, Share2,Banknote,
-   Facebook,
-   Instagram} from 'lucide-angular';
+import {
+  LucideAngularModule,
+  ArrowLeft,
+  ArrowRight,
+  MapPin,
+  Dot,
+  Star,
+  User,
+  Award,
+  Globe,
+  Compass,
+  X,
+  Phone,
+  Mail,
+  Tag,
+  Landmark,
+  Contact,
+  Home,
+  Check,
+  AppWindow,
+  Bed,
+  Users,
+  Tags,
+  CreditCard,
+  Share2,
+  Banknote,
+  Facebook,
+  Instagram,
+} from 'lucide-angular';
 import { HomestaysCarouselComponent } from '../../carousels/homestays-carousel/homestays-carousel.component';
 import { ProductsCarouselComponent } from '../../carousels/products-carousel/products-carousel.component';
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
@@ -23,10 +47,15 @@ register();
   selector: 'app-homestay-profile',
   templateUrl: './homestay-profile.component.html',
   styleUrls: ['./homestay-profile.component.css'],
-  imports: [CommonModule, LucideAngularModule,
-    HomestaysCarouselComponent,ActivitiesCarouselComponent,ProductsCarouselComponent,EventsCarouselComponent
+  imports: [
+    CommonModule,
+    LucideAngularModule,
+    HomestaysCarouselComponent,
+    ActivitiesCarouselComponent,
+    ProductsCarouselComponent,
+    EventsCarouselComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomestayProfileComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
@@ -36,6 +65,12 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
   private _smallImages: any[] = [];
   mainImage: any = null;
   public handleImageError = handleImageError;
+
+  // Carousel counts for section visibility
+  activitiesCount = 0;
+  productsCount = 0;
+  eventsCount = 0;
+  homestaysCount = 0;
 
   icons = {
     ArrowLeft: ArrowLeft,
@@ -60,15 +95,15 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     Users: Users,
     CreditCard: CreditCard,
     Share2: Share2,
-    AppWindow:AppWindow,
-    Facebook:Facebook,
-     Instagram :Instagram,
-     Banknote:Banknote
+    AppWindow: AppWindow,
+    Facebook: Facebook,
+    Instagram: Instagram,
+    Banknote: Banknote,
   };
 
   private apiService = inject(ApiService);
 
-  constructor(private router: ActivatedRoute) { }
+  constructor(private router: ActivatedRoute) {}
 
   ngOnInit() {
     this.getFirstSegment();
@@ -97,17 +132,19 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
 
   swapImage(image: any): void {
     if (image) {
-      const currentIndex = this._smallImages.findIndex(img => img === image);
+      const currentIndex = this._smallImages.findIndex((img) => img === image);
       if (currentIndex !== -1) {
         // Add fade-in animation class
-        const mainImageElement = document.querySelector('.main-image-container img');
+        const mainImageElement = document.querySelector(
+          '.main-image-container img'
+        );
         if (mainImageElement) {
           mainImageElement.classList.add('fade-in');
           setTimeout(() => {
             mainImageElement.classList.remove('fade-in');
           }, 500);
         }
-        
+
         // Swap the main image with the selected image
         const temp = this.mainImage;
         this.mainImage = image;
@@ -120,7 +157,9 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector('.main-image-container img');
+      const mainImageElement = document.querySelector(
+        '.main-image-container img'
+      );
       if (mainImageElement) {
         mainImageElement.classList.add('fade-in');
         setTimeout(() => {
@@ -139,7 +178,9 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector('.main-image-container img');
+      const mainImageElement = document.querySelector(
+        '.main-image-container img'
+      );
       if (mainImageElement) {
         mainImageElement.classList.add('fade-in');
         setTimeout(() => {
@@ -170,28 +211,26 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
 
   loadHomestayData(id: number): void {
     this.loading = true;
-    this.apiService
-      .getDataById<any>(getByIDEndpoints.homestays, id)
-      .subscribe({
-        next: (data: any) => {
-          if (data) {
-            this.homestayInfo = data;
-            // Set first image as main image
-            this.mainImage = data.images?.[0] || null;
-            // Store remaining images as small images
-            this._smallImages = data.images?.slice(1) || [];
-          } else {
-            this.handleNoDataFound();
-          }
-        },
-        error: (error: any) => {
-          console.error('Error fetching data:', error);
+    this.apiService.getDataById<any>(getByIDEndpoints.homestays, id).subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.homestayInfo = data;
+          // Set first image as main image
+          this.mainImage = data.images?.[0] || null;
+          // Store remaining images as small images
+          this._smallImages = data.images?.slice(1) || [];
+        } else {
           this.handleNoDataFound();
-        },
-        complete: () => {
-          this.loading = false;
-        },
-      });
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching data:', error);
+        this.handleNoDataFound();
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 
   handleNoDataFound() {
@@ -199,20 +238,20 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     this.loading = false;
   }
 
-  getSocialMediaLinks(): { name: string; url: string ,icon:any}[] {
+  getSocialMediaLinks(): { name: string; url: string; icon: any }[] {
     const links = [];
     if (this.homestayInfo.socialMediaLinks?.facebook) {
       links.push({
         name: 'Facebook',
         url: this.homestayInfo.socialMediaLinks.facebook,
-        icon:this.icons.Facebook
+        icon: this.icons.Facebook,
       });
     }
     if (this.homestayInfo.socialMediaLinks?.instagram) {
       links.push({
         name: 'Instagram',
         url: this.homestayInfo.socialMediaLinks.instagram,
-        icon:this.icons.Instagram
+        icon: this.icons.Instagram,
       });
     }
     return links;

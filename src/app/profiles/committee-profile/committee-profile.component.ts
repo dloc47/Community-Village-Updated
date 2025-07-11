@@ -7,12 +7,28 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';   
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
-import { LucideAngularModule, ArrowLeft, ArrowRight,
-   MapPin, Dot, Star, User, Award, Globe, 
-   Compass, X, Phone, Mail, Tag, Landmark, Contact, Tags } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  ArrowLeft,
+  ArrowRight,
+  MapPin,
+  Dot,
+  Star,
+  User,
+  Award,
+  Globe,
+  Compass,
+  X,
+  Phone,
+  Mail,
+  Tag,
+  Landmark,
+  Contact,
+  Tags,
+} from 'lucide-angular';
 import { HomestaysCarouselComponent } from '../../carousels/homestays-carousel/homestays-carousel.component';
 import { ProductsCarouselComponent } from '../../carousels/products-carousel/products-carousel.component';
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
@@ -26,40 +42,40 @@ register();
   templateUrl: './committee-profile.component.html',
   styleUrls: ['./committee-profile.component.css'],
   imports: [
-    CommonModule, 
-    NgxPaginationModule, 
-    FormsModule, 
+    CommonModule,
+    NgxPaginationModule,
+    FormsModule,
     LucideAngularModule,
     CommitteeCarouselComponent,
     HomestaysCarouselComponent,
     ProductsCarouselComponent,
     ActivitiesCarouselComponent,
-    EventsCarouselComponent
+    EventsCarouselComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CommitteeProfileComponent implements OnInit {
   @Input() id: string = '';
   districtId: any;
 
-  private apiService = inject(ApiService)
+  private apiService = inject(ApiService);
   public handleImageError = handleImageError;
-  committeeInfo: any = []
-  private _smallImages: any[] = []
-  mainImage: any = null
+  committeeInfo: any = [];
+  private _smallImages: any[] = [];
+  mainImage: any = null;
   Math = Math;
 
   get smallImages(): any[] {
-    return this._smallImages
+    return this._smallImages;
   }
 
   get galleryImages(): any[] {
-    return [this.mainImage, ...this._smallImages].filter(img => img !== null);
+    return [this.mainImage, ...this._smallImages].filter((img) => img !== null);
   }
 
-  loading: boolean = false
-  noDataFound: boolean = false
-  imgPlaceholder = placeholder.image
+  loading: boolean = false;
+  noDataFound: boolean = false;
+  imgPlaceholder = placeholder.image;
 
   // Default coordinates for Sikkim state center
   latitude: string = '27.543024123517547';
@@ -93,24 +109,24 @@ export class CommitteeProfileComponent implements OnInit {
     Tag: Tag,
     Landmark: Landmark,
     Contact: Contact,
-    Tags: Tags
+    Tags: Tags,
   };
 
   constructor(
     private sanitizer: DomSanitizer,
     private router: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    if(this.id) {
-      this.loadCommitteeData(this.id)
+    if (this.id) {
+      this.loadCommitteeData(this.id);
     }
   }
 
   isBoxVisible: boolean = true;
   toggleDivs(divType: string) {
-    if(divType == 'villageDetails') this.isBoxVisible = true;
-    else if(divType == 'leaderShip') this.isBoxVisible = false;
+    if (divType == 'villageDetails') this.isBoxVisible = true;
+    else if (divType == 'leaderShip') this.isBoxVisible = false;
   }
 
   swapImage(image: any): void {
@@ -118,14 +134,16 @@ export class CommitteeProfileComponent implements OnInit {
       const currentIndex = this._smallImages.indexOf(image);
       if (currentIndex !== -1) {
         // Add fade-in animation class
-        const mainImageElement = document.querySelector('.main-image-container img');
+        const mainImageElement = document.querySelector(
+          '.main-image-container img'
+        );
         if (mainImageElement) {
           mainImageElement.classList.add('fade-in');
           setTimeout(() => {
             mainImageElement.classList.remove('fade-in');
           }, 500);
         }
-        
+
         // Swap the main image with the selected image
         const temp = this.mainImage;
         this.mainImage = image;
@@ -138,7 +156,9 @@ export class CommitteeProfileComponent implements OnInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector('.main-image-container img');
+      const mainImageElement = document.querySelector(
+        '.main-image-container img'
+      );
       if (mainImageElement) {
         mainImageElement.classList.add('fade-in');
         setTimeout(() => {
@@ -157,7 +177,9 @@ export class CommitteeProfileComponent implements OnInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector('.main-image-container img');
+      const mainImageElement = document.querySelector(
+        '.main-image-container img'
+      );
       if (mainImageElement) {
         mainImageElement.classList.add('fade-in');
         setTimeout(() => {
@@ -195,7 +217,7 @@ export class CommitteeProfileComponent implements OnInit {
             this.mainImage = data.images?.[0] || null;
             // Store remaining images as small images
             this._smallImages = data.images?.slice(1) || [];
-            
+
             // Update map coordinates if available, but keep zoom level for state view
             if (data.latitude && data.longitude) {
               this.latitude = data.latitude ? data.latitude : this.latitude;
@@ -210,7 +232,7 @@ export class CommitteeProfileComponent implements OnInit {
         error: (error: any) => {
           console.error('Error fetching data:', error);
           this.handleNoDataFound();
-        }
+        },
       });
   }
 
@@ -231,4 +253,11 @@ export class CommitteeProfileComponent implements OnInit {
   getDistrictClasses(region: string): string {
     return getDistrictClass(region);
   }
+
+  // Carousel counts for hiding/showing sections
+  homestaysCount: number = 0;
+  activitiesCount: number = 0;
+  eventsCount: number = 0;
+  productsCount: number = 0;
+  committeesCount: number = 0;
 }
