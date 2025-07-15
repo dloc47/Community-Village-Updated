@@ -10,7 +10,6 @@
           [src]="mainImage?.imageUrl || imgPlaceholder"
           [alt]="committeeInfo?.villageName || 'Village Image'"
           class="w-full h-[400px] object-contain rounded-xl cursor-pointer transition-all duration-500 ease-in-out transform hover:scale-[1.02]"
-          (click)="openImageGallery()"
           (error)="handleImageError($event)"
         />
       </div>

@@ -1,284 +1,213 @@
 <!-- Navigation Header -->
 <header class="bg-white shadow-lg top-0 sticky z-1001">
-    <nav class="max-w-6xl mx-auto px-4">
-        <section class="flex justify-between items-center py-2">
-            <!-- Left Logo -->
-            <figure class="flex flex-col items-center w-24 md:w-48">
-                <a href="#"
-                    class="flex flex-col items-center">
-                    <img src="mainlogo.svg"
-                        alt="Community Village Logo"
-                        class="h-10 md:h-12">
-                    <span class="text-[10px] md:text-[14px] text-center text-[#1C2A0E] mt-1">
-                        Community Villages of Sikkim
-                    </span>
-                </a>
-            </figure>
-
-            <ul class="hidden md:flex items-center gap-1 font-normal">
-                <li>
-                    <a [routerLink]="'/'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/village']"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Committees
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="'/homestay'"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Homestays
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="'/activity'"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Activities
-                    </a>
-                </li>
-
-
-
-
-
-
-
-                <li>
-                    <a [routerLink]="'/product'"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Local Products
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="'/event'"
-                        routerLinkActive="active-tab"
-                        class="relative py-2 px-5 text-black transition-all 
-                               hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] 
-                               after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] 
-                               after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-                               hover:after:w-full hover:after:left-0">
-                        Events
-                    </a>
-                </li>
-            </ul>
-
-
-
-
-
-
-
-
-
-
-            <!-- Right Logo -->
-            <figure class="flex flex-col items-center w-24 md:w-48">
-                <a href="#"
-                    class="flex flex-col items-center">
-                    <img src="tourism_logo.svg"
-                        alt="Tourism Logo"
-                        class="h-10 md:h-12 object-contain [filter:invert(25%)_sepia(90%)_saturate(1900%)_hue-rotate(208deg)_brightness(75%)_contrast(95%)]">
-                    <span class="text-[10px] md:text-[14px] text-center text-[#1C2A0E] mt-1">
-                        Department of Tourism
-                    </span>
-                </a>
-            </figure>
-
-
-
-
-
-
-
-            <!-- Mobile menu button -->
-            <button (click)="toogleMobileMenu()"
-                class="cursor-pointer md:hidden outline-none mobile-menu-button z-50 ml-4"
-                aria-label="Toggle menu">
-                <svg class="w-6 h-6 text-black hover:text-[#1C2A0E]"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </section>
-
-
-
-
-
-
-
-        <!-- Mobile Menu -->
-        <div [ngClass]="{
-            'translate-x-0 opacity-100 pointer-events-auto': !isMenuhidden,
-            'translate-x-full opacity-0 pointer-events-none transition-transform': isMenuhidden
-          }"
-            class=" fixed inset-0 bg-white transform transition-transform duration-300 ease-in-out z-50">
-            <div class="h-full flex flex-col">
-                <!-- Menu Header with Close Button -->
-                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <button (click)="toogleMobileMenu()"
-                        class="cursor-pointer mobile-menu-button p-2 focus:outline-none">
-                        <svg class="w-6 h-6 text-[#1C2A0E]"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-
-
-
-
-
-
-
-                <!-- Mobile Menu Links -->
-                <div class="flex-1 px-6 py-8 overflow-y-auto space-y-8 text-center">
-                    <a [routerLink]="'/'"
-                        [routerLinkActiveOptions]="{exact:true}"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Home
-                    </a>
-
-
-
-
-
-
-
-                    <a [routerLink]="'/village'"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Villages
-                    </a>
-
-
-
-
-
-
-
-                    <a [routerLink]="'/homestay'"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Home Stays
-                    </a>
-
-
-
-
-
-
-
-                    <a [routerLink]="'/activity'"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Activities
-                    </a>
-
-
-
-
-
-
-
-                    <a [routerLink]="'/product'"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Products
-                    </a>
-
-
-
-
-
-
-
-                    <a [routerLink]="'/event'"
-                        routerLinkActive="active-tab"
-                        class="block text-2xl font-medium text-[#1C2A0E] transition-all 
-        relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] 
-        after:bg-black after:transition-all after:duration-300 after:ease-in-out 
-        hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]">
-                        Events
-                    </a>
-
-
-
-
-
-
-
-
-                </div>
-
-
-
-
-
-
-
-
-                <!-- Bottom Section with Login Button -->
-                <div class="px-6 py-6 border-t border-gray-200">
-                    <button class="w-full cursor-pointer bg-[#1C2A0E] text-white rounded-full py-3 text-lg font-medium hover:bg-[#2A3F15] transition-colors">Login</button>
-                </div>
-            </div>
+  <nav class="max-w-6xl mx-auto px-4">
+    <section class="flex justify-between items-center py-2">
+      <!-- Left Logo -->
+      <figure class="flex flex-col items-center w-24 md:w-48">
+        <a href="#" class="flex flex-col items-center">
+          <img
+            src="mainlogo.svg"
+            alt="Community Village Logo"
+            class="h-10 md:h-12"
+          />
+          <span
+            class="text-[10px] md:text-[14px] text-center text-[#1C2A0E] mt-1"
+          >
+            Community Villages of Sikkim
+          </span>
+        </a>
+      </figure>
+
+      <ul class="hidden md:flex items-center gap-1 font-normal">
+        <li>
+          <a
+            [routerLink]="'/'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/committee']"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Committees
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="'/homestay'"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Homestays
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="'/activity'"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Activities
+          </a>
+        </li>
+
+        <li>
+          <a
+            [routerLink]="'/product'"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Local Products
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="'/event'"
+            routerLinkActive="active-tab"
+            class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
+          >
+            Events
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right Logo -->
+      <figure class="flex flex-col items-center w-24 md:w-48">
+        <a href="#" class="flex flex-col items-center">
+          <img
+            src="tourism_logo.svg"
+            alt="Tourism Logo"
+            class="h-10 md:h-12 object-contain [filter:invert(25%)_sepia(90%)_saturate(1900%)_hue-rotate(208deg)_brightness(75%)_contrast(95%)]"
+          />
+          <span
+            class="text-[10px] md:text-[14px] text-center text-[#1C2A0E] mt-1"
+          >
+            Department of Tourism
+          </span>
+        </a>
+      </figure>
+
+      <!-- Mobile menu button -->
+      <button
+        (click)="toogleMobileMenu()"
+        class="cursor-pointer md:hidden outline-none mobile-menu-button z-50 ml-4"
+        aria-label="Toggle menu"
+      >
+        <svg
+          class="w-6 h-6 text-black hover:text-[#1C2A0E]"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </section>
+
+    <!-- Mobile Menu -->
+    <div
+      [ngClass]="{
+        'translate-x-0 opacity-100 pointer-events-auto': !isMenuhidden,
+        'translate-x-full opacity-0 pointer-events-none transition-transform':
+          isMenuhidden
+      }"
+      class="fixed inset-0 bg-white transform transition-transform duration-300 ease-in-out z-50"
+    >
+      <div class="h-full flex flex-col">
+        <!-- Menu Header with Close Button -->
+        <div
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-200"
+        >
+          <button
+            (click)="toogleMobileMenu()"
+            class="cursor-pointer mobile-menu-button p-2 focus:outline-none"
+          >
+            <svg
+              class="w-6 h-6 text-[#1C2A0E]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
         </div>
-    </nav>
+
+        <!-- Mobile Menu Links -->
+        <div class="flex-1 px-6 py-8 overflow-y-auto space-y-8 text-center">
+          <a
+            [routerLink]="'/'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Home
+          </a>
+
+          <a
+            [routerLink]="'/village'"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Villages
+          </a>
+
+          <a
+            [routerLink]="'/homestay'"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Home Stays
+          </a>
+
+          <a
+            [routerLink]="'/activity'"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Activities
+          </a>
+
+          <a
+            [routerLink]="'/product'"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Products
+          </a>
+
+          <a
+            [routerLink]="'/event'"
+            routerLinkActive="active-tab"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+          >
+            Events
+          </a>
+        </div>
+
+        <!-- Bottom Section with Login Button -->
+        <div class="px-6 py-6 border-t border-gray-200">
+          <button
+            class="w-full cursor-pointer bg-[#1C2A0E] text-white rounded-full py-3 text-lg font-medium hover:bg-[#2A3F15] transition-colors"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
 </header>

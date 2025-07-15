@@ -52,22 +52,19 @@ export class EventProfileComponent implements OnInit {
 
   getFirstSegment(): boolean {
     let segmentFound = false;
-
     this.router.paramMap.subscribe((params) => {
       const id = params.get('id');
-
       if (id) {
-        this.loadEventData(parseInt(id));
+        this.loadEventData(id);
         segmentFound = true;
       } else {
         console.log('No valid ID found in route.');
       }
     });
-
     return segmentFound;
   }
 
-  loadEventData(id: number): void {
+  loadEventData(id: string): void {
     this.loading = true;
     this.apiService.getDataById<any>(getByIDEndpoints.events, id).subscribe({
       next: (data: any) => {

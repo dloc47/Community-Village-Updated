@@ -55,7 +55,6 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CommitteeProfileComponent implements OnInit {
-  @Input() id: string = '';
   districtId: any;
 
   private apiService = inject(ApiService);
@@ -118,9 +117,21 @@ export class CommitteeProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.id) {
-      this.loadCommitteeData(this.id);
-    }
+    this.getFirstSegment();
+  }
+
+  getFirstSegment(): boolean {
+    let segmentFound = false;
+    this.router.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.loadCommitteeData(id);
+        segmentFound = true;
+      } else {
+        console.log('No valid ID found in route.');
+      }
+    });
+    return segmentFound;
   }
 
   isBoxVisible: boolean = true;
@@ -192,11 +203,6 @@ export class CommitteeProfileComponent implements OnInit {
       this._smallImages.unshift(this.mainImage);
       this.mainImage = lastImage;
     }
-  }
-
-  openImageGallery(): void {
-    // This method can be implemented later to open a full-screen gallery view
-    console.log('Opening image gallery...');
   }
 
   loadCommitteeData(id: string): void {

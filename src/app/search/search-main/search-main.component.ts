@@ -1,35 +1,51 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { GlobalEnums, paginatedEndpoints, search } from '../../utils/globalEnums.enum';
+import { FormsModule } from '@angular/forms';
+
 import { SearchService } from '../../../services/search.service';
-import { SearchHomestayComponent } from "../search-homestay/search-homestay.component";
-import { SearchActivityComponent } from "../search-activity/search-activity.component";
-import { SearchProductComponent } from "../search-product/search-product.component";
-import { SearchEventComponent } from "../search-event/search-event.component";
-import { ActivatedRoute } from '@angular/router';
-import { LucideAngularModule, ShoppingBag,
-   Users, X, Search, ChevronDown,Milestone ,Binoculars,HousePlus,
-   CalendarDays,TextSearch,ListFilter} from 'lucide-angular';
+import { SearchHomestayComponent } from '../search-homestay/search-homestay.component';
+import { SearchActivityComponent } from '../search-activity/search-activity.component';
+import { SearchProductComponent } from '../search-product/search-product.component';
+import { SearchEventComponent } from '../search-event/search-event.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EntityType, DistrictCode } from '../../../services/search.service';
+import {
+  LucideAngularModule,
+  ShoppingBag,
+  Users,
+  X,
+  Search,
+  ChevronDown,
+  Milestone,
+  Binoculars,
+  HousePlus,
+  CalendarDays,
+  TextSearch,
+  ListFilter,
+} from 'lucide-angular';
 import { SearchCommitteeComponent } from '../search-committee/search-committee.component';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-search-main',
   templateUrl: './search-main.component.html',
   styleUrls: ['./search-main.component.css'],
   imports: [
-    CommonModule, ReactiveFormsModule,
-    SearchCommitteeComponent, SearchHomestayComponent,
+    CommonModule,
+    SearchCommitteeComponent,
+    SearchHomestayComponent,
     SearchActivityComponent,
     SearchProductComponent,
     SearchEventComponent,
-    LucideAngularModule
-  ]
+    LucideAngularModule,
+    FormsModule,
+  ],
 })
 export class SearchMainComponent implements OnInit {
-  private fb=inject( FormBuilder)
-  private searchService=inject( SearchService)
-  private router=inject( ActivatedRoute)
+  private searchService = inject(SearchService);
+  private apiService = inject(ApiService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   // Define icons object
   icons = {
@@ -39,237 +55,91 @@ export class SearchMainComponent implements OnInit {
     EventIcon: CalendarDays,
     LocationIcon: Milestone,
     SearchIcon: Search,
-    TextSearchIcon:TextSearch,
+    TextSearchIcon: TextSearch,
     ClearIcon: X,
     DropdownIcon: ChevronDown,
-    HomestayIcon:HousePlus,
-    FilterIcon:ListFilter
+    HomestayIcon: HousePlus,
+    FilterIcon: ListFilter,
+  };
+
+  entityType: EntityType = 'Committee';
+  districtCode: DistrictCode = '';
+  committeeId: string = '';
+  searchText: string = '';
+
+  appliedFilters: any;
+
+  isData$ = this.searchService.isDataFound$;
+
+  updateParams() {
+    this.searchService.updateParams({
+      entityType: this.entityType,
+      districtCode: this.districtCode,
+      committeeId: this.committeeId,
+      searchText: this.searchText,
+      pageNumber: 1, // Reset to page 1 when filters change
+    });
   }
 
-  GlobalEnums = GlobalEnums;  //enums which store tabs category to avoid type error
-  activeTab:GlobalEnums=GlobalEnums.village;  //current active tab or category to show data
-  
-  isLoading:any;
-  noDataFound:any;
-  errorMessage:any
-  pageNo:number=1
-  itemPerPage:number=search.itemPerPage
-  category:GlobalEnums=GlobalEnums.village
-  paginateCategory:paginatedEndpoints=paginatedEndpoints.villages
+  resetFilters() {
+    this.districtCode = '';
+    this.committeeId = '';
+    this.searchText = '';
+    this.updateParams();
+  }
 
+  districts: any;
+  committees: any = [];
 
-  districts:any=[]
-  villages:any=[]
-
-  userInputs: FormGroup = this.fb.group({
-    region: [''],          // Default value as an empty string
-    village: [''],         // Default value as an empty string
-    searchTerm: ['']       // Default value as an empty string
-  });
-  
-  
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    this.route.data.subscribe((data) => {
+      this.entityType = this.toTitleCase(data['type'] || 'Committee');
+      this.updateParams();
 
-    //load districts
-        this.loadDistricts();
-       this.isLoading = this.searchService.loading$;
-  
-    //no data found
-      this.noDataFound =    this.searchService.noDataFound$;
+      this.searchService.searchParams$.subscribe((params) => {
+        this.appliedFilters = params;
+      });
 
-
-    //error message
-    this.searchService.errorMessage$.subscribe((error) => {
-      this.errorMessage = error;
+      //load districts
+      this.loadDistricts();
     });
-       
-    //get first parameter
-      this.getFirstParameter();
-  }
-
-  
- getFirstParameter() {
-let firstSegment:any;
-this.router.parent?.url.subscribe((segments) => {
-   firstSegment = segments[0]?.path || '';
-   if(firstSegment!='search'){
-   this.setActiveTabParam(firstSegment);
-   }
-});
-
-  // Subscribe to route params
-
-  this.router.params.subscribe((params) => {
-    const type = params['type'] || undefined;
-    const districtId = params['districtId'] || undefined;
-    const villageId = params['villageId'] || undefined;
-    const keyword = params['keyword'] || undefined;
-    // If 'type' exists, set the active tab
-    if (firstSegment=='search'&&type !== undefined) {
-      this.setActiveTabParam(type);
-    }
-
-    // If 'districtId' is valid, call search() else paginated
-    if (districtId !== undefined && districtId!=='undefined' && districtId!=='') {
-      this.redirectedFilters(type,districtId,villageId,keyword);
-    }
-    else{
-      this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
-    }
-
-
-  });
-
-
-}
-
-redirectedFilters(type:any, districtId:any, villageId:any, keyword:any) {
-    // Normalize parameters: if undefined, 'undefined', or '', set to undefined
-    type = (type === undefined || type === 'undefined' || type === '') ? undefined : type;
-    districtId = (districtId === undefined || districtId === 'undefined' || districtId === '') ? undefined : districtId;
-    villageId = (villageId === undefined || villageId === 'undefined' || villageId === '') ? undefined : villageId;
-    keyword = (keyword === undefined || keyword === 'undefined' || keyword === '') ? undefined : keyword;
-
-   this.loadVillages(districtId);  //drill down vilages from district
-
-    this.userInputs.patchValue({
-      region: districtId,          // Default value as an empty string
-      village:villageId,
-      searchTerm:keyword         // Default value as an empty string
-    });
-
-    this.search();  //call this method after setting all the values
-    
-}
-
-
-
-setActiveTabParam(path: string) {
-    switch (path.toLowerCase()) { // Convert path to lowercase for case-insensitive comparison
-        case 'village':
-        case 'villages':
-            this.setActiveTabs(GlobalEnums.village);
-            break;
-        case 'homestay':
-        case 'homestays':
-            this.setActiveTabs(GlobalEnums.homestays);
-            break;
-        case 'product':
-        case 'products':
-            this.setActiveTabs(GlobalEnums.product);
-            break;
-        case 'activity':
-        case 'activities':
-            this.setActiveTabs(GlobalEnums.activities);
-            break;
-        case 'event':
-        case 'events':
-            this.setActiveTabs(GlobalEnums.events);
-            break;
-        default:
-            console.warn('Invalid tab selected!');
-    }
-}
-
-
-
-   // ✅ Handle paginated data request
-   getPaginatedData(endpoint:paginatedEndpoints,pageNo: number, itemPerPage: number): void {
-    this.searchService.updateQueryState('paginated', { endpoint,pageNo, itemPerPage });
-  }
-
-  
-  // ✅ Handle filtered data request
-  getFilteredData(category: string, districtId?: number, villageId?: number, searchTerm?: string): void {
-    this.searchService.updateQueryState('filtered', {
-      category,
-      districtId,
-      villageId,
-      searchTerm,
-    });
-
   }
 
   loadDistricts(): void {
-    this.searchService.drillDownDistrict().subscribe((result) => {
-      this.districts = result;
+    this.apiService.getData('website/districts').subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.districts = res;
+        }
+      },
+      error(error: any) {
+        console.error('Error Fetching Districts', error);
+      },
     });
   }
 
-  loadVillages(id:any): void {
-    this.searchService.drillDownVillage(id).subscribe((result) => {
-      this.villages = result;
+  loadCommittees(): void {
+    this.apiService.getData('website/committees').subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.committees = res.filter(
+            (item: any) => String(item.districtId) === String(this.districtCode)
+          );
+        }
+      },
+      error(error: any) {
+        console.error('Error Fetching Committees', error);
+      },
     });
   }
 
-  onDistrictChange(){
-    const input=this.userInputs.get('region')?.value
-    this.loadVillages(input)
+  navigateToType(type: string): void {
+    this.router.navigate(['/', type]);
   }
 
-  clearFilters(){
-    this.userInputs.reset(
-      {
-        region: '',
-        village: '',
-        searchTerm: '',
-      }
-    );
-    this.villages=[];
-    this.getPaginatedData(this.paginateCategory,this.pageNo,this.itemPerPage);
-   }
-
-   search() {
-    let regionStr = this.getValidInput(this.userInputs.get('region')?.value);
-    let villageStr = this.getValidInput(this.userInputs.get('village')?.value);
-    let searchTerm = this.getValidInput(this.userInputs.get('searchTerm')?.value);
-  
-
-    // Convert to number if valid and not NaN
-    let region = regionStr !== undefined && !isNaN(Number(regionStr)) ? Number(regionStr) : undefined;
-    let village = villageStr !== undefined && !isNaN(Number(villageStr)) ? Number(villageStr) : undefined;
-    
-
-
-     this.getFilteredData(this.category, region, village, searchTerm);
+  toTitleCase(text: string): any {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   }
-  
-     // Function to check if the value is valid (not empty or just spaces)
-     private getValidInput(value: any): string | undefined {
-      return value && value.trim() !== '' ? value.trim() : undefined;
-    }
-  
-
-   setActiveTabs(selectedTab: GlobalEnums) {
-           this.activeTab = selectedTab;
-           switch(selectedTab)
-           {
-            case GlobalEnums.village:
-              this.category=GlobalEnums.village;
-              this.paginateCategory = paginatedEndpoints.villages;
-              break;
-              case GlobalEnums.activities:
-                this.category=GlobalEnums.activities;
-                this.paginateCategory = paginatedEndpoints.activities;
-                break;
-                case GlobalEnums.events:
-                  this.category=GlobalEnums.events;
-                  this.paginateCategory = paginatedEndpoints.events;
-                  break;
-                  case GlobalEnums.product:
-                    this.category=GlobalEnums.product;
-                    this.paginateCategory = paginatedEndpoints.products;
-                    break;
-                    case GlobalEnums.homestays:
-                      this.category=GlobalEnums.homestays;
-                      this.paginateCategory = paginatedEndpoints.homestays;
-           }
-
-           this.clearFilters(); // Clear selected options or input after changing the tab
-    }
-           
-
-
 }

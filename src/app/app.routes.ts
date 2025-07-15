@@ -8,96 +8,95 @@ import { CommitteeProfileComponent } from './profiles/committee-profile/committe
 import { EventProfileComponent } from './profiles/event-profile/event-profile.component';
 
 export const routes: Routes = [
-
-  {path:'', component:HomeMainComponent},
+  { path: '', component: HomeMainComponent },
 
   {
-   path: 'search',
-   children:
-   [
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full'
-      },
+    path: 'search',
+    children: [
+      { path: '', component: SearchMainComponent, pathMatch: 'full' },
       {
-         path:':type/:districtId/:villageId/:keyword',
-         component:SearchMainComponent
+        path: ':type/:districtId/:villageId/:keyword',
+        component: SearchMainComponent,
       },
-   ]
- },
+    ],
+  },
 
- 
- {
-   path: 'village',
-   children:[
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full',
-         data: { type: 'village' }, // Pass type to SearchComponent
+  {
+    path: 'committee',
+    children: [
+      {
+        path: '',
+        component: SearchMainComponent,
+        pathMatch: 'full',
+        data: { type: 'committee' }, // Pass type to SearchComponent
       },
       {
-         path:':id',
-         component:CommitteeProfileComponent
-      }
-   ]
- },
+        path: ':id',
+        component: CommitteeProfileComponent,
+      },
+    ],
+  },
 
- {
-   path: 'event',
-   children:[
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full',
-         data: { type: 'event' }, // Pass type to SearchComponent
+  {
+    path: 'event',
+    children: [
+      {
+        path: '',
+        component: SearchMainComponent,
+        pathMatch: 'full',
+        data: { type: 'event' }, // Pass type to SearchComponent
       },
       {
-         path:':id',
-         component:EventProfileComponent
-      }
-   ]
- },
+        path: ':id',
+        component: EventProfileComponent,
+      },
+    ],
+  },
 
- {
-   path: 'homestay',
-   children:[
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full',
-         data: { type: 'homestay' }, // Pass type to SearchComponent
+  {
+    path: 'homestay',
+    children: [
+      {
+        path: '',
+        component: SearchMainComponent,
+        pathMatch: 'full',
+        data: { type: 'homestay' }, // Pass type to SearchComponent
       },
       {
-         path:':id',
-         component:HomestayProfileComponent
-      }
-   ]
- },
+        path: ':id',
+        component: HomestayProfileComponent,
+      },
+    ],
+  },
 
- {
-   path: 'product',
-   children:[
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full',
-         data: { type: 'product' }, // Pass type to SearchComponent
+  {
+    path: 'product',
+    children: [
+      {
+        path: '',
+        component: SearchMainComponent,
+        pathMatch: 'full',
+        data: { type: 'product' }, // Pass type to SearchComponent
       },
       {
-         path:':id',
-         component:ProductProfleComponent
-      }
-   ]
- },
- {
-   path: 'activity',
-   children:[
-      {path:'',
-         component:SearchMainComponent,
-         pathMatch:'full',
-         data: { type: 'activity' }, // Pass type to SearchComponent
+        path: ':id',
+        component: ProductProfleComponent,
+      },
+    ],
+  },
+  {
+    path: 'activity',
+    children: [
+      {
+        path: '',
+        component: SearchMainComponent,
+        pathMatch: 'full',
+        data: { type: 'activity' }, // Pass type to SearchComponent
       },
       {
-         path:':id',
-         component:ActivityProfileComponent
-      }
-   ]
- },  
+        path: ':id',
+        component: ActivityProfileComponent,
+      },
+    ],
+  },
 ];

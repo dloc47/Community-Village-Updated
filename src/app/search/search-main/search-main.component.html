@@ -1,186 +1,260 @@
 <section class="relative mt-5 max-w-6xl mx-auto px-4">
-	<!-- Search Container: Houses all search-related elements -->
-	<div class="bg-white rounded-2xl shadow-lg border border-sky-100 p-4 md:p-6">
-		<!-- Category Tabs: Toggle between different content types -->
-		<div class="md:flex md:flex-wrap grid grid-cols-2 gap-2.5 mb-6">
-			<!-- Committees Category Button -->
-			<button [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.village}"
-				(click)="setActiveTabs(GlobalEnums.village)"
-				type="button"
-				data-category="villages"
-				class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-				<lucide-angular [img]="icons.VillageIcon" class="w-5 h-5"></lucide-angular>
-				Committees
-			</button>
-			<!-- Homestay Category Button -->
-			<button [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.homestays}"
-				(click)="setActiveTabs(GlobalEnums.homestays)"
-				type="button"
-				data-category="homestays"
-				class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-				<lucide-angular [img]="icons.HomestayIcon" class="w-5 h-5"></lucide-angular>
-				Homestays
-			</button>
-			<!-- Activities Category Button -->
-			<button [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.activities}"
-				(click)="setActiveTabs(GlobalEnums.activities)"
-				type="button"
-				data-category="activities"
-				class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-				<lucide-angular [img]="icons.ActivityIcon" class="w-5 h-5"></lucide-angular>
-				Activities
-			</button>
-			<!-- Products Category Button -->
-			<button [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.product}"
-				(click)="setActiveTabs(GlobalEnums.product)"
-				type="button"
-				data-category="products"
-				class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-				<lucide-angular [img]="icons.ProductIcon" class="w-5 h-5"></lucide-angular>
-				Products
-			</button>
-			<!-- Events Category Button -->
-			<button [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.events}"
-				(click)="setActiveTabs(GlobalEnums.events)"
-				type="button"
-				data-category="events"
-				class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-				<lucide-angular [img]="icons.EventIcon" class="w-5 h-5"></lucide-angular>
-				Events
-			</button>
-			<!-- Clear Button -->
-			<button (click)="clearFilters()"
-				type="button"
-				id="clearButton"
-				class="ml-auto inline-flex items-center border border-[#1C2A0E] rounded-full px-4 py-2.5 text-sm font-medium text-[#1C2A0E] hover:bg-[#1C2A0E] cursor-pointer hover:text-white transition-all duration-300">
-				<lucide-angular [img]="icons.ClearIcon" class="w-4 h-4 mr-1.5"></lucide-angular>
-				Clear Filters
-			</button>
-		</div>
+  <!-- Search Container: Houses all search-related elements -->
+  <div class="bg-white rounded-2xl shadow-lg border border-sky-100 p-4 md:p-6">
+    <!-- Category Tabs: Toggle between different content types -->
+    <div class="md:flex md:flex-wrap grid grid-cols-2 gap-2.5 mb-6">
+      <!-- Committees Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': appliedFilters?.entityType == 'Committee'
+        }"
+        (click)="navigateToType('committee')"
+        type="button"
+        data-category="villages"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.VillageIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Committees
+      </button>
+      <!-- Homestay Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': appliedFilters?.entityType == 'Homestay'
+        }"
+        (click)="navigateToType('homestay')"
+        type="button"
+        data-category="homestays"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.HomestayIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Homestays
+      </button>
+      <!-- Activities Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': appliedFilters?.entityType == 'Activity'
+        }"
+        (click)="navigateToType('activity')"
+        type="button"
+        data-category="activities"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.ActivityIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Activities
+      </button>
+      <!-- Products Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': appliedFilters?.entityType == 'Product'
+        }"
+        (click)="navigateToType('product')"
+        type="button"
+        data-category="products"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.ProductIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Products
+      </button>
+      <!-- Events Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': appliedFilters?.entityType == 'Event'
+        }"
+        (click)="navigateToType('event')"
+        type="button"
+        data-category="events"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.EventIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Events
+      </button>
+    </div>
 
-		<!-- Search Form: Contains all search input fields -->
-		<form [formGroup]="userInputs" class="grid  md:grid-cols-12 gap-4">
-			<!-- Location Dropdown -->
-			<div class="md:col-span-3">
-				<label class="block text-sm font-medium text-gray-700 mb-2">District</label>
-				<div class="relative">
-					<select id="region" (change)="onDistrictChange()"
-						formControlName="region"
-						class="cursor-pointer w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none">
-						<option selected value>
-							@if (districts.isDataAvailable) {
-								Select District
-							}
-							@else{
-								<span class="inline-block w-4 h-4 border-2 border-t-transparent border-blue-500 rounded-full animate-spin align-middle">
-									Loading...
-								</span>
-							}
-						</option>
-						<option *ngFor="let district of districts.items; let i=index"
-							[value]="district.districtId">
-							{{district.districtName}}
-						</option>
-					</select>
-					<lucide-angular [img]="icons.LocationIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-angular>
-					<lucide-angular [img]="icons.DropdownIcon" class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"></lucide-angular>
-				</div>
-			</div>
+    <!-- Search Form: Contains all search input fields -->
+    <form class="grid md:grid-cols-12 gap-4">
+      <!-- Location Dropdown -->
+      <div class="md:col-span-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >District</label
+        >
+        <div class="relative">
+          <select
+            name="district"
+            (change)="loadCommittees(); this.updateParams()"
+            [(ngModel)]="districtCode"
+            class="cursor-pointer w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none"
+          >
+            <option selected="true" value="">
+              @if (districts&&districts.length>0) { Select District } @else{
+              loading.. }
+            </option>
+            <option
+              *ngFor="let district of districts"
+              [value]="district.districtId"
+            >
+              {{ district.districtName }}
+            </option>
+          </select>
+          <lucide-angular
+            [img]="icons.LocationIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+          <lucide-angular
+            [img]="icons.DropdownIcon"
+            class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
 
-			<!-- Committee Dropdown -->
-			<div class="md:col-span-3">
-				<label class="block text-sm font-medium text-gray-700 mb-2">Committee</label>
-				<div class="relative">
-					<select id="village"
-						[disabled]="userInputs.get('region')?.value"
-						formControlName="village"
-						class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
-						<option selected value>
-							@if (userInputs.get('region')?.value) {
-								Select Committee
-							}
-							@else{
-								Select District First
-							}
-						</option>
-						<option *ngFor="let village of villages.items; let i=index"
-							[value]="village.committeeId">
-							{{village.committeeName}}
-						</option>
-					</select>
-					<lucide-angular [img]="icons.VillageIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-angular>
-					<lucide-angular [img]="icons.DropdownIcon" class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"></lucide-angular>
-				</div>
-			</div>
+      <!-- Committee Dropdown -->
+      <div class="md:col-span-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Committee</label
+        >
+        <div class="relative">
+          <select
+            name="committee"
+            [(ngModel)]="committeeId"
+            (change)="updateParams()"
+            [disabled]="!(districtCode && committees)"
+            class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <option selected value>
+              @if (districtCode && committees ) { Select Committee } @else{
+              Please Select a District}
+            </option>
+            <option
+              *ngFor="let committee of committees"
+              [value]="committee.committeeId"
+            >
+              {{ committee.committeeName }}
+            </option>
+          </select>
+          <lucide-angular
+            [img]="icons.VillageIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+          <lucide-angular
+            [img]="icons.DropdownIcon"
+            class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
 
-			<!-- Search Input -->
-			<div class="md:col-span-4">
-				<label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-				<div class="relative">
-					<input id="searchTerm"
-						type="text"
-						placeholder="Search committees, homestays, activities..."
-						formControlName="searchTerm"
-						class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E]">
-					<lucide-angular [img]="icons.TextSearchIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-angular>
-				</div>
-			</div>
+      <!-- Search Input -->
+      <div class="md:col-span-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Search</label
+        >
+        <div class="relative">
+          <input
+            [(ngModel)]="searchText"
+            (input)="updateParams()"
+            name="searchTerm"
+            type="text"
+            placeholder="Search by name, place, or type"
+            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E]"
+          />
+          <lucide-angular
+            [img]="icons.TextSearchIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
 
-			<!-- Search Button -->
-			<div class="md:col-span-2">
-				<label class="block text-sm font-medium text-transparent mb-2">Search</label>
-				<button type="button"
-					(click)="search()"
-					class="w-full inline-flex items-center justify-center border border-[#1C2A0E] rounded-lg px-4 py-2.5 text-sm font-medium text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
-					<lucide-angular [img]="icons.SearchIcon" class="w-4 h-4 mr-1.5"></lucide-angular>
-					Search
-				</button>
-			</div>
-		</form>
-	</div>
+      <!-- Search Button -->
+      <div class="md:col-span-2">
+        <button
+          (click)="resetFilters()"
+          type="button"
+          class="w-full cursor-pointer mt-7 inline-flex items-center justify-center border border-[#1C2A0E] rounded-lg px-4 py-2.5 text-sm font-medium text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300"
+        >
+          <lucide-angular
+            [img]="icons.ClearIcon"
+            class="w-4 h-4 mr-1.5"
+          ></lucide-angular>
+          Clear Filters
+        </button>
+      </div>
+    </form>
+  </div>
 </section>
 
 <!-- Divider with gradient -->
 <div class="relative max-w-6xl mx-auto px-4 mt-6 mb-4">
-	<div class="h-px bg-gradient-to-r from-transparent via-sky-200 to-gray-100"></div>
+  <div
+    class="h-px bg-gradient-to-r from-transparent via-sky-200 to-gray-100"
+  ></div>
 </div>
 
 <!-- Results Section -->
 <section class="relative pb-6">
-	<div class="max-w-6xl mx-auto px-4">
-		<!-- Section Title -->
-		<div class="mb-6">
-			<h2 class="text-lg font-medium text-gray-700 flex items-center gap-2">
-			  <lucide-angular [img]="icons.FilterIcon" class="w-5 h-5 text-blue-600"></lucide-angular>
-			  Results Found
-			</h2>
-			<p class="text-sm text-gray-500 mt-1">
-			  Filtered by your preferences
-			</p>
-		  </div>
-		  
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Section Title -->
+    <div class="mb-6" *ngIf="!(isData$ | async)">
+      <h2 class="text-lg font-medium text-gray-700 flex items-center gap-2">
+        <lucide-angular
+          [img]="icons.FilterIcon"
+          class="w-5 h-5 text-blue-600"
+        ></lucide-angular>
+        Results Found
+      </h2>
+      <p class="text-sm text-gray-500 mt-1">Filtered by your preferences</p>
+    </div>
 
-		<!-- Dynamic Content Container -->
-		<div class="space-y-4">
-			<!-- Loader for screen when data is loading -->
-			<div *ngIf="isLoading |async"
-				class="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-md">
-				<div class="flex flex-col items-center space-y-4">
-					<div class="w-12 h-12 border-4 border-[#1C2A0E] border-t-transparent rounded-full animate-spin shadow-lg"></div>
-					<p class="text-gray-700 text-lg font-medium">Please wait...</p>
-				</div>
-			</div>
+    <!-- Dynamic Content Container -->
+    <div class="space-y-4">
+      <div
+        *ngIf="!(isData$ | async)"
+        class="flex flex-col items-center justify-center min-h-[220px] bg-gray-50 rounded-2xl border border-gray-200 shadow-sm p-6 text-center"
+        role="alert"
+        aria-live="polite"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-gray-400 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9.75 9.75L14.25 14.25M14.25 9.75L9.75 14.25M12 2.25C6.615 2.25 2.25 6.615 2.25 12s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25z"
+          />
+        </svg>
 
-			<div *ngIf="noDataFound |async" 
-				class="flex items-center justify-center min-h-[200px] bg-white rounded-lg border border-gray-200 shadow-sm">
-				<p class="text-lg font-medium text-gray-600">No results found</p>
-			</div>
+        <p class="text-lg font-semibold text-gray-600">No results found</p>
+        <p class="text-sm text-gray-500 mt-1">
+          Try adjusting your filters or keywords.
+        </p>
+      </div>
 
-			<app-search-committee *ngIf="activeTab==GlobalEnums.village"></app-search-committee>
-			<app-search-homestay *ngIf="activeTab==GlobalEnums.homestays"></app-search-homestay>
-			<app-search-activity *ngIf="activeTab==GlobalEnums.activities"></app-search-activity>
-			<app-search-product *ngIf="activeTab==GlobalEnums.product"></app-search-product>
-			<app-search-event *ngIf="activeTab==GlobalEnums.events"></app-search-event>
-		</div>
-	</div>
+      <ng-container [ngSwitch]="appliedFilters?.entityType">
+        <app-search-committee
+          *ngSwitchCase="'Committee'"
+        ></app-search-committee>
+        <app-search-homestay *ngSwitchCase="'Homestay'"></app-search-homestay>
+        <app-search-activity *ngSwitchCase="'Activity'"></app-search-activity>
+        <app-search-product *ngSwitchCase="'Product'"></app-search-product>
+        <app-search-event *ngSwitchCase="'Event'"></app-search-event>
+      </ng-container>
+    </div>
+  </div>
 </section>
