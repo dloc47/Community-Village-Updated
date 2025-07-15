@@ -5,63 +5,35 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class LoaderService {
-  private _loadingCount = 0;
   private _isLoading = new BehaviorSubject<boolean>(false);
   isLoading$ = this._isLoading.asObservable();
 
   private fallbackTimeoutHandle: any;
 
   /**
-   * Show loader (increases counter).
+   * Show loader immediately. Optionally auto-hide after fallbackDuration ms.
    * @param fallbackDuration (optional) — forces hide after X ms
    */
-  showLoader(fallbackDuration: number = 15000): void {
-    this._loadingCount++;
-
-    if (this._loadingCount === 1) {
-      this._isLoading.next(true);
-    }
-
-    // fallback auto-hide if something breaks
-    if (fallbackDuration > 0) {
+  showLoader(fallbackDuration?: number) {
+    this._isLoading.next(true);
+    if (this.fallbackTimeoutHandle) {
       clearTimeout(this.fallbackTimeoutHandle);
+    }
+    if (fallbackDuration) {
       this.fallbackTimeoutHandle = setTimeout(() => {
-        this.forceHide('Fallback timeout triggered');
+        this.hideLoader();
       }, fallbackDuration);
     }
   }
 
   /**
-   * Hide loader (decreases counter).
-   * Only hides when all paired `showLoader()` are cleared.
+   * Hide loader immediately.
    */
   hideLoader(): void {
-    if (this._loadingCount > 0) {
-      this._loadingCount--;
-    }
-
-    if (this._loadingCount === 0) {
+    this._isLoading.next(false);
+    if (this.fallbackTimeoutHandle) {
       clearTimeout(this.fallbackTimeoutHandle);
-      this._isLoading.next(false);
+      this.fallbackTimeoutHandle = null;
     }
-  }
-
-  /**
-   * Forcefully hide loader (ignores counter).
-   */
-  forceHide(reason: string = ''): void {
-    console.warn('[LoaderService] Force hide triggered.', reason);
-    this._loadingCount = 0;
-    this._isLoading.next(false);
-    clearTimeout(this.fallbackTimeoutHandle);
-  }
-
-  /**
-   * Reset loader state completely.
-   */
-  reset(): void {
-    this._loadingCount = 0;
-    clearTimeout(this.fallbackTimeoutHandle);
-    this._isLoading.next(false);
   }
 }

@@ -1,84 +1,92 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit,inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getDistrictClass,getProfileImage,handleImageError } from '../../utils/utils';
+import {
+  getDistrictClass,
+  getProfileImage,
+  handleImageError,
+} from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
-import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
-import { LucideAngularModule, MapPin, ChevronRight, Milestone, Users, Tag } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  ChevronRight,
+  Milestone,
+  Users,
+  Tag,
+} from 'lucide-angular';
+import { ApiService } from '../../../services/api.service';
+import { finalize } from 'rxjs';
+import { LoaderService } from '../../../services/loader.service';
 
 @Component({
   selector: 'app-search-committee',
   templateUrl: './search-committee.component.html',
   styleUrls: ['./search-committee.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
+  imports: [CommonModule, RouterLink, NgxPaginationModule, LucideAngularModule],
 })
 export class SearchCommitteeComponent implements OnInit {
-  private searchService = inject(SearchService)
-  public handleImageError =handleImageError
-  public getDistrictClass =getDistrictClass
-  public getProfileImage=getProfileImage
+  private searchService = inject(SearchService);
+  private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
+  public handleImageError = handleImageError;
+  public getDistrictClass = getDistrictClass;
+  public getProfileImage = getProfileImage;
 
-  itemPerPage=search.itemPerPage;
-  pageNo:number=1
-  villageData:any[]=[]
-  totalRecords:number=0
-  isDataFound=false;
-  isLoading:boolean=false;
+  entityData: any;
+  pagination = {
+    pageNo: 1,
+    totalRecords: 0,
+    pageSize: 0,
+  };
 
   // Define icons object
   icons = {
     ArrowIcon: ChevronRight,
     DistrictIcon: Milestone,
     CommitteeIcon: Users,
-    TagIcon: Tag
-  }
-
-  constructor() { }
+    TagIcon: Tag,
+  };
 
   ngOnInit() {
-    this.searchService.queryState$.subscribe(({ type, query }) => {
-      this.loadData(type, query);
-    });
-
-    this.searchService.loading$.subscribe((isLoading) => {
-      this.isLoading = isLoading;
+    this.searchService.searchParams$.subscribe((params) => {
+      this.pagination.pageSize = params.pageSize;
+      this.pagination.pageNo = params.pageNumber;
+      this.getCommittees();
     });
   }
 
-
-loadData(type: 'paginated' | 'filtered', query: any): void {
-  this.villageData=[];
-  this.searchService.getData(type, query).subscribe((result: any) => {
-    if (result.isDataAvailable) {
-      this.villageData = result.items;
-      if(type=='paginated')
-      {
-        this.totalRecords = result.totalRecords;
-      }
-      else if(type=='filtered')
-      {
-        this.totalRecords = result.items.length;
-      }
-    } 
-  });
-}
-
-
-
-
-  // ✅ Handle Page Change (ngx-pagination)
-onPageChange(pageNumber: number): void {
-  this.pageNo = pageNumber 
-  this.getPaginatedData(paginatedEndpoints.villages,this.pageNo,search.itemPerPage)
-  
-}
-
-   // ✅ Handle paginated data request
-   getPaginatedData(endpoint:paginatedEndpoints,pageNo: number, itemPerPage: number): void {
-    this.searchService.updateQueryState('paginated', { endpoint,pageNo, itemPerPage });
+  getCommittees() {
+    this.loader.showLoader();
+    this.entityData = [];
+    const url = this.searchService.querySearchEndpoint();
+    this.apiService
+      .get(url)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.entityData = res.data;
+            this.pagination.totalRecords = res.totalRecords;
+            this.searchService.isDataFound.next(
+              this.entityData && this.entityData.length
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.searchService.isDataFound.next(false);
+        },
+      });
   }
 
-
-
+  onPageChange(pageNumber: number): void {
+    this.searchService.updateParams({
+      pageNumber: pageNumber,
+    });
+  }
 }

@@ -58,7 +58,6 @@ export class SearchService {
   }
 
   querySearchEndpoint(): string {
-    const params = new URLSearchParams();
     const {
       entityType,
       pageNumber,
@@ -66,17 +65,22 @@ export class SearchService {
       districtCode,
       searchText,
       committeeId,
-    } = this.getCurrentParams(); // Get from BehaviorSubject-based state
+    } = this.getCurrentParams();
 
-    // Conditionally set only meaningful values
-    if (entityType) params.set('entityType', entityType);
-    if (pageNumber > 0) params.set('pageNumber', String(pageNumber));
-    if (pageSize > 0) params.set('pageSize', String(pageSize));
-    if (districtCode) params.set('districtId', districtCode);
-    if (searchText?.trim()) params.set('searchText', searchText.trim());
-    if (committeeId) params.set('villageId', String(committeeId)); // Assuming villageId = committeeId
+    let query = `website/filter?`;
+    let parts = [];
 
-    return `website/filter?${params.toString()}`;
+    if (entityType) parts.push(`entityType=${entityType}`);
+    if (pageNumber) parts.push(`pageNumber=${pageNumber}`);
+    if (pageSize) parts.push(`pageSize=${pageSize}`);
+    if (districtCode) parts.push(`districtId=${districtCode}`);
+    if (searchText?.trim())
+      parts.push(`searchText=${encodeURIComponent(searchText.trim())}`);
+    if (committeeId) parts.push(`villageId=${committeeId}`);
+
+    query += parts.join('&'); // ✅ This automatically adds & in between
+
+    return query;
   }
 
   // Track no data and error states

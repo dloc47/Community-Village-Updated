@@ -46,6 +46,7 @@ export class SearchMainComponent implements OnInit {
   private apiService = inject(ApiService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  page: any;
 
   // Define icons object
   icons = {
@@ -121,6 +122,8 @@ export class SearchMainComponent implements OnInit {
   }
 
   loadCommittees(): void {
+    this.committees = [];
+    this.committeeId = '';
     this.apiService.getData('website/committees').subscribe({
       next: (res: any) => {
         if (res) {
