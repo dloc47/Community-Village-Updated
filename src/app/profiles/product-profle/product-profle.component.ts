@@ -3,7 +3,6 @@ import { getByIDEndpoints, placeholder } from '../../utils/globalEnums.enum';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   LucideAngularModule,
@@ -35,9 +34,9 @@ import {
 } from 'lucide-angular';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { ProductsCarouselComponent } from '../../carousels/products-carousel/products-carousel.component';
-
-// Register Swiper custom elements
-register();
+import { Router } from '@angular/router';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-profle',
@@ -86,8 +85,12 @@ export class ProductProfleComponent implements OnInit {
   };
 
   private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
+  private routerNav: Router;
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute, routerNav: Router) {
+    this.routerNav = routerNav;
+  }
 
   ngOnInit() {
     this.getFirstSegment();
@@ -102,34 +105,39 @@ export class ProductProfleComponent implements OnInit {
         segmentFound = true;
       } else {
         console.log('No valid ID found in route.');
+        this.handleNoDataFound();
       }
     });
     return segmentFound;
   }
 
   loadProductbyID(id: number): void {
-    this.loading = true;
-    this.apiService.getDataById<any>(getByIDEndpoints.products, id).subscribe({
-      next: (data: any) => {
-        if (data) {
-          this.productInfo = data;
-        } else {
+    this.loader.showLoader();
+    this.apiService
+      .getDataById<any>(getByIDEndpoints.products, id)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (data: any) => {
+          if (data) {
+            this.productInfo = data;
+          } else {
+            this.handleNoDataFound();
+          }
+        },
+        error: (error: any) => {
+          console.error('Error fetching data:', error);
           this.handleNoDataFound();
-        }
-      },
-      error: (error: any) => {
-        console.error('Error fetching data:', error);
-        this.handleNoDataFound();
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
+        },
+      });
   }
 
   handleNoDataFound() {
-    this.noDataFound = true;
-    this.loading = false;
+    this.loader.hideLoader();
+    this.routerNav.navigate(['/not-found']);
   }
 
   openImageModal(imageUrl: string): void {
