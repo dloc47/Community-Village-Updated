@@ -86,6 +86,7 @@ export class SearchMainComponent implements OnInit {
     this.districtCode = '';
     this.committeeId = '';
     this.searchText = '';
+
     this.updateParams();
   }
 

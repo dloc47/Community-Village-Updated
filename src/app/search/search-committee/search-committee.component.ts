@@ -16,7 +16,7 @@ import {
   Tag,
 } from 'lucide-angular';
 import { ApiService } from '../../../services/api.service';
-import { finalize } from 'rxjs';
+import { finalize, debounceTime, distinctUntilChanged } from 'rxjs';
 import { LoaderService } from '../../../services/loader.service';
 
 @Component({
@@ -49,11 +49,16 @@ export class SearchCommitteeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.searchService.searchParams$.subscribe((params) => {
-      this.pagination.pageSize = params.pageSize;
-      this.pagination.pageNo = params.pageNumber;
-      this.getCommittees();
-    });
+    this.searchService.searchParams$
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe((params) => {
+        this.pagination.pageSize = params.pageSize;
+        this.pagination.pageNo = params.pageNumber;
+        this.getCommittees();
+      });
   }
 
   getCommittees() {

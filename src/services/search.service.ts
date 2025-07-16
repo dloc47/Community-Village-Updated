@@ -50,7 +50,10 @@ export class SearchService {
   updateParams(partial: Partial<SearchParams>) {
     const current = this._searchParams.getValue();
     const updated = { ...current, ...partial };
-    this._searchParams.next(updated);
+    // Only emit if params actually changed
+    if (JSON.stringify(current) !== JSON.stringify(updated)) {
+      this._searchParams.next(updated);
+    }
   }
 
   getCurrentParams(): SearchParams {
