@@ -1,8 +1,8 @@
 <!-- Homestays Carousel Single -->
-<swiper-container 
-    direction="horizontal"
-    slides-per-view="1"
-    breakpoints='{
+<swiper-container
+  direction="horizontal"
+  slides-per-view="1"
+  breakpoints='{
         "640": {
             "slidesPerView": 2,
             "spaceBetween": 16
@@ -20,82 +20,122 @@
             "spaceBetween": 16
         }
     }'
-    space-between="16"
-    navigation="false"
-    pagination="true"
-    pagination-clickable="true"
-    autoplay="true"
-    loop="true"
-    class="mt-2">
-    <swiper-slide *ngFor="let homestay of homestays; let i = index" class="mt-2 pb-16">
-        <div class="group flex flex-col h-full shadow-md rounded-lg">
-            <div class="relative overflow-hidden rounded-t-lg !rounded-b-none mb-3 aspect-square min-h-[200px] sm:min-h-[220px] max-h-[200px] sm:max-h-[220px]">
-                <!-- Verified Tag -->
-                <span *ngIf="homestay.verificationStatusId === 1" 
-                  class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
-                  <lucide-angular [img]="icons.CommitteeIcon" class="w-4 h-4"></lucide-angular>
-                  Verified by Committee
-                </span>
-                <span *ngIf="homestay.verificationStatusId === 2" 
-                  class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
-                  <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
-                  Verified
-                </span>
-                <img [src]="getProfileImage(homestay.images)"
-                    [alt]="homestay.homestayName"
-                    loading="lazy"
-                    (error)="handleImageError($event)"
-                    class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="flex flex-col flex-grow px-2 min-h-[180px]">
-                <h4 class="text-base font-semibold line-clamp-1 my-1 px-1 flex items-center">
-                    <lucide-angular [img]="icons.HomestayIcon" class="w-3.5 h-3.5 mr-1"></lucide-angular>
-                    {{homestay.homestayName}}</h4>
-                <!-- Committee Name and Region -->
-                <div class="flex flex-col gap-2 my-0.5">
-                    <div class="flex">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-full text-xs font-medium">
-                            <lucide-angular [img]="icons.CommitteeIcon" class="w-3.5 h-3.5 text-black flex-shrink-0"></lucide-angular>
-                            <span class="truncate">{{homestay.committeeName}}</span>
-                        </span>
-                    </div>
-                    <div class="flex">
-                        <span [ngClass]="getDistrictClass(homestay.districtName)"
-                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white">
-                            <lucide-angular [img]="icons.DistrictIcon" class="w-3.5 h-3.5 flex-shrink-0"></lucide-angular>
-                            <span class="truncate">{{homestay.districtName}}</span>
-                        </span>
-                    </div>
-                </div>
-                <p class="text-gray-700 my-2 line-clamp-2 h-11 text-sm">
-                    {{homestay.description}}
-                </p>
-                <div class="flex mt-1 mb-2 flex-row gap-x-1.5 line-clamp-1 h-[2rem] overflow-hidden">
-                    <div *ngFor="let amenity of homestay.amenities | slice:0:2; let i = index">
-                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                            <lucide-angular [img]="icons.TagIcon" class="w-3 h-3 flex-shrink-0"></lucide-angular>
-                            <span class="truncate">{{amenity}}</span>
-                        </span>
-                    </div>
-                </div>
-                <a [routerLink]="['/homestay',homestay.homestayId]" (click)="scrollToTop()"
-                    class="mx-auto flex justify-center mb-3 items-center 
-                    mt-auto w-11/12 border border-[#1C2A0E] rounded-full 
-                    px-4 sm:px-5 py-1 sm:py-1.5 text-sm text-[#1C2A0E]
-                    hover:bg-[#1C2A0E] hover:text-white transition-all duration-300">
-                    Know More
-                    <lucide-angular [img]="icons.ArrowIcon" class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5 flex-shrink-0"></lucide-angular>
-                </a>
-            </div>
+  space-between="16"
+  navigation="false"
+  pagination="true"
+  pagination-clickable="true"
+  autoplay="true"
+  class="mt-2"
+>
+  <swiper-slide
+    *ngFor="let homestay of homestays; let i = index"
+    class="mt-2 pb-16"
+  >
+    <div class="group flex flex-col h-full shadow-md rounded-lg">
+      <div
+        class="relative overflow-hidden rounded-t-lg !rounded-b-none mb-3 aspect-square min-h-[200px] sm:min-h-[220px] max-h-[200px] sm:max-h-[220px]"
+      >
+        <!-- Verified Tag -->
+        <span
+          *ngIf="homestay.verificationStatusId === 1"
+          class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow"
+        >
+          <lucide-angular
+            [img]="icons.CommitteeIcon"
+            class="w-4 h-4"
+          ></lucide-angular>
+          Verified by Committee
+        </span>
+        <span
+          *ngIf="homestay.verificationStatusId === 2"
+          class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow"
+        >
+          <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+          Verified
+        </span>
+        <img
+          [src]="getProfileImage(homestay.images)"
+          [alt]="homestay.homestayName"
+          loading="lazy"
+          (error)="handleImageError($event)"
+          class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
+        />
+      </div>
+      <div class="flex flex-col flex-grow px-2 min-h-[180px]">
+        <h4
+          class="text-base font-semibold line-clamp-1 truncate overflow-hidden my-1 px-1 flex items-center"
+        >
+          <lucide-angular
+            [img]="icons.HomestayIcon"
+            class="w-3.5 h-3.5 mr-1"
+          ></lucide-angular>
+          {{ homestay.homestayName }}
+        </h4>
+        <!-- Committee Name and Region -->
+        <div class="flex flex-col gap-2 my-0.5">
+          <div class="flex">
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 rounded-full text-xs font-medium"
+            >
+              <lucide-angular
+                [img]="icons.CommitteeIcon"
+                class="w-3.5 h-3.5 text-black flex-shrink-0"
+              ></lucide-angular>
+              <span class="truncate line-clamp-1 overflow-hidden">{{
+                homestay.committeeName
+              }}</span>
+            </span>
+          </div>
+          <div class="flex">
+            <span
+              [ngClass]="getDistrictClass(homestay.districtName)"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 hover:text-white"
+            >
+              <lucide-angular
+                [img]="icons.DistrictIcon"
+                class="w-3.5 h-3.5 flex-shrink-0"
+              ></lucide-angular>
+              <span class="truncate line-clamp-1 overflow-hidden">{{
+                homestay.districtName
+              }}</span>
+            </span>
+          </div>
         </div>
-    </swiper-slide>
+        <p class="text-gray-700 my-2 line-clamp-2 h-11 text-sm">
+          {{ homestay.description }}
+        </p>
+        <div
+          class="flex mt-1 mb-2 flex-row gap-x-1.5 line-clamp-1 h-[2rem] overflow-hidden"
+        >
+          <div
+            *ngFor="
+              let amenity of homestay.amenities | slice : 0 : 2;
+              let i = index
+            "
+          >
+            <span
+              class="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+            >
+              <lucide-angular
+                [img]="icons.TagIcon"
+                class="w-3 h-3 flex-shrink-0"
+              ></lucide-angular>
+              <span class="truncate">{{ amenity }}</span>
+            </span>
+          </div>
+        </div>
+        <a
+          [routerLink]="['/homestay', homestay.homestayId]"
+          (click)="scrollToTop()"
+          class="mx-auto flex justify-center mb-3 items-center mt-auto w-11/12 border border-[#1C2A0E] rounded-full px-4 sm:px-5 py-1 sm:py-1.5 text-sm text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300"
+        >
+          Know More
+          <lucide-angular
+            [img]="icons.ArrowIcon"
+            class="h-3 w-3 sm:h-3.5 sm:w-3.5 ml-1.5 flex-shrink-0"
+          ></lucide-angular>
+        </a>
+      </div>
+    </div>
+  </swiper-slide>
 </swiper-container>
-
-
-
-
-
-
-
-
-

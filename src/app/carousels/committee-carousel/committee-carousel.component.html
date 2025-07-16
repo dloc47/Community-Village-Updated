@@ -48,13 +48,15 @@
         <!-- Committee Name and Region -->
         <div class="flex flex-wrap gap-2 my-0.5">
           <span
-            class="inline-flex items-center gap-2 font-semibold px-2.5 py-1 rounded-full text-md"
+            class="inline-flex overflow-hidden items-center gap-2 font-semibold px-2.5 py-1 rounded-full text-md"
           >
             <lucide-angular
               [img]="icons.UserIcon"
               class="w-3.5 h-3.5 text-black flex-shrink-0"
             ></lucide-angular>
-            <span class="truncate">{{ village.committeeName }}</span>
+            <span class="truncate line-clamp-1">{{
+              village.committeeName
+            }}</span>
           </span>
           <span
             [ngClass]="getDistrictClass(village.region)"

@@ -73,7 +73,9 @@
         </div>
       </div>
       <div class="flex flex-col flex-grow p-4 min-h-[180px]">
-        <h4 class="text-base font-semibold mb-2 line-clamp-1 flex items-center">
+        <h4
+          class="text-base font-semibold mb-2 line-clamp-1 truncate overflow-hidden flex items-center"
+        >
           <lucide-angular
             [img]="icons.EventIcon"
             class="w-3 h-3 mr-1"
@@ -86,7 +88,7 @@
         <!-- Location and Region Tags -->
         <div class="flex flex-wrap gap-2 mt-auto mb-2">
           <span
-            class="inline-flex items-center gap-1 bg-yellow-100 text-gray-800 px-2 py-0.5 rounded-full text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap"
+            class="inline-flex items-center gap-1 bg-yellow-100 text-gray-800 px-2 py-0.5 rounded-full text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap truncate line-clamp-1"
           >
             <lucide-angular
               [img]="icons.LocationIcon"
@@ -96,7 +98,7 @@
           </span>
           <span
             [ngClass]="getDistrictClass(event.region)"
-            class="inline-flex items-center gap-1 hover:text-white px-2 py-0.5 rounded-full text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap"
+            class="inline-flex items-center gap-1 hover:text-white px-2 py-0.5 rounded-full text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap truncate line-clamp-1"
           >
             <lucide-angular
               [img]="icons.DistrictIcon"
