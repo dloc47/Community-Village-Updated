@@ -16,6 +16,9 @@ import {
 } from 'lucide-angular';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
+import { Router } from '@angular/router';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-profile',
@@ -24,8 +27,6 @@ import { EventsCarouselComponent } from '../../carousels/events-carousel/events-
   imports: [CommonModule, LucideAngularModule, EventsCarouselComponent],
 })
 export class EventProfileComponent implements OnInit {
-  loading: boolean = false;
-  noDataFound: boolean = false;
   eventInfo: any = [];
   public handleImageError = handleImageError;
   public getDistrictClasses = getDistrictClass;
@@ -43,8 +44,12 @@ export class EventProfileComponent implements OnInit {
   };
 
   private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
+  private routerNav: Router;
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private router: ActivatedRoute, routerNav: Router) {
+    this.routerNav = routerNav;
+  }
 
   ngOnInit() {
     this.getFirstSegment();
@@ -59,37 +64,39 @@ export class EventProfileComponent implements OnInit {
         segmentFound = true;
       } else {
         console.log('No valid ID found in route.');
+        this.handleNoDataFound();
       }
     });
     return segmentFound;
   }
 
   loadEventData(id: string): void {
-    this.loading = true;
-    this.apiService.getDataById<any>(getByIDEndpoints.events, id).subscribe({
-      next: (data: any) => {
-        console.log(data);
-
-        if (data) {
-          this.eventInfo = data;
-        } else {
+    this.loader.showLoader();
+    this.apiService
+      .getDataById<any>(getByIDEndpoints.events, id)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (data: any) => {
+          if (data) {
+            this.eventInfo = data;
+          } else {
+            this.handleNoDataFound();
+          }
+        },
+        error: (error: any) => {
+          console.error('Error fetching data:', error);
           this.handleNoDataFound();
-        }
-      },
-      error: (error: any) => {
-        console.error('Error fetching data:', error);
-        this.handleNoDataFound();
-      },
-      complete: () => {
-        this.loading = false;
-        console.log('Data fetch completed:', this.eventInfo);
-      },
-    });
+        },
+      });
   }
 
   handleNoDataFound() {
-    this.noDataFound = true;
-    this.loading = false;
+    this.loader.hideLoader();
+    this.routerNav.navigate(['/not-found']);
   }
 
   formatDate(date: string): string {

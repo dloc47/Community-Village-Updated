@@ -46,8 +46,6 @@ import { finalize } from 'rxjs/operators';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductProfleComponent implements OnInit {
-  loading: boolean = false;
-  noDataFound: boolean = false;
   productInfo: any = [];
   placeholder: placeholder = placeholder.image;
   showModal: boolean = false;

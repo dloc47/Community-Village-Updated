@@ -7,7 +7,7 @@
           eventInfo.verificationStatusId === 0 ||
           eventInfo.verificationStatusId === 1
         "
-        class="px-2.5 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 flex items-center gap-1"
+        class="px-2.5 py-1 text-xs font-medium rounded-full text-white bg-amber-600 flex items-center gap-1"
       >
         <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
         Verified by Committee
@@ -89,7 +89,7 @@
 
     <!-- Event Details Section -->
     <div
-      class="md:col-span-1 space-y-4 max-h-80 overflow-auto custom-scrollbar"
+      class="md:col-span-1 space-y-4 max-h-[400px] overflow-auto custom-scrollbar"
     >
       <!-- Committee & Region Tags -->
       <div class="flex flex-wrap items-center gap-2">
@@ -120,12 +120,12 @@
       <!-- About this Event Header & Description -->
       <div>
         <h2
-          class="text-lg font-semibold mb-2 max-h-24 overflow-auto custom-scrollbar"
+          class="text-lg font-semibold mb-2 text-[#1C2A0E] max-h-24 overflow-auto custom-scrollbar"
         >
           About this Event
         </h2>
         <div
-          class="text-gray-600 text-justify text-sm leading-relaxed mb-2 max-h-32 overflow-y-auto custom-scrollbar"
+          class="text-gray-700 text-base leading-relaxed py-2 max-h-[120px] overflow-auto text-justify"
         >
           {{ eventInfo.description }}
         </div>
