@@ -164,7 +164,7 @@
         <div class="relative">
           <input
             [(ngModel)]="searchText"
-            (input)="updateParams()"
+            (input)="onUserInput($event)"
             name="searchTerm"
             type="text"
             placeholder="Search by name, place, or type"

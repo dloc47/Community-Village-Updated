@@ -175,6 +175,20 @@ export class SearchMainComponent implements OnInit, OnDestroy {
     });
   }
 
+  typingTimeout: any;
+
+  onUserInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    // Clear the previous timeout (if user is still typing)
+    clearTimeout(this.typingTimeout);
+
+    // Set a new timeout
+    this.typingTimeout = setTimeout(() => {
+      this.updateParams();
+    }, 700);
+  }
+
   navigateToType(type: string): void {
     this.router.navigate(['/', type]);
   }

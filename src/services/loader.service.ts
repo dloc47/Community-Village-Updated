@@ -9,19 +9,22 @@ export class LoaderService {
   isLoading$ = this._isLoading.asObservable();
 
   private fallbackTimeoutHandle: any;
-  private loaderShownAt: number | null = null;
-  private minDisplayTime = 500; // ms
+  private hideDelayTimeout: any;
+  private hideDelay = 500; // ms
 
   /**
    * Show loader immediately. Optionally auto-hide after fallbackDuration ms.
-   * @param fallbackDuration (optional) — forces hide after X ms
    */
   showLoader(fallbackDuration?: number) {
+    if (this.hideDelayTimeout) {
+      clearTimeout(this.hideDelayTimeout); // prevent premature hide
+    }
     this._isLoading.next(true);
-    this.loaderShownAt = Date.now();
+
     if (this.fallbackTimeoutHandle) {
       clearTimeout(this.fallbackTimeoutHandle);
     }
+
     if (fallbackDuration) {
       this.fallbackTimeoutHandle = setTimeout(() => {
         this.hideLoader();
@@ -30,25 +33,18 @@ export class LoaderService {
   }
 
   /**
-   * Hide loader immediately (or after min display time).
+   * Hide loader, but with a 500ms delay from the time this is called.
    */
   hideLoader(): void {
-    if (this.loaderShownAt) {
-      const elapsed = Date.now() - this.loaderShownAt;
-      if (elapsed < this.minDisplayTime) {
-        setTimeout(() => {
-          this._isLoading.next(false);
-          this.loaderShownAt = null;
-        }, this.minDisplayTime - elapsed);
-        if (this.fallbackTimeoutHandle) {
-          clearTimeout(this.fallbackTimeoutHandle);
-          this.fallbackTimeoutHandle = null;
-        }
-        return;
-      }
+    if (this.hideDelayTimeout) {
+      clearTimeout(this.hideDelayTimeout);
     }
-    this._isLoading.next(false);
-    this.loaderShownAt = null;
+
+    this.hideDelayTimeout = setTimeout(() => {
+      this._isLoading.next(false);
+      this.hideDelayTimeout = null;
+    }, this.hideDelay);
+
     if (this.fallbackTimeoutHandle) {
       clearTimeout(this.fallbackTimeoutHandle);
       this.fallbackTimeoutHandle = null;
