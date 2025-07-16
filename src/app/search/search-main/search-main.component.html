@@ -90,7 +90,7 @@
       <!-- Location Dropdown -->
       <div class="md:col-span-3">
         <label class="block text-sm font-medium text-gray-700 mb-2"
-          >District</label
+          >Region</label
         >
         <div class="relative">
           <select
@@ -100,7 +100,7 @@
             class="cursor-pointer w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none"
           >
             <option selected="true" value="">
-              @if (districts&&districts.length>0) { Select District } @else{
+              @if (districts&&districts.length>0) { Select Region } @else{
               loading.. }
             </option>
             <option
@@ -130,13 +130,13 @@
           <select
             name="committee"
             [(ngModel)]="committeeId"
-            (change)="updateParams()"
+            (change)="onCommitteeChange()"
             [disabled]="!(districtCode && committees)"
             class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <option selected value="">
               @if (districtCode && committees ) { Select Committee } @else{
-              Please Select a District}
+              Please Select a Region}
             </option>
             <option
               *ngFor="let committee of committees"
@@ -177,7 +177,7 @@
         </div>
       </div>
 
-      <!-- Search Button -->
+      <!--Clear Button -->
       <div class="md:col-span-2">
         <button
           (click)="resetFilters()"

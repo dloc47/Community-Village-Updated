@@ -1,176 +1,354 @@
 <!-- Hero Section with Background Image -->
 <section class="relative h-screen p-2 sm:p-4 md:p-8">
-    <!-- Background Image -->
-    <div class="absolute inset-4 sm:inset-8 rounded-[24px] overflow-hidden z-0">
-        <img 
-            src="assets/images/general/hero-bg2.jpg"
-            alt="Scenic view of Sikkim mountains and traditional house" 
-            class="w-full h-full object-cover"
-            loading="eager"
-        />
-    </div>
+  <!-- Background Image -->
+  <div class="absolute inset-4 sm:inset-8 rounded-[24px] overflow-hidden z-0">
+    <img
+      src="assets/images/general/hero-bg2.jpg"
+      alt="Scenic view of Sikkim mountains and traditional house"
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+  </div>
 
-    <div class="absolute bg-white/10 shadow-sky-50 shadow-2xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-[80%] md:w-[70%] lg:w-3xl h-[80%] sm:h-[70%] md:h-[60%] lg:h-[26rem] p-4">
-        <!-- Top Left Corner -->
-        <div class="absolute top-0 left-0 w-1/3 border-t-5 border-white"></div>
-        <div class="absolute top-0 left-0 h-1/2 border-l-5 border-white"></div>
-      
-        <!-- Bottom 19-05-25Right Corner -->
-        <div class="absolute bottom-0 right-0 w-1/3 border-b-5 border-white"></div>
-        <div class="absolute bottom-0 right-0 h-1/2 border-r-5 border-white"></div>
-      
-        <!-- Content -->
-        <div class="text-center relative h-full max-w-6xl mx-auto px-4 flex flex-col justify-center z-10">
-            <div class="max-w-3xl">
-                <h1 class="text-3xl sm:text-4xl md:text-5xl text-white font-semibold mb-4 sm:mb-6 leading-tight">
-                    Stay Local. Explore Nature. Experience Authentic Traditions.
-                </h1>
-                <p class="text-sm sm:text-base lg:text-xl text-white/90 mb-4 max-w-full md:max-w-2xl">
-                    Immerse yourself in the beauty of Sikkim's villages, where tradition meets modern exploration. Find cozy homestays, experience cultural heritage, enjoy adventure activities, and shop for handcrafted local treasures—all while directly supporting the community. Your journey to authentic Sikkim starts here!
-                </p>
-            </div>
-            <button routerLink="/search" class="cursor-pointer border-2 w-32 sm:w-40 flex justify-center self-center border-white text-white px-4 sm:px-6 py-2 text-base sm:text-lg font-semibold rounded-full backdrop-blur-md bg-white/10 hover:bg-white/20 hover:border-white/50 transition-all duration-300 ease-in-out">
-                Explore 
-            </button>
-        </div>
+  <div
+    class="absolute bg-white/10 shadow-sky-50 shadow-2xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-[80%] md:w-[70%] lg:w-3xl h-[80%] sm:h-[70%] md:h-[60%] lg:h-[26rem] p-4"
+  >
+    <!-- Top Left Corner -->
+    <div class="absolute top-0 left-0 w-1/3 border-t-5 border-white"></div>
+    <div class="absolute top-0 left-0 h-1/2 border-l-5 border-white"></div>
+
+    <!-- Bottom 19-05-25Right Corner -->
+    <div class="absolute bottom-0 right-0 w-1/3 border-b-5 border-white"></div>
+    <div class="absolute bottom-0 right-0 h-1/2 border-r-5 border-white"></div>
+
+    <!-- Content -->
+    <div
+      class="text-center relative h-full max-w-6xl mx-auto px-4 flex flex-col justify-center z-10"
+    >
+      <div class="max-w-3xl">
+        <h1
+          class="text-3xl sm:text-4xl md:text-5xl text-white font-semibold mb-4 sm:mb-6 leading-tight"
+        >
+          Stay Local. Explore Nature. Experience Authentic Traditions.
+        </h1>
+        <p
+          class="text-sm sm:text-base lg:text-xl text-white/90 mb-4 max-w-full md:max-w-2xl"
+        >
+          Immerse yourself in the beauty of Sikkim's villages, where tradition
+          meets modern exploration. Find cozy homestays, experience cultural
+          heritage, enjoy adventure activities, and shop for handcrafted local
+          treasures—all while directly supporting the community. Your journey to
+          authentic Sikkim starts here!
+        </p>
+      </div>
+      <button
+        routerLink="/search"
+        class="cursor-pointer border-2 w-32 sm:w-40 flex justify-center self-center border-white text-white px-4 sm:px-6 py-2 text-base sm:text-lg font-semibold rounded-full backdrop-blur-md bg-white/10 hover:bg-white/20 hover:border-white/50 transition-all duration-300 ease-in-out"
+      >
+        Explore
+      </button>
     </div>
+  </div>
 </section>
 
-<!-- After Hero Section -->
-<section class="relative -mt-6 md:-mt-20 max-w-6xl  mx-auto px-4">
-    <!-- Search Container -->
-    <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6">
-        <!-- Category Tabs -->
-        <div class="flex flex-wrap gap-2 mb-4">
-            <button type="button" (click)="setActiveTab(GlobalEnums.village)" [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.village}" class="category-btn cursor-pointer px-4 py-2 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm flex items-center gap-2">
-                <lucide-icon [img]="icons.CommitteeIcon" class="w-5 h-5"></lucide-icon>
-                Committees
-            </button>
-            <button type="button" (click)="setActiveTab(GlobalEnums.homestays)" [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.homestays}" class="category-btn cursor-pointer px-4 py-2 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm flex items-center gap-2">
-                <lucide-icon [img]="icons.HomestayIcon" class="w-5 h-5"></lucide-icon>
-                Homestays
-            </button>
-            <button type="button" (click)="setActiveTab(GlobalEnums.activities)" [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.activities}" class="category-btn cursor-pointer px-4 py-2 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm flex items-center gap-2">
-                <lucide-icon [img]="icons.ActivityIcon" class="w-5 h-5"></lucide-icon>
-                Activities
-            </button>
-            <button type="button" (click)="setActiveTab(GlobalEnums.product)" [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.product}" class="category-btn cursor-pointer px-4 py-2 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm flex items-center gap-2">
-                <lucide-icon [img]="icons.ProductIcon" class="w-5 h-5"></lucide-icon>
-                Products
-            </button>
-            <button type="button" (click)="setActiveTab(GlobalEnums.events)" [ngClass]="{'bg-[#1C2A0E] text-white':activeTab==GlobalEnums.events}" class="category-btn cursor-pointer px-4 py-2 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm flex items-center gap-2">
-                <lucide-icon [img]="icons.EventIcon" class="w-5 h-5"></lucide-icon>
-                Events
-            </button>
-        </div>
-        <!-- Search Form -->
-        <form [formGroup]="heroSearchForm" class="grid md:grid-cols-12 gap-4">
-            <!-- Location Dropdown -->
-            <div class="md:col-span-3">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                <div class="relative">
-                    <select id="region" (change)="onDistrictChange($event)" formControlName="region" class="cursor-pointer w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none">
-                        <option value="" disabled>Select Region</option>
-                        <option *ngFor="let district of districts" [value]="district.districtId">{{district.districtName}}</option>
-                    </select>
-                    <lucide-icon [img]="icons.DistrictIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-icon>
-                </div>
-            </div>
-            <!-- Committee Dropdown -->
-            <div class="md:col-span-3">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Committee</label>
-                <div class="relative">
-                    <select id="committee" formControlName="committee" class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none">
-                        <option value="" disabled >Select Committee</option>
-                        <option *ngFor="let committee of committee"  [value]="committee.committeeId">{{committee.committeeName}}</option>
-                    </select>
-                    <lucide-icon [img]="icons.CommitteeIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-icon>
-                </div>
-            </div>
-            <!-- Search Input -->
-            <div class="md:col-span-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                <div class="relative">
-                    <input formControlName="searchTerm" id="searchTerm" type="text" placeholder="Search homestays, activities, products..." class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E]">
-                    <lucide-icon [img]="icons.SearchIcon" class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"></lucide-icon>
-                </div>
-            </div>
-            <!-- Search Button -->
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-transparent mb-2">Search</label>
-                <button (click)="onHeroSearch()" type="button" class="cursor-pointer w-full bg-[#1C2A0E] text-white rounded-lg py-2.5 hover:bg-[#2A3F15] transition-all flex items-center justify-center gap-2">
-                    <lucide-icon [img]="icons.SearchIcon" class="w-5 h-5"></lucide-icon>
-                    Search
-                </button>
-            </div>
-        </form>
+<!-- Floating Search Section (restored style) -->
+<section class="relative -mt-6 md:-mt-20 max-w-6xl mx-auto px-4 z-20">
+  <div class="bg-white rounded-2xl shadow-lg border border-sky-100 p-4 md:p-6">
+    <!-- Category Tabs: Toggle between different content types -->
+    <div class="md:flex md:flex-wrap grid grid-cols-2 gap-2.5 mb-6">
+      <!-- Committees Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': SearchParams.entityType == 'Committee'
+        }"
+        (click)="SearchParams.entityType = 'Committee'"
+        type="button"
+        data-category="villages"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.VillageIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Committees
+      </button>
+      <!-- Homestay Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': SearchParams.entityType == 'Homestay'
+        }"
+        (click)="SearchParams.entityType = 'Homestay'"
+        type="button"
+        data-category="homestays"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.HomestayIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Homestays
+      </button>
+      <!-- Activities Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': SearchParams.entityType == 'Activity'
+        }"
+        (click)="SearchParams.entityType = 'Activity'"
+        type="button"
+        data-category="activities"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.ActivityIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Activities
+      </button>
+      <!-- Products Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': SearchParams.entityType == 'Product'
+        }"
+        (click)="SearchParams.entityType = 'Product'"
+        type="button"
+        data-category="products"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.ProductIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Products
+      </button>
+      <!-- Events Category Button -->
+      <button
+        [ngClass]="{
+          'bg-[#1C2A0E] text-white': SearchParams.entityType == 'Event'
+        }"
+        (click)="SearchParams.entityType = 'Event'"
+        type="button"
+        data-category="events"
+        class="category-btn cursor-pointer px-4 py-2.5 rounded-full text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all text-sm font-medium flex items-center gap-2"
+      >
+        <lucide-angular
+          [img]="icons.EventIcon"
+          class="w-5 h-5"
+        ></lucide-angular>
+        Events
+      </button>
     </div>
+
+    <!-- Search Form: Contains all search input fields -->
+    <form class="grid md:grid-cols-12 gap-4">
+      <!-- Location Dropdown -->
+      <div class="md:col-span-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Region</label
+        >
+        <div class="relative">
+          <select
+            name="district"
+            (change)="loadCommittees()"
+            [(ngModel)]="SearchParams.districtCode"
+            class="cursor-pointer w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none"
+          >
+            <option selected="true" value="">
+              @if (districts&&districts.length>0) { Select Region } @else{
+              loading.. }
+            </option>
+            <option
+              *ngFor="let district of districts"
+              [value]="district.districtId"
+            >
+              {{ district.districtName }}
+            </option>
+          </select>
+          <lucide-angular
+            [img]="icons.LocationIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+          <lucide-angular
+            [img]="icons.DropdownIcon"
+            class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
+
+      <!-- Committee Dropdown -->
+      <div class="md:col-span-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Committee</label
+        >
+        <div class="relative">
+          <select
+            name="committee"
+            [(ngModel)]="SearchParams.committeeId"
+            [disabled]="!(SearchParams.districtCode && committees)"
+            class="w-full cursor-pointer pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E] appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <option selected value="">
+              @if (SearchParams.districtCode && committees ) { Select Committee
+              } @else{ Please Select a Region}
+            </option>
+            <option
+              *ngFor="let committee of committees"
+              [value]="committee.committeeId"
+            >
+              {{ committee.committeeName }}
+            </option>
+          </select>
+          <lucide-angular
+            [img]="icons.VillageIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+          <lucide-angular
+            [img]="icons.DropdownIcon"
+            class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="md:col-span-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Search</label
+        >
+        <div class="relative">
+          <input
+            [(ngModel)]="SearchParams.searchText"
+            name="searchTerm"
+            type="text"
+            placeholder="Search by name, place, or type"
+            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1C2A0E]/20 focus:border-[#1C2A0E]"
+          />
+          <lucide-angular
+            [img]="icons.TextSearchIcon"
+            class="w-5 h-5 text-gray-400 absolute left-1 top-1/2 -translate-y-1/2"
+          ></lucide-angular>
+        </div>
+      </div>
+      <!-- Search Button -->
+      <div class="md:col-span-2">
+        <button
+          (click)="searchAndRedirect()"
+          type="button"
+          class="w-full cursor-pointer mt-7 inline-flex items-center justify-center border border-[#1C2A0E] rounded-lg px-4 py-2.5 text-sm font-medium text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300"
+        >
+          <lucide-angular
+            [img]="icons.SearchIcon"
+            class="w-4 h-4 mr-1.5"
+          ></lucide-angular>
+          Search
+        </button>
+      </div>
+    </form>
+  </div>
 </section>
 
+<!-- Description and GridView -->
+<!-- Statistics and Description Section -->
+<section class="py-10 bg-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Initiative Image and Text -->
+    <div class="flex flex-col items-center mb-12">
+      <img
+        src="tourism_logo.svg"
+        alt="Tourism Logo"
+        class="h-14 object-contain [filter:invert(25%)_sepia(90%)_saturate(1900%)_hue-rotate(208deg)_brightness(75%)_contrast(95%)]"
+      />
+      <h3 class="text-[#1C2A0E] text-lg font-medium py-2">
+        An initiative by the Tourism Department of Sikkim
+      </h3>
+    </div>
 
-<!-------------------Description and GridView----------------->
-    <!-- Statistics and Description Section -->
-    <section class="py-10 bg-white">
-        <div class="max-w-6xl mx-auto px-4">
+    <!-- Main Heading and Description -->
+    <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+      <!-- Left side - Title -->
+      <div class="pr-4">
+        <h2
+          class="text-[#1C2A0E] text-3xl md:text-3xl font-bold leading-tight mb-6"
+        >
+          Bridging Tourists with Sikkim's Vibrant Village Committees
+        </h2>
+      </div>
 
-        <!-- Initiative Image and Text -->
-        <div class="flex flex-col items-center mb-12">
-            <img src="tourism_logo.svg" alt="Tourism Logo" class="h-14 object-contain [filter:invert(25%)_sepia(90%)_saturate(1900%)_hue-rotate(208deg)_brightness(75%)_contrast(95%)]">
-            <h3 class="text-[#1C2A0E] text-lg font-medium py-2">An initiative by the Tourism Department of Sikkim</h3>
-        </div>
+      <!-- Right side - Description -->
+      <div class="md:w-full">
+        <p class="text-base text-[#1C2A0E] leading-relaxed">
+          An initiative by the Tourism Department of Sikkim, this portal brings
+          visibility to Village Committees, homestays, and local experiences
+          that often go unnoticed. By directly connecting travelers with rural
+          hosts, artisans, and event organizers, we empower local tourism while
+          offering visitors an authentic way to explore Sikkim's rich heritage.
+        </p>
+      </div>
+    </div>
 
-            <!-- Main Heading and Description -->
-            <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
-                <!-- Left side - Title -->
-                <div class=" pr-4">
-                    <h2 class="text-[#1C2A0E] text-3xl md:text-3xl font-bold leading-tight mb-6">
-                        Bridging Tourists with Sikkim's Vibrant Village Committees
-                    </h2>
-                </div>
-                
-                <!-- Right side - Description -->
-                <div class=" md:w-full">
-                    <p class="text-base text-[#1C2A0E] leading-relaxed">
-                        An initiative by the Tourism Department of Sikkim, this portal brings visibility to Village Committees, homestays, and local experiences that often go unnoticed. By directly connecting travelers with rural hosts, artisans, and event organizers, we empower local tourism while offering visitors an authentic way to explore Sikkim's rich heritage.
-                    </p>
-                </div>
-            </div>
-  
-            <!-- Statistics Grid -->
-                        <div class="grid  grid-cols-2 sm:grid-cols-3 md:grid-cols-5 border-t border-gray-200 mt-14 pt-16 gap-4">
-                <!-- Village Committees -->
-                <div class="text-center border-r border-gray-200">
-                    <h3 class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl  mb-2">{{counts.committees}}</h3>
-                    <p class="text-[#1C2A0E] text-sm sm:text-base">Village Committees</p>
-                </div>
-  
-                <!-- Home Stays -->
-                <div class="text-center border-r border-gray-200">
-                    <h3 class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl  mb-2">{{counts.homestays}}
-                        <span class="text-3xl sm:text-4xl md:text-5xl">@if (counts.homestays>0) {+}</span></h3>
-                    <p class="text-[#1C2A0E] text-sm sm:text-base">Homestays</p>
-                </div>
-  
-                <!-- Things to do -->
-                <div class="text-center border-r border-gray-200">
-                    <h3 class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl  mb-2">{{counts.activities}}
-                        <span class="text-3xl sm:text-4xl md:text-5xl">@if (counts.activities>0) {+}</span></h3>
-                    <p class="text-[#1C2A0E] text-sm sm:text-base">Activities</p>
-                </div>
-  
-                <!-- Local Products -->
-                <div class="text-center border-r border-gray-200">
-                    <h3 class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl  mb-2">{{counts.products}}
-                        <span class="text-3xl sm:text-4xl md:text-5xl">@if (counts.products>0) {+}</span></h3>
-                    <p class="text-[#1C2A0E] text-sm sm:text-base">Products</p>
-                </div>
-  
-                <!-- Events -->
-                <div class="text-center">
-                    <h3 class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl  mb-2">{{counts.events}}
-                        <span class="text-3xl sm:text-4xl md:text-5xl">@if (counts.events>0) {+}</span></h3>
-                    <p class="text-[#1C2A0E] text-sm sm:text-base">Events</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Statistics Grid -->
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 border-t border-gray-200 mt-14 pt-16 gap-4"
+    >
+      <!-- Village Committees -->
+      <div class="text-center border-r border-gray-200">
+        <h3
+          class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl mb-2"
+        >
+          {{ counts.committees }}
+        </h3>
+        <p class="text-[#1C2A0E] text-sm sm:text-base">Village Committees</p>
+      </div>
+
+      <!-- Home Stays -->
+      <div class="text-center border-r border-gray-200">
+        <h3
+          class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl mb-2"
+        >
+          {{ counts.homestays }}
+          <span class="text-3xl sm:text-4xl md:text-5xl"
+            >@if (counts.homestays>0) {+}</span
+          >
+        </h3>
+        <p class="text-[#1C2A0E] text-sm sm:text-base">Homestays</p>
+      </div>
+
+      <!-- Things to do -->
+      <div class="text-center border-r border-gray-200">
+        <h3
+          class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl mb-2"
+        >
+          {{ counts.activities }}
+          <span class="text-3xl sm:text-4xl md:text-5xl"
+            >@if (counts.activities>0) {+}</span
+          >
+        </h3>
+        <p class="text-[#1C2A0E] text-sm sm:text-base">Activities</p>
+      </div>
+
+      <!-- Local Products -->
+      <div class="text-center border-r border-gray-200">
+        <h3
+          class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl mb-2"
+        >
+          {{ counts.products }}
+          <span class="text-3xl sm:text-4xl md:text-5xl"
+            >@if (counts.products>0) {+}</span
+          >
+        </h3>
+        <p class="text-[#1C2A0E] text-sm sm:text-base">Products</p>
+      </div>
+
+      <!-- Events -->
+      <div class="text-center">
+        <h3
+          class="text-[#1C2A0E] font-bold text-4xl sm:text-5xl md:text-6xl mb-2"
+        >
+          {{ counts.events }}
+          <span class="text-3xl sm:text-4xl md:text-5xl"
+            >@if (counts.events>0) {+}</span
+          >
+        </h3>
+        <p class="text-[#1C2A0E] text-sm sm:text-base">Events</p>
+      </div>
+    </div>
+  </div>
+</section>

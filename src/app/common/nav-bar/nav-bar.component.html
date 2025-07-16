@@ -63,7 +63,7 @@
             routerLinkActive="active-tab"
             class="relative py-2 px-5 text-black transition-all hover:text-[#1C2A0E] hover:bg-gray-50 active:text-[#2A3F15] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0"
           >
-            Local Products
+            Products
           </a>
         </li>
         <li>
@@ -153,7 +153,8 @@
             [routerLink]="'/'"
             [routerLinkActiveOptions]="{ exact: true }"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Home
           </a>
@@ -161,7 +162,8 @@
           <a
             [routerLink]="'/village'"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Villages
           </a>
@@ -169,7 +171,8 @@
           <a
             [routerLink]="'/homestay'"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Home Stays
           </a>
@@ -177,7 +180,8 @@
           <a
             [routerLink]="'/activity'"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Activities
           </a>
@@ -185,7 +189,8 @@
           <a
             [routerLink]="'/product'"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Products
           </a>
@@ -193,20 +198,14 @@
           <a
             [routerLink]="'/event'"
             routerLinkActive="active-tab"
-            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15]"
+            class="block text-2xl font-medium text-[#1C2A0E] transition-all relative after:content-[''] after:absolute after:bottom-[-8px] after:left-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0 hover:text-[#2A3F15] py-4 border-b border-gray-100"
+            (click)="onMobileNavClick()"
           >
             Events
           </a>
         </div>
 
         <!-- Bottom Section with Login Button -->
-        <div class="px-6 py-6 border-t border-gray-200">
-          <button
-            class="w-full cursor-pointer bg-[#1C2A0E] text-white rounded-full py-3 text-lg font-medium hover:bg-[#2A3F15] transition-colors"
-          >
-            Login
-          </button>
-        </div>
       </div>
     </div>
   </nav>
