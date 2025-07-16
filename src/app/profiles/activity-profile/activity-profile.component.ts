@@ -4,11 +4,12 @@ import {
   OnInit,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize } from 'rxjs/operators';
 import { getByIDEndpoints, placeholder } from '../../utils/globalEnums.enum';
 import { CommonModule } from '@angular/common';
-import { register } from 'swiper/element/bundle';
 import {
   LucideAngularModule,
   ArrowLeft,
@@ -39,8 +40,6 @@ import {
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import { ActivitiesCarouselComponent } from '../../carousels/activities-carousel/activities-carousel.component';
 
-register();
-
 @Component({
   selector: 'app-activity-profile',
   standalone: true,
@@ -51,8 +50,6 @@ register();
 })
 export class ActivityProfileComponent implements OnInit {
   placeholder: placeholder = placeholder.image;
-  loading: boolean = false;
-  noDataFound: boolean = false;
   activityInfo: any = [];
   showModal: boolean = false;
   selectedImage: string = '';
@@ -88,8 +85,12 @@ export class ActivityProfileComponent implements OnInit {
   };
 
   private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
+  private routerNav: Router;
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private activatedRoute: ActivatedRoute, router: Router) {
+    this.routerNav = router;
+  }
 
   ngOnInit() {
     this.getFirstSegment();
@@ -97,57 +98,48 @@ export class ActivityProfileComponent implements OnInit {
 
   getFirstSegment(): boolean {
     let segmentFound = false;
-
-    // Get route parameters using ActivatedRoute
-    this.router.paramMap.subscribe((params) => {
+    this.activatedRoute.paramMap.subscribe((params) => {
       const id = params.get('id');
-
       if (id) {
-        // If ID is present, load committee data
-        this.loadActivityData(parseInt(id)); // Load data with ID
+        this.loadActivityData(parseInt(id));
         segmentFound = true;
       } else {
-        // Fallback if no ID
         console.log('No valid ID found in route.');
+        this.handleNoDataFound();
       }
     });
-
     return segmentFound;
   }
 
   // ✅ Fetch  data
   loadActivityData(id: number): void {
-    this.loading = true;
+    this.loader.showLoader();
     this.apiService
       .getDataById<any>(getByIDEndpoints.activities, id)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
       .subscribe({
         next: (data: any) => {
-          console.log(data);
-
-          // Check if data is valid
           if (data) {
-            // Enrich with additional properties (no need for mapping here)
             this.activityInfo = data;
           } else {
-            // Handle no data scenario
             this.handleNoDataFound();
           }
         },
         error: (error: any) => {
           console.error('Error fetching data:', error);
-          this.handleNoDataFound(); // Handle error gracefully
-        },
-        complete: () => {
-          this.loading = false;
-          console.log('Data fetch completed:', this.activityInfo);
+          this.handleNoDataFound();
         },
       });
   }
 
   // Handle no data scenario
   handleNoDataFound() {
-    this.noDataFound = true;
-    this.loading = false;
+    this.loader.hideLoader();
+    this.routerNav.navigate(['/not-found']);
   }
 
   openImageModal(imageUrl: string): void {
