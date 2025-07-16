@@ -2,8 +2,7 @@ import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../utils/globalEnums.enum';
-import { CommonModule } from '@angular/common';
-import { register } from 'swiper/element/bundle';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
 import {
@@ -39,9 +38,10 @@ import { HomestaysCarouselComponent } from '../../carousels/homestays-carousel/h
 import { ProductsCarouselComponent } from '../../carousels/products-carousel/products-carousel.component';
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
 import { ActivitiesCarouselComponent } from '../../carousels/activities-carousel/activities-carousel.component';
-
-// Register Swiper custom elements
-register();
+import { finalize } from 'rxjs';
+import { LoaderService } from '../../../services/loader.service';
+import { Router } from '@angular/router';
+import { PLATFORM_ID, inject as ngInject } from '@angular/core';
 
 @Component({
   selector: 'app-homestay-profile',
@@ -58,13 +58,15 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomestayProfileComponent implements OnInit, AfterViewInit {
-  loading: boolean = false;
-  noDataFound: boolean = false;
   homestayInfo: any = [];
   placeholder: placeholder = placeholder.image;
   private _smallImages: any[] = [];
   mainImage: any = null;
   public handleImageError = handleImageError;
+  private loader = inject(LoaderService);
+  private router: Router;
+  private platformId = ngInject(PLATFORM_ID);
+  isBrowser: boolean = true;
 
   // Carousel counts for section visibility
   activitiesCount = 0;
@@ -103,23 +105,28 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
 
   private apiService = inject(ApiService);
 
-  constructor(private router: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, router: Router) {
+    this.router = router;
+  }
 
   ngOnInit() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getFirstSegment();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      const swiperContainer = document.querySelector('swiper-container');
-      if (swiperContainer) {
-        const swiper = (swiperContainer as any).swiper;
-        if (swiper) {
-          swiper.update();
-          swiper.updateSlides();
+    if (this.isBrowser) {
+      setTimeout(() => {
+        const swiperContainer = document.querySelector('swiper-container');
+        if (swiperContainer) {
+          const swiper = (swiperContainer as any).swiper;
+          if (swiper) {
+            swiper.update();
+            swiper.updateSlides();
+          }
         }
-      }
-    }, 0);
+      }, 0);
+    }
   }
 
   get smallImages(): any[] {
@@ -135,14 +142,16 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
       const currentIndex = this._smallImages.findIndex((img) => img === image);
       if (currentIndex !== -1) {
         // Add fade-in animation class
-        const mainImageElement = document.querySelector(
-          '.main-image-container img'
-        );
-        if (mainImageElement) {
-          mainImageElement.classList.add('fade-in');
-          setTimeout(() => {
-            mainImageElement.classList.remove('fade-in');
-          }, 500);
+        if (this.isBrowser) {
+          const mainImageElement = document.querySelector(
+            '.main-image-container img'
+          );
+          if (mainImageElement) {
+            mainImageElement.classList.add('fade-in');
+            setTimeout(() => {
+              mainImageElement.classList.remove('fade-in');
+            }, 500);
+          }
         }
 
         // Swap the main image with the selected image
@@ -157,14 +166,16 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector(
-        '.main-image-container img'
-      );
-      if (mainImageElement) {
-        mainImageElement.classList.add('fade-in');
-        setTimeout(() => {
-          mainImageElement.classList.remove('fade-in');
-        }, 500);
+      if (this.isBrowser) {
+        const mainImageElement = document.querySelector(
+          '.main-image-container img'
+        );
+        if (mainImageElement) {
+          mainImageElement.classList.add('fade-in');
+          setTimeout(() => {
+            mainImageElement.classList.remove('fade-in');
+          }, 500);
+        }
       }
 
       const firstImage = this._smallImages[0];
@@ -178,14 +189,16 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
     if (this._smallImages.length > 0) {
       // Add fade-in animation class
-      const mainImageElement = document.querySelector(
-        '.main-image-container img'
-      );
-      if (mainImageElement) {
-        mainImageElement.classList.add('fade-in');
-        setTimeout(() => {
-          mainImageElement.classList.remove('fade-in');
-        }, 500);
+      if (this.isBrowser) {
+        const mainImageElement = document.querySelector(
+          '.main-image-container img'
+        );
+        if (mainImageElement) {
+          mainImageElement.classList.add('fade-in');
+          setTimeout(() => {
+            mainImageElement.classList.remove('fade-in');
+          }, 500);
+        }
       }
 
       const lastImage = this._smallImages[this._smallImages.length - 1];
@@ -197,12 +210,13 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
 
   getFirstSegment(): boolean {
     let segmentFound = false;
-    this.router.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.loadHomestayData(parseInt(id));
         segmentFound = true;
       } else {
+        this.handleNoDataFound();
         console.log('No valid ID found in route.');
       }
     });
@@ -210,32 +224,57 @@ export class HomestayProfileComponent implements OnInit, AfterViewInit {
   }
 
   loadHomestayData(id: number): void {
-    this.loading = true;
-    this.apiService.getDataById<any>(getByIDEndpoints.homestays, id).subscribe({
-      next: (data: any) => {
-        if (data) {
-          this.homestayInfo = data;
-          // Set first image as main image
-          this.mainImage = data.images?.[0] || null;
-          // Store remaining images as small images
-          this._smallImages = data.images?.slice(1) || [];
-        } else {
+    this.loader.showLoader();
+    this.apiService
+      .getDataById<any>(getByIDEndpoints.homestays, id)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (data: any) => {
+          if (data) {
+            this.homestayInfo = data;
+
+            // --- Robust Image Handling ---
+            const placeholderImg = { imageUrl: placeholder.image };
+
+            const validImages = Array.isArray(data.images)
+              ? data.images.filter(
+                  (img: any) =>
+                    img &&
+                    typeof img.imageUrl === 'string' &&
+                    img.imageUrl.trim() !== ''
+                )
+              : [];
+
+            this.mainImage =
+              validImages.length > 0 ? validImages[0] : placeholderImg;
+
+            const smallImages = validImages.slice(1, 3);
+            if (smallImages.length === 0) {
+              this._smallImages = [placeholderImg, placeholderImg];
+            } else if (smallImages.length === 1) {
+              this._smallImages = [smallImages[0], placeholderImg];
+            } else {
+              this._smallImages = smallImages;
+            }
+          } else {
+            this.handleNoDataFound();
+          }
+        },
+        error: (error: any) => {
+          console.error('Error fetching homestay data:', error);
           this.handleNoDataFound();
-        }
-      },
-      error: (error: any) => {
-        console.error('Error fetching data:', error);
-        this.handleNoDataFound();
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
+        },
+      });
   }
 
   handleNoDataFound() {
-    this.noDataFound = true;
-    this.loading = false;
+    // Redirect to not-found route
+    this.loader.hideLoader();
+    this.router.navigate(['/not-found']);
   }
 
   getSocialMediaLinks(): { name: string; url: string; icon: any }[] {
