@@ -1,32 +1,53 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit,inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getDynamicClass,getProfileImage, getDistrictClass, handleImageError } from '../../utils/utils';
+import {
+  getDynamicClass,
+  getProfileImage,
+  getDistrictClass,
+  handleImageError,
+} from '../../utils/utils';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
-import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
-import { LucideAngularModule, MapPin, Users, Tag, ChevronRight, ShoppingBag, HousePlus, Award } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  MapPin,
+  Users,
+  Tag,
+  ChevronRight,
+  ShoppingBag,
+  HousePlus,
+  Award,
+} from 'lucide-angular';
+import { ApiService } from '../../../services/api.service';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-search-product',
   templateUrl: './search-product.component.html',
   styleUrls: ['./search-product.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
+  imports: [CommonModule, RouterLink, NgxPaginationModule, LucideAngularModule],
 })
 export class SearchProductComponent implements OnInit {
-
-  private searchService = inject(SearchService)
+  private searchService = inject(SearchService);
+  private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
   public getProfileImage = getProfileImage;
   public getDistrictClass = getDistrictClass;
   public handleImageError = handleImageError;
 
-  itemPerPage=search.itemPerPage;
-  pageNo:number=1
-  productData:any[]=[]
-  totalRecords:number=0
-  isDataFound=false;
-  isLoading:boolean=false;
-  
+  productData: any[] = [];
+  pagination = {
+    pageNo: 1,
+    pageSize: 0,
+    totalRecords: 0,
+  };
+
+  // Observables for template
+  isLoading$ = this.loader.isLoading$;
+  isDataFound$ = this.searchService.isDataFound$;
+
   // Define icons object
   icons = {
     ArrowIcon: ChevronRight,
@@ -37,59 +58,59 @@ export class SearchProductComponent implements OnInit {
     Users: Users,
     MapPin: MapPin,
     HouseIcon: HousePlus,
-    Award: Award
+    Award: Award,
   };
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.searchService.queryState$.subscribe(({ type, query }) => {
-      this.loadData(type, query);
-    });
-
-    this.searchService.loading$.subscribe((isLoading) => {
-      this.isLoading = isLoading;
-    });
+    this.searchService.searchParams$
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe((params) => {
+        this.pagination.pageSize = params.pageSize;
+        this.pagination.pageNo = params.pageNumber;
+        this.getProducts();
+      });
   }
 
+  getProducts() {
+    this.loader.showLoader();
+    this.productData = [];
+    const url = this.searchService.querySearchEndpoint();
+    this.apiService
+      .get(url)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.productData = res.data;
+            this.pagination.totalRecords = res.totalRecords;
+            this.searchService.isDataFound.next(
+              !!(this.productData && this.productData.length)
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.searchService.isDataFound.next(false);
+        },
+      });
+  }
 
-loadData(type: 'paginated' | 'filtered', query: any): void {
-  this.productData=[];
-  this.totalRecords=0;
-
-  this.searchService.getData(type, query).subscribe((result: any) => {
-    if (result.isDataAvailable) {
-      this.productData = result.items;
-      if(type=='paginated')
-      {
-        this.totalRecords = result.totalRecords;
-      }
-      else if(type=='filtered')
-      {
-        this.totalRecords = result.items.length;
-      }
-    } 
-  });
-}
-
-
-  getClass(input:number){
+  getClass(input: number) {
     return getDynamicClass(input);
   }
-  
-  // ✅ Handle Page Change (ngx-pagination)
-onPageChange(pageNumber: number): void {
-  this.pageNo = pageNumber 
-  this.getPaginatedData(paginatedEndpoints.products,this.pageNo,search.itemPerPage)
-  
-}
 
-   // ✅ Handle paginated data request
-   getPaginatedData(endpoint:paginatedEndpoints,pageNo: number, itemPerPage: number): void {
-    this.searchService.updateQueryState('paginated', { endpoint,pageNo, itemPerPage });
+  onPageChange(pageNumber: number): void {
+    this.searchService.updateParams({
+      pageNumber: pageNumber,
+    });
   }
-
-
-
-
 }
