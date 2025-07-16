@@ -2,13 +2,11 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
-import { Validators, FormsModule } from '@angular/forms';
-import { GlobalEnums } from '../../utils/globalEnums.enum';
+import { FormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import {
   LucideAngularModule,
-  MapPin,
   Users,
   Tag,
   ChevronRight,
@@ -21,14 +19,15 @@ import {
   Search,
   Milestone,
   ChevronDown,
-  X,
-  CodeSquare,
 } from 'lucide-angular';
 import {
   EntityType,
   DistrictCode,
   SearchService,
 } from '../../../services/search.service';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 interface SearchParams {
   entityType: EntityType;
@@ -48,6 +47,7 @@ export class HeroSectionComponent implements OnInit, AfterViewInit {
   private apiService = inject(ApiService);
   private router = inject(Router);
   private searchService = inject(SearchService);
+  private loader = inject(LoaderService);
 
   counts: any = {
     committees: '00',
@@ -87,8 +87,30 @@ export class HeroSectionComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.fetchEntityCounts();
-    this.loadDistricts();
+    this.loader.showLoader();
+    forkJoin({
+      entityCounts: this.apiService.getData('website/entity-counts').pipe(
+        catchError((error) => {
+          console.error('Error fetching entity counts:', error);
+          return of({});
+        })
+      ),
+      districts: this.apiService.getData('website/districts').pipe(
+        catchError((error) => {
+          console.error('Error Fetching Districts', error);
+          return of([]);
+        })
+      ),
+    })
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe(({ entityCounts, districts }) => {
+        this.handleEntityData(entityCounts);
+        this.districts = districts;
+      });
   }
 
   loadDistricts(): void {

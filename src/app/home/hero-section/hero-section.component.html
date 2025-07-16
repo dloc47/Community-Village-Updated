@@ -1,7 +1,9 @@
 <!-- Hero Section with Background Image -->
-<section class="relative h-screen p-2 sm:p-4 md:p-8">
+<section class="relative h-[75vh] sm:h-[80vh] md:h-screen p-2 sm:p-4 md:p-8">
   <!-- Background Image -->
-  <div class="absolute inset-4 sm:inset-8 rounded-[24px] overflow-hidden z-0">
+  <div
+    class="absolute inset-2 sm:inset-8 rounded-[14px] sm:rounded-[24px] overflow-hidden z-0"
+  >
     <img
       src="assets/images/general/hero-bg2.jpg"
       alt="Scenic view of Sikkim mountains and traditional house"
@@ -11,28 +13,44 @@
   </div>
 
   <div
-    class="absolute bg-white/10 shadow-sky-50 shadow-2xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-[80%] md:w-[70%] lg:w-3xl h-[80%] sm:h-[70%] md:h-[60%] lg:h-[26rem] p-4"
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[98%] sm:w-[80%] md:w-[70%] lg:w-3xl h-[90%] sm:h-[70%] md:h-[60%] lg:h-[26rem] p-10 sm:p-4"
   >
     <!-- Top Left Corner -->
-    <div class="absolute top-0 left-0 w-1/3 border-t-5 border-white"></div>
-    <div class="absolute top-0 left-0 h-1/2 border-l-5 border-white"></div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-[120%] -translate-y-[120%] w-14 border-t-4 border-white sm:-translate-x-[180%] sm:-translate-y-[180%] sm:w-24 sm:border-t-5"
+    ></div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-[120%] -translate-y-[120%] h-14 border-l-4 border-white sm:-translate-x-[180%] sm:-translate-y-[180%] sm:h-24 sm:border-l-5"
+    ></div>
 
-    <!-- Bottom 19-05-25Right Corner -->
-    <div class="absolute bottom-0 right-0 w-1/3 border-b-5 border-white"></div>
-    <div class="absolute bottom-0 right-0 h-1/2 border-r-5 border-white"></div>
+    <!-- Bottom Right Corner -->
+    <div
+      class="absolute top-1/2 left-1/2 translate-x-[120%] translate-y-[120%] w-14 border-b-4 border-white sm:translate-x-[180%] sm:translate-y-[180%] sm:w-24 sm:border-b-5"
+    ></div>
+    <div
+      class="absolute top-1/2 left-1/2 translate-x-[120%] translate-y-[120%] h-14 border-r-4 border-white sm:translate-x-[180%] sm:translate-y-[180%] sm:h-24 sm:border-r-5"
+    ></div>
 
     <!-- Content -->
-    <div
-      class="text-center relative h-full max-w-6xl mx-auto px-4 flex flex-col justify-center z-10"
-    >
-      <div class="max-w-3xl">
+    <div class="flex items-center justify-center h-full w-full relative z-10">
+      <div
+        class="relative w-full max-w-2xl mx-auto px-2 sm:px-6 py-6 rounded-2xl bg-black/25 backdrop-blur-md overflow-hidden"
+      >
+        <!-- Top-left border -->
+        <div
+          class="absolute top-0 left-0 w-34 h-34 border-t-3 border-l-3 border-white rounded-tl-2xl z-10"
+        ></div>
+        <!-- Bottom-right border -->
+        <div
+          class="absolute bottom-0 right-0 w-34 h-34 border-b-3 border-r-3 border-white rounded-br-2xl z-10"
+        ></div>
         <h1
-          class="text-3xl sm:text-4xl md:text-5xl text-white font-semibold mb-4 sm:mb-6 leading-tight"
+          class="text-3xl sm:text-4xl md:text-5xl text-white font-semibold mb-4 sm:mb-6 leading-tight text-center"
         >
           Stay Local. Explore Nature. Experience Authentic Traditions.
         </h1>
         <p
-          class="text-sm sm:text-base lg:text-xl text-white/90 mb-4 max-w-full md:max-w-2xl"
+          class="text-sm sm:text-base lg:text-xl text-white/90 mb-4 max-w-full md:max-w-2xl text-center"
         >
           Immerse yourself in the beauty of Sikkim's villages, where tradition
           meets modern exploration. Find cozy homestays, experience cultural
@@ -40,13 +58,15 @@
           treasures—all while directly supporting the community. Your journey to
           authentic Sikkim starts here!
         </p>
+        <div class="flex justify-center">
+          <button
+            routerLink="/search"
+            class="cursor-pointer border-2 w-32 sm:w-40 flex justify-center border-white text-white px-4 sm:px-6 py-2 text-base sm:text-lg font-semibold rounded-full backdrop-blur-md bg-white/10 hover:bg-white/20 hover:border-white/50 transition-all duration-300 ease-in-out"
+          >
+            Explore
+          </button>
+        </div>
       </div>
-      <button
-        routerLink="/search"
-        class="cursor-pointer border-2 w-32 sm:w-40 flex justify-center self-center border-white text-white px-4 sm:px-6 py-2 text-base sm:text-lg font-semibold rounded-full backdrop-blur-md bg-white/10 hover:bg-white/20 hover:border-white/50 transition-all duration-300 ease-in-out"
-      >
-        Explore
-      </button>
     </div>
   </div>
 </section>
