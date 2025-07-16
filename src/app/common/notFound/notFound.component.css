@@ -1,0 +1,39 @@
+/* Animate the search icon with a subtle pulsing effect */
+.animate-search {
+  animation: search-pulse 1.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  color: #1c2a0e;
+}
+
+@keyframes search-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Neutral hover for Go to Search button */
+button:hover.bg-white,
+button.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+  color: #1c2a0e;
+  border-color: #1c2a0e;
+}
+
+/* Primary button hover/focus uses black */
+button.bg-\[\#1C2A0E\]:hover,
+button.bg-\[\#1C2A0E\]:focus {
+  background-color: #000 !important;
+  color: #fff;
+  border-color: #000;
+}
+button.bg-\[\#1C2A0E\]:focus {
+  box-shadow: 0 0 0 2px #0002;
+}

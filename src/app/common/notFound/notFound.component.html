@@ -1,0 +1,61 @@
+<div
+  class="w-full min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-[#f4f7f3] to-[#eaf1e6] px-4"
+>
+  <div
+    class="w-full max-w-lg text-center rounded-3xl p-8 md:p-12 relative overflow-hidden"
+  >
+    <!-- Watermark Logo -->
+    <img
+      src="/tourism_logo.svg"
+      alt="Tourism Logo"
+      class="absolute opacity-10 w-64 h-64 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+      style="z-index: 0"
+    />
+    <div
+      class="flex flex-col items-center justify-center space-y-6 relative z-10"
+    >
+      <!-- Icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-16 h-16 text-[#1C2A0E] mb-2 animate-search"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+        />
+      </svg>
+      <!-- Heading -->
+      <h2 class="text-3xl font-bold text-[#1C2A0E]">
+        We couldn’t find what you’re looking for
+      </h2>
+
+      <!-- Message -->
+      <p class="text-gray-600 text-base max-w-md mx-auto">
+        The resource you’re trying to view might have been moved, removed, or
+        doesn’t exist.<br />
+        Please check the link, try searching again, or go back to the homepage.
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
+        <button
+          (click)="goHome()"
+          class="bg-[#1C2A0E] hover:bg-black text-white font-semibold px-6 py-2 rounded-lg transition-all shadow focus:outline-none focus:ring-2 focus:ring-black"
+        >
+          Return Home
+        </button>
+        <button
+          (click)="goSearch()"
+          class="border border-[#1C2A0E] text-[#1C2A0E] hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all bg-white focus:outline-none focus:ring-2 focus:ring-gray-200"
+        >
+          Go to Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

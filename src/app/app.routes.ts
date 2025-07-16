@@ -6,6 +6,7 @@ import { ActivityProfileComponent } from './profiles/activity-profile/activity-p
 import { ProductProfleComponent } from './profiles/product-profle/product-profle.component';
 import { CommitteeProfileComponent } from './profiles/committee-profile/committee-profile.component';
 import { EventProfileComponent } from './profiles/event-profile/event-profile.component';
+import { NotFoundComponent } from './common/notFound/notFound.component';
 
 export const routes: Routes = [
   { path: '', component: HomeMainComponent },
@@ -99,4 +100,6 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent },
 ];

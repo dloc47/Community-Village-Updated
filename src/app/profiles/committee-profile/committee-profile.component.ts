@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { PLATFORM_ID, inject as ngInject } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ApiService } from '../../../services/api.service';
 import { getByIDEndpoints, placeholder } from '../../utils/globalEnums.enum';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { register } from 'swiper/element/bundle';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { handleImageError, getDistrictClass } from '../../utils/utils';
@@ -34,9 +34,9 @@ import { ProductsCarouselComponent } from '../../carousels/products-carousel/pro
 import { EventsCarouselComponent } from '../../carousels/events-carousel/events-carousel.component';
 import { ActivitiesCarouselComponent } from '../../carousels/activities-carousel/activities-carousel.component';
 import { CommitteeCarouselComponent } from '../../carousels/committee-carousel/committee-carousel.component';
+import { isPlatformBrowser } from '@angular/common';
+import { LoaderService } from '../../../services/loader.service';
 
-// Register Swiper custom elements
-register();
 @Component({
   selector: 'app-committee-profile',
   templateUrl: './committee-profile.component.html',
@@ -55,42 +55,10 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CommitteeProfileComponent implements OnInit {
-  districtId: any;
-
   private apiService = inject(ApiService);
-  public handleImageError = handleImageError;
-  committeeInfo: any = [];
-  private _smallImages: any[] = [];
-  mainImage: any = null;
-  Math = Math;
-
-  get smallImages(): any[] {
-    return this._smallImages;
-  }
-
-  get galleryImages(): any[] {
-    return [this.mainImage, ...this._smallImages].filter((img) => img !== null);
-  }
-
-  loading: boolean = false;
-  noDataFound: boolean = false;
-  imgPlaceholder = placeholder.image;
-
-  // Default coordinates for Sikkim state center
-  latitude: string = '27.543024123517547';
-  longitude: string = '88.41507197403864';
-  zoom: number = 8; // Reduced zoom to show more of the state
-  mapType: string = 'k'; // Default to satellite view
-
-  get mapUrl(): string {
-    return `https://maps.google.com/maps?q=${this.latitude},${this.longitude}&z=${this.zoom}&t=${this.mapType}&output=embed`;
-  }
-
-  get safeMapUrl(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.mapUrl);
-  }
-
-  isMapModalOpen: boolean = false;
+  private platformId = ngInject(PLATFORM_ID);
+  private loader = inject(LoaderService);
+  private router: Router;
 
   icons = {
     ArrowLeft: ArrowLeft,
@@ -111,10 +79,43 @@ export class CommitteeProfileComponent implements OnInit {
     Tags: Tags,
   };
 
+  districtId: any;
+  imgPlaceholder = placeholder.image;
+  public handleImageError = handleImageError;
+  committeeInfo: any = [];
+  private _smallImages: any[] = [];
+  mainImage: any = null;
+  Math = Math;
+  // Default coordinates for Sikkim state center
+  latitude: string = '27.543024123517547';
+  longitude: string = '88.41507197403864';
+  zoom: number = 8; // Reduced zoom to show more of the state
+  mapType: string = 'k'; // Default to satellite view
+  isMapModalOpen: boolean = false;
+
+  get smallImages(): any[] {
+    return this._smallImages;
+  }
+
+  get galleryImages(): any[] {
+    return [this.mainImage, ...this._smallImages].filter((img) => img !== null);
+  }
+
+  get mapUrl(): string {
+    return `https://maps.google.com/maps?q=${this.latitude},${this.longitude}&z=${this.zoom}&t=${this.mapType}&output=embed`;
+  }
+
+  get safeMapUrl(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.mapUrl);
+  }
+
   constructor(
     private sanitizer: DomSanitizer,
-    private router: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    router: Router
+  ) {
+    this.router = router;
+  }
 
   ngOnInit(): void {
     this.getFirstSegment();
@@ -122,12 +123,13 @@ export class CommitteeProfileComponent implements OnInit {
 
   getFirstSegment(): boolean {
     let segmentFound = false;
-    this.router.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.loadCommitteeData(id);
         segmentFound = true;
       } else {
+        this.handleNoDataFound();
         console.log('No valid ID found in route.');
       }
     });
@@ -164,23 +166,25 @@ export class CommitteeProfileComponent implements OnInit {
   }
 
   nextImage(event: Event): void {
-    event.stopPropagation();
-    if (this._smallImages.length > 0) {
-      // Add fade-in animation class
-      const mainImageElement = document.querySelector(
-        '.main-image-container img'
-      );
-      if (mainImageElement) {
-        mainImageElement.classList.add('fade-in');
-        setTimeout(() => {
-          mainImageElement.classList.remove('fade-in');
-        }, 500);
-      }
+    if (isPlatformBrowser(this.platformId)) {
+      event.stopPropagation();
+      if (this._smallImages.length > 0) {
+        // Add fade-in animation class
+        const mainImageElement = document.querySelector(
+          '.main-image-container img'
+        );
+        if (mainImageElement) {
+          mainImageElement.classList.add('fade-in');
+          setTimeout(() => {
+            mainImageElement.classList.remove('fade-in');
+          }, 500);
+        }
 
-      const firstImage = this._smallImages[0];
-      this._smallImages.shift();
-      this._smallImages.push(this.mainImage);
-      this.mainImage = firstImage;
+        const firstImage = this._smallImages[0];
+        this._smallImages.shift();
+        this._smallImages.push(this.mainImage);
+        this.mainImage = firstImage;
+      }
     }
   }
 
@@ -206,12 +210,12 @@ export class CommitteeProfileComponent implements OnInit {
   }
 
   loadCommitteeData(id: string): void {
-    this.loading = true;
+    this.loader.showLoader();
     this.apiService
       .getDataById<any>(getByIDEndpoints.villages, id)
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loader.hideLoader();
         })
       )
       .subscribe({
@@ -219,16 +223,41 @@ export class CommitteeProfileComponent implements OnInit {
           if (data) {
             this.committeeInfo = data;
             this.districtId = data.districtId;
-            // Set first image as main image
-            this.mainImage = data.images?.[0] || null;
-            // Store remaining images as small images
-            this._smallImages = data.images?.slice(1) || [];
 
-            // Update map coordinates if available, but keep zoom level for state view
-            if (data.latitude && data.longitude) {
-              this.latitude = data.latitude ? data.latitude : this.latitude;
-              this.longitude = data.longitude ? data.longitude : this.longitude;
-              // Keep zoom level at 8 to show state context
+            // --- Robust Image Handling ---
+            const placeholderImg = { imageUrl: placeholder.image };
+
+            // Ensure data.images is a valid array
+            const validImages = Array.isArray(data.images)
+              ? data.images.filter(
+                  (img: any) =>
+                    img &&
+                    typeof img.imageUrl === 'string' &&
+                    img.imageUrl.trim() !== ''
+                )
+              : [];
+
+            // Main image
+            this.mainImage =
+              validImages.length > 0 ? validImages[0] : placeholderImg;
+
+            // Small images (2 max)
+            const smallImages = validImages.slice(1, 3);
+            if (smallImages.length === 0) {
+              this._smallImages = [placeholderImg, placeholderImg];
+            } else if (smallImages.length === 1) {
+              this._smallImages = [smallImages[0], placeholderImg];
+            } else {
+              this._smallImages = smallImages;
+            }
+
+            // --- Location Handling ---
+            if (
+              typeof data.latitude === 'number' &&
+              typeof data.longitude === 'number'
+            ) {
+              this.latitude = data.latitude;
+              this.longitude = data.longitude;
               this.zoom = 8;
             }
           } else {
@@ -243,17 +272,22 @@ export class CommitteeProfileComponent implements OnInit {
   }
 
   handleNoDataFound() {
-    this.noDataFound = true;
+    // Redirect to not-found route
+    this.router.navigate(['/not-found']);
   }
 
   openMapModal(): void {
     this.isMapModalOpen = true;
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
   }
 
   closeMapModal(): void {
     this.isMapModalOpen = false;
-    document.body.style.overflow = ''; // Restore background scrolling
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.style.overflow = '';
+    }
   }
 
   getDistrictClasses(region: string): string {
