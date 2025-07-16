@@ -1,88 +1,103 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchService } from '../../../services/search.service';
-import { paginatedEndpoints, search } from '../../utils/globalEnums.enum';
-import { getProfileImage, handleImageError, getDistrictClass } from '../../utils/utils';
-import { LucideAngularModule, MapPin, ChevronRight, Users, Tag, HousePlus, Award } from 'lucide-angular';
+import {
+  getProfileImage,
+  handleImageError,
+  getDistrictClass,
+} from '../../utils/utils';
+import {
+  LucideAngularModule,
+  MapPin,
+  ChevronRight,
+  Users,
+  Tag,
+  HousePlus,
+  Award,
+} from 'lucide-angular';
+import { ApiService } from '../../../services/api.service';
+import { LoaderService } from '../../../services/loader.service';
+import { finalize, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-search-homestay',
   templateUrl: './search-homestay.component.html',
   styleUrls: ['./search-homestay.component.css'],
-  imports:[CommonModule,RouterLink,NgxPaginationModule,LucideAngularModule]
+  imports: [CommonModule, RouterLink, NgxPaginationModule, LucideAngularModule],
 })
 export class SearchHomestayComponent implements OnInit {
+  private searchService = inject(SearchService);
+  private apiService = inject(ApiService);
+  private loader = inject(LoaderService);
+  public getProfileImage = getProfileImage;
+  public getDistrictClass = getDistrictClass;
+  public handleImageError = handleImageError;
 
- private searchService = inject(SearchService)
- public getProfileImage =getProfileImage
- public getDistrictClass =getDistrictClass
- public handleImageError =handleImageError
+  homestayData: any[] = [];
+  pagination = {
+    pageNo: 1,
+    pageSize: 0,
+    totalRecords: 0,
+  };
 
- itemPerPage=search.itemPerPage;
- pageNo:number=1
- homestayData:any[]=[]
- totalRecords:number=0
- isDataFound=false;
- isLoading:boolean=false;
-
- // Define icons object
- icons = {
-   ArrowIcon: ChevronRight,
-   DistrictIcon: MapPin,
-   CommitteeIcon: Users,
-   TagIcon: Tag,
-   HomestayIcon: HousePlus,
-   Users: Users,
-   MapPin: MapPin,
-   Award: Award
- };
-
-  constructor() { }
+  // Define icons object
+  icons = {
+    ArrowIcon: ChevronRight,
+    DistrictIcon: MapPin,
+    CommitteeIcon: Users,
+    TagIcon: Tag,
+    HomestayIcon: HousePlus,
+    Users: Users,
+    MapPin: MapPin,
+    Award: Award,
+  };
 
   ngOnInit() {
-    this.searchService.queryState$.subscribe(({ type, query }) => {
-      this.loadData(type, query);
-    });
-
-    this.searchService.loading$.subscribe((isLoading) => {
-      this.isLoading = isLoading;
-    });
+    this.searchService.searchParams$
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe((params) => {
+        this.pagination.pageSize = params.pageSize;
+        this.pagination.pageNo = params.pageNumber;
+        this.getHomestays();
+      });
   }
 
-
-loadData(type: 'paginated' | 'filtered', query: any): void {
-  this.homestayData=[];
-
-  this.searchService.getData(type, query).subscribe((result: any) => {
-    if (result.isDataAvailable) {
-      this.homestayData = result.items;
-      if(type=='paginated')
-      {
-        this.totalRecords = result.totalRecords;
-      }
-      else if(type=='filtered')
-      {
-        this.totalRecords = result.items.length;
-      }
-    } 
-  });
-}
-
-
-
-
-  // ✅ Handle Page Change (ngx-pagination)
-onPageChange(pageNumber: number): void {
-  this.pageNo = pageNumber 
-  this.getPaginatedData(paginatedEndpoints.homestays,this.pageNo,search.itemPerPage)
-  
-}
-
-   // ✅ Handle paginated data request
-   getPaginatedData(endpoint:paginatedEndpoints,pageNo: number, itemPerPage: number): void {
-    this.searchService.updateQueryState('paginated', { endpoint,pageNo, itemPerPage });
+  getHomestays() {
+    this.loader.showLoader();
+    this.homestayData = [];
+    const url = this.searchService.querySearchEndpoint();
+    this.apiService
+      .get(url)
+      .pipe(
+        finalize(() => {
+          this.loader.hideLoader();
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.homestayData = res.data;
+            this.pagination.totalRecords = res.totalRecords;
+            this.searchService.isDataFound.next(
+              !!(this.homestayData && this.homestayData.length)
+            );
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.searchService.isDataFound.next(false);
+        },
+      });
   }
 
+  onPageChange(pageNumber: number): void {
+    this.searchService.updateParams({
+      pageNumber: pageNumber,
+    });
+  }
 }

@@ -1,73 +1,130 @@
 <!-- ------------------------- Homestays ------------------------------ -->
-<div *ngFor="let homestay of homestayData | paginate: { itemsPerPage: itemPerPage, currentPage: pageNo, totalItems: totalRecords }; let i = index"
-	class="bg-white rounded-xl my-4 shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0] border border-gray-200">
-	<div class="flex flex-col sm:flex-row h-auto sm:h-48">
-		<div class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0">
-			<!-- Verified Tag -->
-			<span *ngIf="homestay.verificationStatusId === 1" 
-				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow">
-				<lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
-				Verified by Committee
-			</span>
-			<span *ngIf="homestay.verificationStatusId === 2" 
-				class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow">
-				<lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
-				Verified
-			</span>
-			<img [src]="getProfileImage(homestay.images)"
-				[alt]="homestay.homestayName"
-				(error)="handleImageError($event)"
-				class="w-full h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none transition duration-500">
-		</div>
-		<div class="flex-1 p-4 flex flex-col">
-			<div class="flex-grow">
-				<div class="flex flex-row flex-wrap items-center gap-2 mb-2">
-					<h4 class="text-base font-semibold whitespace-nowrap line-clamp-1 flex items-center gap-1">
-						<lucide-angular [img]="icons.HomestayIcon" class="w-5 h-5 text-emerald-700" stroke-width="2"></lucide-angular>
-						{{homestay.homestayName}}
-					</h4>
-					<span class="inline-flex items-center px-3 py-1.5 hover:text-white ml-2 rounded-full text-xs border font-medium gap-1"
-						[ngClass]="getDistrictClass(homestay.districtName)">
-						<lucide-angular [img]="icons.DistrictIcon" class="w-4 h-4" stroke-width="2"></lucide-angular>
-						{{homestay.districtName}}
-					</span>
-				</div>
-				<div class="flex flex-row gap-1 sm:gap-4 mb-2 ml-1">
-					<div class="flex items-center gap-1 text-sm text-gray-600">
-						<lucide-angular [img]="icons.Users" class="w-4 h-4 text-emerald-700" stroke-width="2"></lucide-angular>
-						<span class="line-clamp-1">{{homestay.committeeName}}</span>
-					</div>
-					<div class="flex items-center gap-1 text-sm text-gray-600">
-						<lucide-angular [img]="icons.MapPin" class="w-4 h-4 text-emerald-700" stroke-width="2"></lucide-angular>
-						<span class="line-clamp-1">{{homestay.address}}</span>
-					</div>
-				</div>
-				<p class="text-gray-700 mt-2 line-clamp-2 text-sm">
-					{{homestay.description}}
-				</p>
-			</div>
-			<div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-				<div class="flex flex-wrap items-center gap-2 text-sm mb-2 sm:mb-0">
-					<span *ngFor="let tag of homestay.tags | slice:0:4"
-						class="inline-flex items-center bg-gray-100 border border-gray-200 rounded-full px-3 py-1 text-sm text-gray-700 gap-1 mb-1">
-						<lucide-angular [img]="icons.TagIcon" class="w-4 h-4" stroke-width="2"></lucide-angular>
-						{{tag}}
-					</span>
-				</div>
-				<a [routerLink]="['/homestay', homestay.homestayId]"
-					routerLinkActive="router-link-active"
-					class="inline-flex items-center w-full sm:w-auto border border-[#1C2A0E] rounded-full px-4 py-1.5 text-sm font-semibold bg-[#F9FAFB] text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center sm:justify-end shadow-sm">
-					Know More
-					<lucide-angular [img]="icons.ArrowIcon"
-						class="h-4 w-4 ml-1.5"
-						stroke-width="2">
-					</lucide-angular>
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="py-4 flex justify-center" *ngIf="homestayData.length > 0 && !isLoading">
-	<pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+<div>
+  <div
+    *ngFor="
+      let homestay of homestayData
+        | paginate
+          : {
+              itemsPerPage: pagination.pageSize,
+              currentPage: pagination.pageNo,
+              totalItems: pagination.totalRecords
+            };
+      let i = index
+    "
+    class="bg-white rounded-xl my-4 shadow-md overflow-hidden hover:shadow-lg hover:bg-[#FFFFF0] border border-gray-200"
+  >
+    <div class="flex flex-col sm:flex-row h-auto sm:h-48">
+      <div
+        class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0"
+      >
+        <!-- Verified Tag -->
+        <span
+          *ngIf="homestay.verificationStatusId === 1"
+          class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow"
+        >
+          <lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
+          Verified by Committee
+        </span>
+        <span
+          *ngIf="homestay.verificationStatusId === 2"
+          class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow"
+        >
+          <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+          Verified
+        </span>
+        <img
+          [src]="getProfileImage(homestay.images)"
+          [alt]="homestay.homestayName"
+          (error)="handleImageError($event)"
+          class="w-full h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none transition duration-500"
+        />
+      </div>
+      <div class="flex-1 p-4 flex flex-col">
+        <div class="flex-grow">
+          <div class="flex flex-row flex-wrap items-center gap-2 mb-2">
+            <h4
+              class="text-base font-semibold whitespace-nowrap line-clamp-1 flex items-center gap-1"
+            >
+              <lucide-angular
+                [img]="icons.HomestayIcon"
+                class="w-5 h-5 text-emerald-700"
+                stroke-width="2"
+              ></lucide-angular>
+              {{ homestay.homestayName }}
+            </h4>
+            <span
+              class="inline-flex items-center px-3 py-1.5 hover:text-white ml-2 rounded-full text-xs border font-medium gap-1"
+              [ngClass]="getDistrictClass(homestay.districtName)"
+            >
+              <lucide-angular
+                [img]="icons.DistrictIcon"
+                class="w-4 h-4"
+                stroke-width="2"
+              ></lucide-angular>
+              {{ homestay.districtName }}
+            </span>
+          </div>
+          <div class="flex flex-row gap-1 sm:gap-4 mb-2 ml-1">
+            <div class="flex items-center gap-1 text-sm text-gray-600">
+              <lucide-angular
+                [img]="icons.Users"
+                class="w-4 h-4 text-emerald-700"
+                stroke-width="2"
+              ></lucide-angular>
+              <span class="line-clamp-1">{{ homestay.committeeName }}</span>
+            </div>
+            <div class="flex items-center gap-1 text-sm text-gray-600">
+              <lucide-angular
+                [img]="icons.MapPin"
+                class="w-4 h-4 text-emerald-700"
+                stroke-width="2"
+              ></lucide-angular>
+              <span class="line-clamp-1">{{ homestay.address }}</span>
+            </div>
+          </div>
+          <p class="text-gray-700 mt-2 line-clamp-2 text-sm">
+            {{ homestay.description }}
+          </p>
+        </div>
+        <div
+          class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+        >
+          <div class="flex flex-wrap items-center gap-2 text-sm mb-2 sm:mb-0">
+            <span
+              *ngFor="let tag of homestay.tags | slice : 0 : 4"
+              class="inline-flex items-center bg-gray-100 border border-gray-200 rounded-full px-3 py-1 text-sm text-gray-700 gap-1 mb-1"
+            >
+              <lucide-angular
+                [img]="icons.TagIcon"
+                class="w-4 h-4"
+                stroke-width="2"
+              ></lucide-angular>
+              {{ tag }}
+            </span>
+          </div>
+          <a
+            [routerLink]="['/homestay', homestay.homestayId]"
+            routerLinkActive="router-link-active"
+            class="inline-flex items-center w-full sm:w-auto border border-[#1C2A0E] rounded-full px-4 py-1.5 text-sm font-semibold bg-[#F9FAFB] text-[#1C2A0E] hover:bg-[#1C2A0E] hover:text-white transition-all duration-300 justify-center sm:justify-end shadow-sm"
+          >
+            Know More
+            <lucide-angular
+              [img]="icons.ArrowIcon"
+              class="h-4 w-4 ml-1.5"
+              stroke-width="2"
+            >
+            </lucide-angular>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="py-4 flex justify-center"
+    *ngIf="homestayData && homestayData.length > 0"
+  >
+    <pagination-controls
+      (pageChange)="onPageChange($event)"
+    ></pagination-controls>
+  </div>
 </div>
