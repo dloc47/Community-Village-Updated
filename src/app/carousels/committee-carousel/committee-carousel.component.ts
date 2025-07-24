@@ -24,6 +24,7 @@ import {
   Users,
   ChevronRight,
   Tag,
+  Award,
 } from 'lucide-angular';
 
 @Component({
@@ -49,6 +50,7 @@ export class CommitteeCarouselComponent implements OnInit, OnChanges {
     DistrictIcon: Milestone,
     UserIcon: Users,
     TagIcon: Tag,
+    Award: Award,
   };
 
   ngOnInit(): void {
