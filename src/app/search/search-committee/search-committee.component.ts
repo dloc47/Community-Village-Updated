@@ -14,6 +14,7 @@ import {
   Milestone,
   Users,
   Tag,
+  Award,
 } from 'lucide-angular';
 import { ApiService } from '../../../services/api.service';
 import { finalize, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -46,6 +47,7 @@ export class SearchCommitteeComponent implements OnInit {
     DistrictIcon: Milestone,
     CommitteeIcon: Users,
     TagIcon: Tag,
+    Award: Award,
   };
 
   ngOnInit() {

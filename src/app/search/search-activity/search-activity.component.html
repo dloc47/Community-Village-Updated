@@ -18,6 +18,7 @@
         class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden flex-shrink-0"
       >
         <!-- Verified Tag -->
+        <!--
         <span
           *ngIf="activity.verificationStatusId === 1"
           class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1 shadow"
@@ -28,9 +29,10 @@
           ></lucide-angular>
           Verified by Committee
         </span>
+        -->
         <span
           *ngIf="activity.verificationStatusId === 2"
-          class="absolute top-2 left-2 z-10 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1 shadow"
+          class="absolute top-2 left-2 z-10 px-2 py-0.5 text-xs rounded-full font-semibold bg-black text-white flex items-center gap-1 shadow"
         >
           <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
           Verified
