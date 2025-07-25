@@ -6,6 +6,8 @@
       <div
         class="relative overflow-hidden rounded-xl shadow-lg main-image-container"
       >
+        <!-- Verified Tag -->
+        <!-- (REMOVED: No tag here, only tag after name remains) -->
         <img
           [src]="mainImage?.imageUrl || imgPlaceholder"
           [alt]="committeeInfo?.villageName || 'Village Image'"
@@ -111,6 +113,16 @@
         class="px-2.5 py-1 text-xs font-medium rounded-full"
       >
         {{ committeeInfo.districtName }}
+      </span>
+      <span
+        *ngIf="
+          committeeInfo.verificationStatusId === 2 ||
+          committeeInfo.verificationStatusId === 1
+        "
+        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-black text-white flex items-center gap-1"
+      >
+        <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
+        Verified
       </span>
     </div>
     <p

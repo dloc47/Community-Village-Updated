@@ -107,15 +107,11 @@
         {{ homestayInfo.homestayName }}
       </h1>
       <span
-        *ngIf="homestayInfo.verificationStatusId == 1"
-        class="px-2.5 py-1 text-xs font-medium rounded-full bg-amber-600 text-white flex items-center gap-1"
-      >
-        <lucide-angular [img]="icons.Users" class="w-4 h-4"></lucide-angular>
-        Verified by Committee
-      </span>
-      <span
-        *ngIf="homestayInfo.verificationStatusId == 2"
-        class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-600 text-white flex items-center gap-1"
+        *ngIf="
+          homestayInfo.verificationStatusId === 2 ||
+          homestayInfo.verificationStatusId === 1
+        "
+        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-black text-white flex items-center gap-1"
       >
         <lucide-angular [img]="icons.Award" class="w-4 h-4"></lucide-angular>
         Verified
